@@ -64,9 +64,9 @@ ul{
 }
 
 #menuBar {
-    background: white; 
-    border-style: none;
+    background: white;
+    border-style: outset;
+    border-color: grey;
     font-family: "Arial";
-    border-style: none;
-    border-radius: 10px;
+    border-radius: 5px;
 }

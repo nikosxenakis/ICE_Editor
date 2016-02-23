@@ -10,7 +10,6 @@ and open the template in the editor.
 #canvas{
     border: 1px solid #aaa; 
     position: absolute;
-
 }
 html, body {
     width: 100%;
@@ -31,5 +30,9 @@ html, body {
 
 .divElements {
     float: left;
-
+    border-style: outset;
+    border-color: grey;
+    font-family: "Arial";
+    border-radius: 5px;
 } 
+

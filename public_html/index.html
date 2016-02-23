@@ -30,15 +30,12 @@
         <script type="text/javascript" src="JS/fabric.js"></script>
         <script type="text/javascript" src="JS/jquery-ui-1.9.2.custom.js"></script>
 
-
+        <!--
         <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js'></script>
-        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js'></script>
         <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js'></script>
-        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js'></script>
-        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js'></script>
         <script src='http://ngmaterial.assets.s3.amazonaws.com/svg-assets-cache.js'></script>
         <script src='https://cdn.gitcdn.link/cdn/angular/bower-material/v1.0.5-master-9e7937e/angular-material.js'></script>
-
+        -->
 
         <!--JavaScript Local Files-->
         <script src="Program/AddVariables.js"></script>
@@ -74,12 +71,12 @@
 
     </head>
     <body onload="InitEditor();" ng-app="VPL_tree">
-
+        
         <div ng-controller="menubarController as ctrl" layout="row" ng-cloak id="menuBar">
             <md-toolbar class="md-menu-toolbar">
                 <div layout="row">
                     <div>
-                        <h2 class="md-toolbar-tools"  id="menuBar" >VPL tree</h2>
+                        <h2 class="md-toolbar-tools" >VPL tree</h2>
                         <md-menu-bar>
                             <md-menu>
                                 <button ng-click="$mdOpenMenu()">File</button>
@@ -124,10 +121,11 @@
                 </div>
             </md-toolbar>           
         </div>
-
+        
         <div id="viewport" class ="divElements">
             <canvas id="canvas" ></canvas>
         </div>
+        
         <ul class="menu" id="menu">
         </ul>
         <ul id="definedVars" class="menu">
@@ -164,5 +162,6 @@
         </div>
         <div id="dialogInvalidNumberValue">
         </div>
+    
     </body>
 </html>

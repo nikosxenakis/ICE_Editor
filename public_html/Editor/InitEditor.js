@@ -5,7 +5,7 @@
  */
 
 function InitEditor() {
-
+    
     var sideBarCategories = [{name: "Elements", href: "#subCategories"}];
     var sideBarSubCategories = [{subCategoryId: "subCategories", ulId: "subCategories1",
             subCategoriesItems: [{name: "Loop", href: "#condition"},
@@ -43,6 +43,7 @@ function InitEditor() {
 function CreateNewProgram() {
 
     var canvas = new Canvas(850, window.innerHeight - 3);
+
     CreateOperatorsMenu(canvas.canvas);
     CreateVarsMenu(canvas.canvas);
     CreateRightClickMenu(canvas.canvas);

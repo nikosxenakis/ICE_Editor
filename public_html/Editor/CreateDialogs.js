@@ -30,6 +30,7 @@ function CreateDialogs() {
     new DomElement("button", "dialogCannotAddVar", "nameError", "Ok", true);
     new DomSpanElement("invalidNumberMessage", "That value is invalid number.", "dialogInvalidNumberValue", 2, true);
     new DomElement("button", "dialogInvalidNumberValue", "invalidNumberValueButton", "Ok", true);
+
 }
 
 function DomElement(type, parentId, id, value, addValue) {
