@@ -176,3 +176,7 @@ function CreateVarsMenu(canvas) {
             });
 
 }
+
+function CreateFileExplorer(canvas) {
+
+}

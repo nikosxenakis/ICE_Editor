@@ -36,7 +36,9 @@ function InitEditor() {
     InitDialogs();
     InitMenus();
     mySingletonSideBar.getInstance(sideBarCategories, sideBarSubCategories, canvas);
+    
 }
+
 
 function CreateNewProgram() {
 
@@ -44,6 +46,7 @@ function CreateNewProgram() {
     CreateOperatorsMenu(canvas.canvas);
     CreateVarsMenu(canvas.canvas);
     CreateRightClickMenu(canvas.canvas);
+    CreateFileExplorer(canvas.canvas);
     ProgramElement(canvas.canvas);
     return canvas.canvas;
 }

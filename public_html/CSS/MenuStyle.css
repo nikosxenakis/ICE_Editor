@@ -62,3 +62,11 @@ ul{
     width: 140px;
     position:absolute;
 }
+
+#menuBar {
+    background: white; 
+    border-style: none;
+    font-family: "Arial";
+    border-style: none;
+    border-radius: 10px;
+}

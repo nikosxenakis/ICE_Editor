@@ -1,17 +1,46 @@
 <!DOCTYPE HTML>
 <html>
     <head>
+        <meta charset="UTF-8">
+
+        <title>VPL::Program</title>
+    
+        <!--CSS Local Files-->
         <link rel="stylesheet" type="text/css" href="CSS/CanvasStyle.css">
         <link rel="stylesheet" type="text/css" href="CSS/DialogStyle.css">
         <link rel="stylesheet" type="text/css" href="CSS/MenuStyle.css">
         <link rel="stylesheet" type="text/css" href="CSS/jquery-ui-1.9.2.custom.css">
         <link rel="stylesheet" type="text/css" href="CSS/w2ui-1.4.3.min.css" />    
-        <link rel="stylesheet" type="text/css" href="CSS/SideBarStyle.css" />         
-        <title>VPL::Program</title>
+        <link rel="stylesheet" type="text/css" href="CSS/SideBarStyle.css" /> 
+
+        <!--CSS Remote Files--> 
+        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+        <!--JavaScript Remote Files-->
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+    
+
         <script type="text/javascript" src="JS/jquery-1.8.0.min.js "></script>
         <script type="text/javascript" src="JS/w2ui-1.4.3.min.js"></script>
         <script type="text/javascript" src="JS/fabric.js"></script>
         <script type="text/javascript" src="JS/jquery-ui-1.9.2.custom.js"></script>
+
+
+        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js'></script>
+        <script src='http://ngmaterial.assets.s3.amazonaws.com/svg-assets-cache.js'></script>
+        <script src='https://cdn.gitcdn.link/cdn/angular/bower-material/v1.0.5-master-9e7937e/angular-material.js'></script>
+
+
+        <!--JavaScript Local Files-->
         <script src="Program/AddVariables.js"></script>
         <script src="Program/ChangeProgramName.js"></script>
         <script src="Program/AddElements.js"></script> 
@@ -41,9 +70,61 @@
         <script src="DeleteElements/ChangeElementOpacity.js"></script>
         <script src="SideBar/InitSideBar.js"></script>
         <script src="SideBar/AddElementFromSideBar.js"></script>
+        <script src="MenuBar/MenuBar.js"></script>
+
     </head>
-    <body onload="InitEditor();">
-       
+    <body onload="InitEditor();" ng-app="VPL_tree">
+
+        <div ng-controller="menubarController as ctrl" layout="row" ng-cloak id="menuBar">
+            <md-toolbar class="md-menu-toolbar">
+                <div layout="row">
+                    <div>
+                        <h2 class="md-toolbar-tools"  id="menuBar" >VPL tree</h2>
+                        <md-menu-bar>
+                            <md-menu>
+                                <button ng-click="$mdOpenMenu()">File</button>
+                                <md-menu-content>
+                                    <md-menu-item>
+                                        <md-button ng-click="ctrl.newMenuBarAction('New Project', $event)">New...</md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button disabled="disabled" ng-click="ctrl.openFileMenuBarAction('Open File', $event)">Open File</md-button>
+                                    </md-menu-item>
+                                    <md-menu-divider></md-menu-divider>
+                                    <md-menu-item>
+                                        <md-menu>
+                                            <md-button ng-click="$mdOpenMenu()">Export...</md-button>
+                                            <md-menu-content>
+                                                <md-menu-item>
+                                                    <md-button ng-click="ctrl.exportTextMenuBarAction('Text', $event)">Text</md-button>
+                                                </md-menu-item>
+                                            </md-menu-content>
+                                        </md-menu>
+                                    </md-menu-item>
+                                </md-menu-content>
+                                
+                            </md-menu>
+                            <md-menu>
+                                <button ng-click="$mdOpenMenu()">Edit</button>
+                                <md-menu-content>
+                                </md-menu-content>
+                            </md-menu>
+                            <md-menu>
+                                <button ng-click="$mdOpenMenu()">View</button>
+                                <md-menu-content>
+                                </md-menu-content>
+                            </md-menu>
+                            <md-menu>
+                                <button ng-click="$mdOpenMenu()">About</button>
+                                <md-menu-content>
+                                </md-menu-content>
+                            </md-menu>
+                        </md-menu-bar>
+                    </div>
+                </div>
+            </md-toolbar>           
+        </div>
+
         <div id="viewport" class ="divElements">
             <canvas id="canvas" ></canvas>
         </div>
