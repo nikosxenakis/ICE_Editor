@@ -212,7 +212,6 @@ function Canvas(width, height) {
                             }
                             else {
                                 this.elementsUnderDragElement.push(this.horizontalElements[i]);
-
                             }
                         }
                     }
@@ -336,6 +335,8 @@ function Canvas(width, height) {
 }
 
 function ProgramElement(canvas) {
+    
+
 
     var startElement = new fabric.Rect({
         left: 50,
@@ -343,13 +344,15 @@ function ProgramElement(canvas) {
         fill: '#0066FF',
         width: 260,
         height: 50,
-        selectable: false
+        selectable: true
     });
     startElement.type0 = "element";
     startElement.type2 = "start";
     startElement.type3 = "startElement";
     canvas.horizontalElements.push(startElement);
     canvas.add(startElement);
+    
+
 
     var bodyElement = new fabric.Rect({
         left: startElement.left - 24,
@@ -357,10 +360,12 @@ function ProgramElement(canvas) {
         fill: '#0066FF',
         width: 25,
         height: 156,
-        selectable: false
+        selectable: true
     });
     canvas.verticalElements.push(bodyElement);
     canvas.add(bodyElement);
+
+
 
     var endElement = new fabric.Rect({
         left: startElement.left,
@@ -368,8 +373,9 @@ function ProgramElement(canvas) {
         fill: '#0066FF',
         width: startElement.width - 60,
         height: startElement.height,
-        selectable: false
+        selectable: true
     });
+
     endElement.type0 = "element";
     endElement.id = "element1";
     endElement.type2 = "end";
@@ -388,6 +394,17 @@ function ProgramElement(canvas) {
 
     canvas.horizontalElements.push(textEnd);
     canvas.add(textEnd);
+    /*
+    var group = new fabric.Group([ startElement, bodyElement , endElement], {
+        left: 50,
+        top: 50,
+        angle: 0
+    });
+    canvas.add(group);
+    */
+/*
+   
+
 
     var textStart = new fabric.Text("START", {
         left: startElement.left - 2,
@@ -454,6 +471,9 @@ function ProgramElement(canvas) {
     DoNothingElement(canvas);
     canvas.codeFolding = new CodeFolding();
     canvas.codeFolding.initCodeFoldingButton(startElement.top + startElement.height - 10, canvas, 54, startElement);
+    */
+   
+
 }
 
 function SortArray(array) {

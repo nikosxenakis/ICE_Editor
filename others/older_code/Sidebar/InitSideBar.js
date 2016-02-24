@@ -90,7 +90,7 @@ var mySingletonSideBar = (function() {
                 }
                 var offsetTop = $("#viewport").scrollTop();
                 var offsetLeft = $("#viewport").scrollLeft();
-        
+                /*
                _.each(canvas.horizontalElements, function(elem) {
                     if (((elem.top > e.clientY + offsetTop &&
                           elem.top <= e.clientY + offsetTop + image.height) || (elem.top + elem.height > e.clientY + offsetTop
@@ -121,8 +121,28 @@ var mySingletonSideBar = (function() {
                         canvas.makeIntersection = true;
                         canvas.objectIntersected = canvas.elementsUnderDragElement[1];
                         canvas.renderAll();
+
                     }
                 }
+                */
+               
+                _.each(canvas.horizontalElements, function(elem) {
+                    var midYElem = elem.top + elem.height /2
+                    if(
+                        e.clientY >= midYElem &&  e.clientY <= midYElem + elem.height
+                    ){
+                        AddDoNothingElement(elem.left, elem.top, canvas, 4, false);
+
+                        //AddDoNothingElement(elem.left, elem.top, canvas, 4, false);
+                        canvas.makeIntersection = true;
+                        canvas.objectIntersected = elem;
+                        canvas.renderAll();
+                        return;
+                    }
+                });
+
+
+
             }
         };
 

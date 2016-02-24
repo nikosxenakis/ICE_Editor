@@ -5,7 +5,7 @@
 
         <title>VPL::Program</title>
     
-        <!--CSS Local Files-->
+         <!--CSS Local Files-->
         <link rel="stylesheet" type="text/css" href="CSS/CanvasStyle.css">
         <link rel="stylesheet" type="text/css" href="CSS/DialogStyle.css">
         <link rel="stylesheet" type="text/css" href="CSS/MenuStyle.css">
@@ -23,26 +23,25 @@
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
-    
 
         <script type="text/javascript" src="JS/jquery-1.8.0.min.js "></script>
         <script type="text/javascript" src="JS/w2ui-1.4.3.min.js"></script>
         <script type="text/javascript" src="JS/fabric.js"></script>
         <script type="text/javascript" src="JS/jquery-ui-1.9.2.custom.js"></script>
 
-        <!--
-        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js'></script>
-        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js'></script>
-        <script src='http://ngmaterial.assets.s3.amazonaws.com/svg-assets-cache.js'></script>
-        <script src='https://cdn.gitcdn.link/cdn/angular/bower-material/v1.0.5-master-9e7937e/angular-material.js'></script>
-        -->
-
         <!--JavaScript Local Files-->
+        <script src="MenuBar/MenuBar.js"></script>
+        <script src="Editor/InitEditor.js"></script>
+
+        <script src="Canvas/InitCanvas.js"></script>
+        
+        <script src="JS/underscore.js"></script> 
+
+        <!--
         <script src="Program/AddVariables.js"></script>
         <script src="Program/ChangeProgramName.js"></script>
         <script src="Program/AddElements.js"></script> 
         <script src="Program/AddNewElementTransformations.js"></script> 
-        <script src="Program/InitNewProgram.js"></script>
         <script src="Program/CodeFolding.js"></script>
         <script src="Elements/FlowControlElements.js"></script>
         <script src="Elements/FlowControlElementStart.js"></script>
@@ -57,8 +56,6 @@
         <script src="Elements/DoNothingElement.js"></script>
         <script src="Parenthesis/Parenthesis.js"></script>
         <script src="Parenthesis/CheckLogicExprIsBalanced.js"></script>
-        <script src="JS/underscore.js"></script> 
-        <script src="Editor/InitEditor.js"></script>
         <script src="Editor/CreateDialogs.js"></script>
         <script src="Editor/CreateMenus.js"></script>
         <script src="DragAndDrop/DragAndDropElements.js"></script>
@@ -67,11 +64,14 @@
         <script src="DeleteElements/ChangeElementOpacity.js"></script>
         <script src="SideBar/InitSideBar.js"></script>
         <script src="SideBar/AddElementFromSideBar.js"></script>
-        <script src="MenuBar/MenuBar.js"></script>
+        -->
+
+        <!-- Json Files -->
+        <script type="text/javascript" src="data.json"></script>
 
     </head>
     <body onload="InitEditor();" ng-app="VPL_tree">
-        
+        <!-- Menu Bar -->
         <div ng-controller="menubarController as ctrl" layout="row" ng-cloak id="menuBar">
             <md-toolbar class="md-menu-toolbar">
                 <div layout="row">
@@ -121,10 +121,13 @@
                 </div>
             </md-toolbar>           
         </div>
-        
+
+        <!-- Canvas -->
         <div id="viewport" class ="divElements">
             <canvas id="canvas" ></canvas>
         </div>
+        <!--
+
         
         <ul class="menu" id="menu">
         </ul>
@@ -162,6 +165,6 @@
         </div>
         <div id="dialogInvalidNumberValue">
         </div>
-    
+        -->
     </body>
 </html>

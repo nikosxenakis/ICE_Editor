@@ -5,12 +5,7 @@
  */
 
 function InitEditor() {
-
-
- //console.log(sideBarSubCategories[0].tools[0].images[0].color);
-
-
-    /*
+    
     var sideBarCategories = [{name: "Elements", href: "#subCategories"}];
     var sideBarSubCategories = [{subCategoryId: "subCategories", ulId: "subCategories1",
             subCategoriesItems: [{name: "Loop", href: "#condition"},
@@ -32,33 +27,27 @@ function InitEditor() {
                     images: [{id: "Assign", src: "images/assign.png", functionCallNameFromSideBar: "AddFromSideBarElement", translateLength: 34, functionCallNameFromDoNothing: "AddAssignElement", translateLengthFromSideBar: 87, functionToCreateElement: "AssignElement"},
                     {id: "Array", src: "images/array.png", functionCallNameFromSideBar: "AddFromSideBarElement", translateLength: 34, functionCallNameFromDoNothing: "AddAssignElement", translateLengthFromSideBar: 87, functionToCreateElement: "InitArray"},
                     {id: "DoNothing", src: "images/doNothing.png", functionCallNameFromSideBar: "AddFromSideBarDoNothingElement", translateLength: "", functionCallNameFromDoNothing: "", translateLengthFromSideBar: 53}]}]}];
-    */
-    //$('#viewport').css('height', window.innerHeight - 3);
-    $('#viewport').css('height', CanvasData[0].height);
-    $('#viewport').css('width', CanvasData[0].width);
 
-    var canvas = new Canvas(CanvasData[0].width, CanvasData[0].height);
-    addCanvasElements(canvas);
-    //var canvas = CreateNewProgram();
-    /*
+    $('#viewport ').css('height', window.innerHeight - 3);
+    var canvas = CreateNewProgram();
     canvas.VPL_elementsInfo = sideBarSubCategories;
     InitMenuElements(canvas);
     CreateDialogs();
     InitDialogs();
     InitMenus();
     mySingletonSideBar.getInstance(sideBarCategories, sideBarSubCategories, canvas);
-    */
+    
 }
 
 
 function CreateNewProgram() {
 
-    //var canvas = new Canvas(850, window.innerHeight - 3);
+    var canvas = new Canvas(850, window.innerHeight - 3);
 
-    //CreateOperatorsMenu(canvas.canvas);
-    //CreateVarsMenu(canvas.canvas);
-    //CreateRightClickMenu(canvas.canvas);
-    //CreateFileExplorer(canvas.canvas);
+    CreateOperatorsMenu(canvas.canvas);
+    CreateVarsMenu(canvas.canvas);
+    CreateRightClickMenu(canvas.canvas);
+    CreateFileExplorer(canvas.canvas);
+    ProgramElement(canvas.canvas);
     return canvas.canvas;
 }
-

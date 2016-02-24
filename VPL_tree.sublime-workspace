@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"bor",
+				"border-color"
+			],
+			[
+				"Create",
+				"CreateFileExplorer	(InitEditor.js)"
+			],
+			[
 				"d",
 				"dummy"
 			],
@@ -147,6 +155,54 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "public_html/Editor/InitEditor.js",
+			"settings":
+			{
+				"buffer_size": 5697,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "public_html/index.html",
+			"settings":
+			{
+				"buffer_size": 8012,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public_html/Editor/CreateDialogs.js",
+			"settings":
+			{
+				"buffer_size": 8114,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "public_html/CSS/CanvasStyle.css",
+			"settings":
+			{
+				"buffer_size": 713,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "public_html/CSS/MenuStyle.css",
+			"settings":
+			{
+				"buffer_size": 1401,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "public_html/Program/InitNewProgram.js",
+			"settings":
+			{
+				"buffer_size": 18283,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -200,6 +256,14 @@
 	},
 	"file_history":
 	[
+		"/Users/xenis656/VPL_tree/VPL_tree.sublime-project",
+		"/Users/xenis656/VPL_tree/public_html/index.html",
+		"/Users/xenis656/VPL_tree/public_html/CSS/MenuStyle.css",
+		"/Users/xenis656/VPL_tree/public_html/MenuBar/MenuBar.js",
+		"/Users/xenis656/VPL_tree/public_html/HTML/menuBar.html",
+		"/Users/xenis656/VPL_tree/public_html/CSS/MenuBar.css",
+		"/Users/xenis656/VPL_tree/public_html/Editor/CreateMenus.js",
+		"/Users/xenis656/VPL_tree/public_html/terminal.glue",
 		"/Users/xenis656/Dropbox/CSD/4etos/8eksamino/Ptuxiaki Ergasia/ICE Editor version2/VPL_tree/public_html/index.html",
 		"/Users/xenis656/Desktop/s",
 		"/Users/xenis656/Dropbox/CSD/workspace/web/personal website/js/modernizr.custom.97074.js",
@@ -288,6 +352,16 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"ret",
+			";\n",
+			"10px",
+			"definedVars",
+			"divElements",
+			"menubarController",
+			"mdOpenMenu",
+			"firstApplication",
+			"CreateNewProgram",
+			"viewport",
 			"feat",
 			"fea",
 			"aref",
@@ -403,7 +477,7 @@
 			"PEAK"
 		],
 		"highlight": true,
-		"in_selection": true,
+		"in_selection": false,
 		"preserve_case": false,
 		"regex": false,
 		"replace_history":
@@ -418,8 +492,177 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "public_html/Editor/InitEditor.js",
+					"settings":
+					{
+						"buffer_size": 5697,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5600,
+								5600
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "public_html/index.html",
+					"settings":
+					{
+						"buffer_size": 8012,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7992,
+								7992
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 116.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "public_html/Editor/CreateDialogs.js",
+					"settings":
+					{
+						"buffer_size": 8114,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								213,
+								213
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 502.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "public_html/CSS/CanvasStyle.css",
+					"settings":
+					{
+						"buffer_size": 713,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								609,
+								609
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "public_html/CSS/MenuStyle.css",
+					"settings":
+					{
+						"buffer_size": 1401,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1398,
+								1276
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 286.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "public_html/Program/InitNewProgram.js",
+					"settings":
+					{
+						"buffer_size": 18283,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2637,
+								2637
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1670.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -462,6 +705,10 @@
 	{
 		"height": 25.0
 	},
+	"output.git":
+	{
+		"height": 100.0
+	},
 	"replace":
 	{
 		"height": 0.0
@@ -491,6 +738,6 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 325.0,
+	"side_bar_width": 302.0,
 	"status_bar_visible": true
 }
