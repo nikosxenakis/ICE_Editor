@@ -1,0 +1,178 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="UTF-8">
+
+        <title>VPL::Program</title>
+    
+         <!--CSS Local Files-->
+        <link rel="stylesheet" type="text/css" href="CSS/CanvasStyle.css">
+        <!--
+        <link rel="stylesheet" type="text/css" href="CSS/DialogStyle.css">
+        <link rel="stylesheet" type="text/css" href="CSS/MenuStyle.css">
+    -->
+        <link rel="stylesheet" type="text/css" href="CSS/jquery-ui-1.9.2.custom.css">
+        <link rel="stylesheet" type="text/css" href="CSS/w2ui-1.4.3.min.css" />    
+        <link rel="stylesheet" type="text/css" href="CSS/SideBarStyle.css" /> 
+
+        <!--CSS Remote Files--> 
+        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+        <!--JavaScript Remote Files-->
+        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js'></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+
+        <script type="text/javascript" src="JS/jquery-1.8.0.min.js "></script>
+        <script type="text/javascript" src="JS/w2ui-1.4.3.min.js"></script>
+        <script type="text/javascript" src="JS/fabric.js"></script>
+        <script type="text/javascript" src="JS/jquery-ui-1.9.2.custom.js"></script>
+
+        <!--JavaScript Local Files-->
+        <script src="MenuBar/MenuBar.js"></script>
+        <script src="Editor/InitEditor.js"></script>
+
+        <script src="Canvas/InitCanvas.js"></script>
+        
+        <script src="JS/underscore.js"></script> 
+        
+        <script src="SideBar/InitSideBar.js"></script>
+
+
+        <!--
+        <script src="Program/AddVariables.js"></script>
+        <script src="Program/ChangeProgramName.js"></script>
+        <script src="Program/AddElements.js"></script> 
+        <script src="Program/AddNewElementTransformations.js"></script> 
+        <script src="Program/CodeFolding.js"></script>
+        <script src="Elements/FlowControlElements.js"></script>
+        <script src="Elements/FlowControlElementStart.js"></script>
+        <script src="Elements/ElementStart.js"></script>
+        <script src="Elements/VplConditions.js"></script>
+        <script src="Program/AssignElementTransformations.js"></script>
+        <script src="Elements/AssignElement.js"></script>
+        <script src="Elements/Array.js"></script>
+        <script src="Program/AddVal.js"></script>
+        <script src="Program/FlowControlElementsTransformations.js"></script>
+        <script src="Elements/Elements.js"></script>
+        <script src="Elements/DoNothingElement.js"></script>
+        <script src="Parenthesis/Parenthesis.js"></script>
+        <script src="Parenthesis/CheckLogicExprIsBalanced.js"></script>
+        <script src="Editor/CreateDialogs.js"></script>
+        <script src="Editor/CreateMenus.js"></script>
+        <script src="DragAndDrop/DragAndDropElements.js"></script>
+        <script src="DragAndDrop/CreateDragElement.js"></script>
+        <script src="DeleteElements/DeleteTranslateElement.js"></script> 
+        <script src="DeleteElements/ChangeElementOpacity.js"></script>
+        -->
+
+        <!-- Json Files -->
+        <script type="text/javascript" src="data.json"></script>
+
+    </head>
+    <body onload="InitEditor();" ng-app="VPL_tree">
+        
+        <!-- Menu Bar -->
+        <div id="menuBar" ng-controller="menubarController as ctrl" layout="row" ng-cloak>
+            <md-toolbar class="md-menu-toolbar">
+                <div layout="row">
+                    <div>
+                        <h2 class="md-toolbar-tools" >VPL tree</h2>
+                        <md-menu-bar>
+                            <md-menu>
+                                <button ng-click="$mdOpenMenu()">File</button>
+                                <md-menu-content>
+                                    <md-menu-item>
+                                        <md-button ng-click="ctrl.newMenuBarAction('New Project', $event)">New...</md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button disabled="disabled" ng-click="ctrl.openFileMenuBarAction('Open File', $event)">Open File</md-button>
+                                    </md-menu-item>
+                                    <md-menu-divider></md-menu-divider>
+                                    <md-menu-item>
+                                        <md-menu>
+                                            <md-button ng-click="$mdOpenMenu()">Export...</md-button>
+                                            <md-menu-content>
+                                                <md-menu-item>
+                                                    <md-button ng-click="ctrl.exportTextMenuBarAction('Text', $event)">Text</md-button>
+                                                </md-menu-item>
+                                            </md-menu-content>
+                                        </md-menu>
+                                    </md-menu-item>
+                                </md-menu-content>
+                                
+                            </md-menu>
+                            <md-menu>
+                                <button ng-click="$mdOpenMenu()">Edit</button>
+                                <md-menu-content>
+                                </md-menu-content>
+                            </md-menu>
+                            <md-menu>
+                                <button ng-click="$mdOpenMenu()">View</button>
+                                <md-menu-content>
+                                </md-menu-content>
+                            </md-menu>
+                            <md-menu>
+                                <button ng-click="$mdOpenMenu()">About</button>
+                                <md-menu-content>
+                                </md-menu-content>
+                            </md-menu>
+                        </md-menu-bar>
+                    </div>
+                </div>
+            </md-toolbar>           
+        </div>
+
+        <!-- Canvas -->
+        <div id="viewport">
+            <canvas id="canvas" ></canvas>
+        </div>
+
+        <div id="navigationBar">
+        </div>
+        <!--
+
+        
+        <ul class="menu" id="menu">
+        </ul>
+        <ul id="definedVars" class="menu">
+        </ul>
+          <ul id="arrayNames" class="menu">
+        </ul>
+        <ul id="rightClickMenu" class="menu">
+        </ul>
+        <ul id="addVarsEdit" class="menu">
+        </ul>
+        <ul id="arithOps" class="menu">
+        </ul>
+        <ul id="compOps" class="menu">
+        </ul>
+        <ul id="logicOps" class="menu">
+        </ul>
+        <div id="dialog">
+        </div>
+        <div id="dialogEditNumberValue">
+        </div>
+        <div id="dialogEditTextValue">
+        </div>
+        <div id="newVariable">
+        </div>
+        <div id="dialogAddValue">
+        </div>
+        <div id="dialogAddNumberValue">
+        </div>
+        <div id="dialogAddBooleanValue">
+            <div id="booleanValues"></div>
+        </div>
+        <div id="dialogCannotAddVar">
+           
+        </div>
+        <div id="dialogInvalidNumberValue">
+        </div>
+        -->
+
+    </body>
+</html>

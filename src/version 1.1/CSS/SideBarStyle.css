@@ -1,0 +1,102 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 24 Δεκ 2015, 3:59:40 μμ
+    Author     : Default
+*/
+
+    #sideBar{
+        border:none;
+    }
+
+                  
+    #subCategories{                              
+        border:none;
+    }
+
+    #sidebar.ui-tabs.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active {         
+        padding-bottom: 0px;
+        background: #D8D8D8;
+    }
+    
+    #subCategories.ui-tabs.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active {
+        padding-bottom: 0;
+        background: #99CCFF;
+    }
+    
+    #sideBar li {
+        clear: left;
+        width: 45px;
+        margin: 0.2em 0;
+        overflow: hidden;
+        position: relative;
+        right: 39px;
+        display: inline;
+    }
+    
+    #sideBar li a {
+                padding: 0.1em 0.7em;
+                text-decoration: none;
+                margin-left: 2px;
+                color : #404040 ;
+            }
+
+            #sideBar li:hover {
+                cursor: pointer;
+                background: #F8F8F8 ;
+            }
+            img
+            {
+                padding: 10px;
+                display:block;
+            } 
+
+            #categories{
+
+                border-left: 1px solid #C0C0C0;
+                border-top: 1px solid #C0C0C0;
+                border-right: 1px solid #C0C0C0;
+                border-top-left-radius: 6px;
+                border-top-right-radius: 6px;
+                width: 170px;
+                background: #F0F0F0;
+                padding-bottom: 0.5em;
+                //margin-left: 900px;
+                position: relative;
+                left:50px;
+                top:0px;
+                padding-bottom: 0.4em;
+                padding-top: 0.4em;
+            }
+
+            #subCategories1{
+
+                border-left: 1px solid #C0C0C0;
+                border-right: 1px solid #C0C0C0;
+                border-top: 1px solid #D8D8D8 ;
+                width: 200px;
+                background: #E8E8E8;
+                //margin-left: 900px;
+                position: relative;
+                left:50px;
+                top : -16px;
+                padding-bottom: 0.4em;
+                padding-top: 0.4em;
+            }
+
+            #condition, #statement{
+
+                background: #E8E8E8;
+                //border: 1px solid #C0C0C0 ; 
+                overflow: auto;
+                width: 240px; 
+                height: 430px; 
+                margin-top: -28px; 
+                //margin-left: 900px;
+                position: relative;
+                left:50px;
+                //top : -26px;
+            }

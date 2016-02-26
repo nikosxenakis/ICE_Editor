@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type" /> 
+        <meta name="keywords" content=" " /> 
+        <meta name="description" content=" " /> 
+        <meta content="en-us" http-equiv="Content-Language" /> 
+        <meta content="General" name="rating" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <!-- Bootstrap -->
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <link href="bootstrap-3.3.6-dist/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+
+
+        <title>VPL::Program</title>
+
+        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+        <link rel="stylesheet" type="text/css" href="CSS/index.css">
+        <link rel="stylesheet" type="text/css" href="CSS/jquery-ui-1.9.2.custom.css">
+        <link rel="stylesheet" type="text/css" href="CSS/w2ui-1.4.3.min.css" />    
+        <link rel="stylesheet" type="text/css" href="CSS/SideBarStyle.css" /> 
+
+        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js'></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+
+        <script type="text/javascript" src="JS/jquery-1.8.0.min.js "></script>
+        <script type="text/javascript" src="JS/w2ui-1.4.3.min.js"></script>
+        <script type="text/javascript" src="JS/fabric.js"></script>
+        <script type="text/javascript" src="JS/jquery-ui-1.9.2.custom.js"></script>
+        <script src="JS/underscore.js"></script> 
+
+
+        <script src="MenuBar/MenuBar.js"></script>
+        <script src="Editor/InitEditor.js"></script>
+        <script src="Canvas/InitCanvas.js"></script>
+        <script src="SideBar/InitSideBar.js"></script>
+
+        <script type="text/javascript" src="JSON/data.json"></script>
+
+    </head>
+    <body onload="InitEditor();" ng-app="VPL_tree">
+        <div id="container" class="container-fluid"> 
+
+            <div id="masthead" > </div> 
+    <!-- class="col-xs-12 col-sm-12 col-md-12 col-lg-12"-->
+
+                <div id="menuBarContainer" class="row" ng-controller="menubarController as ctrl" ng-cloak>
+                    <div id="menuBarLogo" class="col-xs-12 col-xs-offset-0 col-sm-4 col-sm-offset-0 col-md-2 col-md-offset-0 col-lg-2 col-lg-offset-0">
+                                <h2>VPL tree</h2>
+                    </div>
+                    <div id="menuBar" class="col-xs-12 col-xs-offset-0 col-sm-8 col-sm-offset-0 col-md-8 col-md-offset-0 col-lg-8 col-lg-offset-0">
+                    <md-toolbar class="md-menu-toolbar">
+                            <div  class="nav nav-tabs nav-justified" role="tablist">
+                                <md-menu-bar>
+                                    <md-menu>
+                                        <button ng-click="$mdOpenMenu()">File</button>
+                                        <md-menu-content>
+                                            <md-menu-item>
+                                                <md-button ng-click="ctrl.newMenuBarAction('New Project', $event)">New...</md-button>
+                                            </md-menu-item>
+                                            <md-menu-item>
+                                                <md-button disabled="disabled" ng-click="ctrl.openFileMenuBarAction('Open File', $event)">Open File</md-button>
+                                            </md-menu-item>
+                                            <md-menu-divider></md-menu-divider>
+                                            <md-menu-item>
+                                                <md-menu>
+                                                    <md-button ng-click="$mdOpenMenu()">Export...</md-button>
+                                                    <md-menu-content>
+                                                        <md-menu-item>
+                                                            <md-button ng-click="ctrl.exportTextMenuBarAction('Text', $event)">Text</md-button>
+                                                        </md-menu-item>
+                                                    </md-menu-content>
+                                                </md-menu>
+                                            </md-menu-item>
+                                        </md-menu-content>
+                                        
+                                    </md-menu>
+                                    <md-menu>
+                                        <button ng-click="$mdOpenMenu()">Edit</button>
+                                        <md-menu-content>
+                                        </md-menu-content>
+                                    </md-menu>
+                                    <md-menu>
+                                        <button ng-click="$mdOpenMenu()">View</button>
+                                        <md-menu-content>
+                                        </md-menu-content>
+                                    </md-menu>
+                                    <md-menu>
+                                        <button ng-click="$mdOpenMenu()">About</button>
+                                        <md-menu-content>
+                                        </md-menu-content>
+                                    </md-menu>
+                                </md-menu-bar>
+                            </div>
+                    </md-toolbar>  
+                    </div>         
+                </div>
+
+
+            <div id="mainContent" class="row"> 
+                <div id="navBarContainer" class="col-xs-12 col-xs-offset-0 col-sm-3 col-sm-offset-0 col-md-3 col-md-offset-0 col-lg-2 col-lg-offset-0"> 
+                    <div id="navBar"> 
+                        <ul class="nav nav-pills nav-stacked" role="tablist">
+                            <li class="active"><a href="">program1</a></li>
+                            <li class="active"><a href="">program2</a></li>
+                            <li><a href="">program3</a></li>        
+                        </ul>
+                    </div> 
+                </div> 
+                <div id="canvasContainer" class="col-xs-12 col-xs-offset-0 col-sm-8 col-sm-offset-1 col-md-8 col-md-offset-1 col-lg-7 col-lg-offset-0">
+                    <canvas id="canvas"></canvas>
+                </div>
+                <div id="sideBarContainer" class="col-xs-12 col-xs-offset-0 col-sm-3 col-sm-offset-0 col-md-3 col-md-offset-0 col-lg-3 col-lg-offset-0"> 
+                    <div id="sideBar"> </div> 
+                </div>
+
+            </div> 
+
+            <div id="footer"> 
+                <p>This is the footer</p>
+            </div> 
+
+        </div>
+    </body>
+</html>
