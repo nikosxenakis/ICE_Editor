@@ -1,0 +1,15 @@
+Features added:
+	
+	Responsive via Bootstrap 
+	Json Files
+
+Features to add:
+
+	scolling while holding an object
+	menuBar fix up-down
+	add project explorer functionallity
+	
+Useful Websites:
+	
+	http://www.cssmatic.com/				/*make css*/
+	http://getbootstrap.com/css/			/*bootstrap css*/
