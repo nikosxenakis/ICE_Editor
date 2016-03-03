@@ -11,43 +11,207 @@ function Canvas(width, height) {
         hoverCursor: 'pointer',
         selection: false,
         height:height,
-        width:width
+        width:width,
+        backgroundColor:"white"
     });
-   
+
     //events
     this.canvas.on('mouse:over', function(e) {
+          guiobj = e.target;
+        if (guiobj) {
+
+            if (guiobj.mouseOver) { //this check if doesn't exist drag and drop is anable
+                guiobj.mouseOver();
+            }
+
+            this.renderAll();
+        }
+        if (guiobj.id2 === "doNothing" || guiobj.id2 === "assign") {
+            this.deleteButton.SetPosition(guiobj.firstElement);
+            if (!this.object) {
+                this.add(this.deleteButton);
+            }
+            this.object = guiobj.firstElement;
+            this.deleteButton.element = this.object;
+            this.renderAll();
+        } else if (guiobj.id2 === "flowcontrol1") {
+            this.deleteButton.SetPosition(guiobj.mainElement);
+            if (!this.object) {
+                this.add(this.deleteButton);
+
+            }
+            this.object = guiobj.mainElement;
+            this.deleteButton.element = this.object;
+            this.renderAll();
+        } else if (guiobj.id2 === "deleteButtonElement") {
+            if (!this.object) {
+                this.add(this.deleteButton);
+            }
+            if (this.deleteButton.element.firstElement.id2 !== "flowcontrol1") {
+                this.rightClickedElement = this.deleteButton.element.firstElement;
+                FindAboveAndUnderElements(this, this.rightClickedElement, this.itemsOfDraggableElement, true);
+            } else {
+                this.rightClickedElement = this.deleteButton.element;
+                this.horizontalItemsOfElement.length = 0;
+                this.verticalItemsOfElement.length = 0;
+                FindAboveAndUnderOfFlowControlElements(this, this.rightClickedElement, this.horizontalItemsOfElement, this.verticalItemsOfElement, true);
+
+            }
+            this.renderAll();
+        }
     });
 
     this.canvas.on('mouse:out', function(e) {
+        guiobj = e.target;
+        if (guiobj.mouseOut) { //this check if doesn't exist drag and drop is anable
+            guiobj.mouseOut();
+        }
+
+        this.renderAll();
+        if ((guiobj.id2 === "doNothing" || guiobj.id2 === "assign" || guiobj.id2 === "flowcontrol1")) {
+            this.remove(this.deleteButton);
+            this.object = null;
+
+            this.renderAll();
+        } else if (guiobj.id2 === "deleteButtonElement") {
+            if (this.deleteButton.element.firstElement.id2 !== "flowcontrol1") {
+                ChangeElementOpacity(this.itemsOfDraggableElement);
+            } else {
+                ChangeElementOpacity(this.horizontalItemsOfElement);
+                ChangeElementOpacity(this.verticalItemsOfElement);
+            }
+            this.remove(this.deleteButton);
+            this.renderAll();
+        }
     });
 
+this.canvas.on('mouse:down', function(options) {
+
+
+});
+/*
     this.canvas.on('mouse:down',function(options) {
-        /*
-        guiobj = options.target;
-            if (guiobj) {
-                $(".ui-dialog-content").dialog("close");
-                $(".menu").hide();
-                if (guiobj.downClicked) { //this check if doesn't exist drag and drop is anable
-                    guiobj.downClicked(options.e.clientX, options.e.clientY);
-                }
-                if (guiobj.id2 === "doNothing" || guiobj.id2 === "assign" || guiobj.id2 === "flowcontrol1") {
-                    SetItemsOfDraggableElement(guiobj, this);
-                    this.selected = true;
-                    this.clicked = true;
-                }
-                this.renderAll();
-            }
-            else {
-                $(".menu").hide();
-                $(".ui-dialog-content").dialog("close");
-            }
-        */
-    });
+      guiobj = options.target;
+                if (guiobj) {
+                    $(".ui-dialog-content").dialog("close");
+                    $(".menu").hide();
+                    if (guiobj.downClicked) { //this check if doesn't exist drag and drop is anable
+                        guiobj.downClicked(options.e.clientX, options.e.clientY);
+                    }
+                    if (guiobj.id2 === "doNothing" || guiobj.id2 === "assign" || guiobj.id2 === "flowcontrol1") {
 
+                        SetItemsOfDraggableElement(guiobj, this);
+                        this.selected = true;
+                        this.clicked = true;
+
+                    }
+                    this.renderAll();
+                }
+                else {
+                    $(".menu").hide();
+                    $(".ui-dialog-content").dialog("close");
+                }
+            
+    });
+*/
     this.canvas.on('mouse:move',function(options) {
+        /*
+        if (options.target){
+            guiobj = options.target;  
+        }
+                if (this.clicked) {
+                    CreateDragElementClone(guiobj, this);
+                    this._curX = this.groupArray[0].left;
+                    this._curY = this.groupArray[0].top;
+                    this.clicked = false;
+                    $(".ui-dialog-content").dialog("close");
+                    $(".menu").hide();
+                }
+                if (this.selected) {
+                    var _curXm = (this._curX - options.e.layerX);
+                    var _curYm = (this._curY - options.e.layerY);
+
+                    if (this.groupArray.length > 0)
+                        DragAndDropCloneElement(this.groupArray, _curXm, _curYm);
+                    this.renderAll();
+                }
+                if (this.objectMoving !== null) {
+
+                    if (this.groupArray[0].top < this.startElement.top || this.groupArray[0].top > this.endElement.top) {
+                        this.moveCursor = 'not-allowed';
+                    }
+                    else
+                        this.moveCursor = 'move';
+                    this.elementsUnderDragElement.length = 0;
+
+                    if (this.makeIntersection) {
+
+                        AddDoNothingElement(this.objectIntersected.left, this.objectIntersected.top, this, -4, false);
+                        this.makeIntersection = false;
+                    }
+                    for (var i = 0; i < this.horizontalElements.length; i++) {
+                        if (((this.horizontalElements[i].top > this.groupArray[0].top &&
+                                this.horizontalElements[i].top <= this.groupArray[0].top + this.groupArray[0].item(0).height) || (this.horizontalElements[i].top + this.horizontalElements[i].height > this.groupArray[0].top
+                                && this.horizontalElements[i].top + this.horizontalElements[i].height < this.groupArray[0].top + this.groupArray[0].item(0).height) || (this.horizontalElements[i].top < this.groupArray[0].top &&
+                                this.horizontalElements[i].top + this.horizontalElements[i].height >= this.groupArray[0].top)) &&
+                                (this.horizontalElements[i].type0 === "element") && ((
+                                this.horizontalElements[i].left < this.groupArray[0].left &&
+                                this.horizontalElements[i].left + this.horizontalElements[i].width > this.groupArray[0].left) || (
+                                this.horizontalElements[i].left > this.groupArray[0].left &&
+                                this.horizontalElements[i].left < this.groupArray[0].left + this.groupArray[0].item(0).width))) {
+                            if (this.itemsOfDraggableElement.indexOf(this.horizontalElements[i]) >= 0 && this.objectMoving.id2 === "flowcontrol1"
+                                    && this.horizontalElements[i] !== this.objectMoving.firstElement.endElement && this.horizontalElements[i] !== this.objectMoving.firstElement) {
+                                ;
+                            }
+                            else {
+                                this.elementsUnderDragElement.push(this.horizontalElements[i]);
+
+                            }
+                        }
+                    }
+
+                    if (this.elementsUnderDragElement.length > 1) {
+
+                        SortArray(this.elementsUnderDragElement);
+                        if ((this.elementsUnderDragElement[1].top <= this.elementsUnderDragElement[0].top + this.elementsUnderDragElement[0].height + 4) && !(this.elementsUnderDragElement[0].isMinus === false)) {
+                            if ((this.objectMoving.id2 === "flowcontrol1" && this.elementsUnderDragElement[1] === this.objectMoving.firstElement.endElement) || this.elementsUnderDragElement[1].id === "groupLogicExprError") {
+                                ;
+                            }
+                            else {
+
+                                AddDoNothingElement(this.elementsUnderDragElement[1].left, this.elementsUnderDragElement[1].top, this, 4, false);
+                                this.makeIntersection = true;
+                                this.objectIntersected = this.elementsUnderDragElement[1];
+                                this.renderAll();
+                            }
+                        } else {
+                            this.elementsUnderDragElement.length = 0;
+                        }
+                    }
+                }
+                if (this.groupArray[0]) {
+                    this._curX = this.groupArray[0].left;
+                    this._curY = this.groupArray[0].top;
+                }
+   */         
     });
 
     this.canvas.on('mouse:up',function() {
+         if (this.selected) {
+
+                    if (this.makeIntersection) {
+                        AddDoNothingElement(this.objectIntersected.left, this.objectIntersected.top, this, -4, false);
+                        this.makeIntersection = false;
+                    }
+
+                    this.selected = false;
+                    this.clicked = false;
+                    if (this.objectMoving !== null)
+                        SetNewPositionOfDraggableElement(this.objectMoving, this);
+                    this.elementsUnderDragElement.length = 0;
+                    this.objectMoving = null;
+                    this.renderAll();
+                }
     });
 
     //elements
@@ -56,6 +220,8 @@ function Canvas(width, height) {
 
     this.canvas.elementsUnderDragElement = new Array();
     this.canvas.makeIntersection = false;
+
+    this.canvas.point = new Array(); // the point (x, y) of canvas  that elements will be added
 
     /*
     this.canvas.doNothingElement;
@@ -78,7 +244,6 @@ function Canvas(width, height) {
     this.canvas.groupArray = new Array();
     this.canvas.rightClickedElement; //to know which element was right clicked
     this.canvas.vplStmt;
-    this.canvas.point = new Array(); // the point (x, y) of canvas  that elements will be added
     this.canvas.arithOp; //
     this.canvas.programVariables = new Array();
     this.canvas.programArrays = new Array();
@@ -113,8 +278,6 @@ function Canvas(width, height) {
 
     return this.canvas;
 }
-
-
 
 function addCanvasElements(canvas) {
 

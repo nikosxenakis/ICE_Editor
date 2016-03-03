@@ -1,14 +1,51 @@
-Features added:
-	
-	Responsive via Bootstrap 
-	Json Files
+Features:
 
-Features to add:
+	/*to achieve basic functionallity*/
 
+	fix changeSize of canvas
+	fix top & left of rectangles
+	fit the new object during by adding it in blur
+	multi-depth side bar
+	define Element{
+		id,
+		format( I C E ),
+		type(if,while,do,for),
+		a group element{
+			5 Rectangle
+		},
+		father Element,
+		2 lists of Elements
+	},
+	define Rectangle{
+		id,
+		1 rect,
+		type(vertical,horizotial),
+		define 3 Area
+	},
+	define Area{
+		id,
+		type(text,box)
+	},
 	scolling while holding an object
-	menuBar fix up-down
-	add project explorer functionallity
+	call API
+	changes sandwitch fixed pos
 	
+	/*to achieve extra functionallity and flexibillty*/
+
+	Json Files
+	fix images white->transparent
+	add recycle bin
+	add project explorer functionallity
+	add menu bar functionallity
+
+
+	/*to achieve perfection*/
+
+	Create VPL-tree LOGO
+	Responsive via Bootstrap for all devices
+
+
+
 Useful Websites:
 	
 	http://www.cssmatic.com/				/*make css*/

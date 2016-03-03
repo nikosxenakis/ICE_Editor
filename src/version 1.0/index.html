@@ -1,178 +1,310 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type" /> 
+        <meta name="keywords" content=" " /> 
+        <meta name="description" content=" " /> 
+        <meta content="en-us" http-equiv="Content-Language" /> 
+        <meta content="General" name="rating" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+
+
+
+
+        <!-- Bootstrap -->
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <link href="bootstrap-3.3.6-dist/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+
+
+        <!--Angular JS-->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+        <link rel='stylesheet prefetch' href='https://cdn.gitcdn.xyz/cdn/angular/bower-material/v1.0.5/angular-material.css'>
+        <link rel='stylesheet prefetch' href='https://material.angularjs.org/1.0.5/docs.css'>
+
+        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js'></script>
+        <script src='http://ngmaterial.assets.s3.amazonaws.com/svg-assets-cache.js'></script>
+        <script src='https://cdn.gitcdn.xyz/cdn/angular/bower-material/v1.0.5/angular-material.js'></script>
 
         <title>VPL::Program</title>
-    
-         <!--CSS Local Files-->
-        <link rel="stylesheet" type="text/css" href="CSS/CanvasStyle.css">
-        <!--
-        <link rel="stylesheet" type="text/css" href="CSS/DialogStyle.css">
-        <link rel="stylesheet" type="text/css" href="CSS/MenuStyle.css">
-    -->
-        <link rel="stylesheet" type="text/css" href="CSS/jquery-ui-1.9.2.custom.css">
-        <link rel="stylesheet" type="text/css" href="CSS/w2ui-1.4.3.min.css" />    
-        <link rel="stylesheet" type="text/css" href="CSS/SideBarStyle.css" /> 
 
-        <!--CSS Remote Files--> 
-        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" type="text/css" href="css/IndexStyle.css">
+        <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.9.2.custom.css">
+        <link rel="stylesheet" type="text/css" href="css/w2ui-1.4.3.min.css" />    
+        <link rel="stylesheet" type="text/css" href="css/SideBarStyle.css" /> 
+        <link rel="stylesheet" type="text/css" href="css/NavBarStyle.css" /> 
+        <link rel="stylesheet" type="text/css" href="css/MenuBarStyle.css" /> 
 
-        <!--JavaScript Remote Files-->
-        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js'></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+        <script type="text/javascript" src="js/jquery-1.8.0.min.js "></script>
+        <script type="text/javascript" src="js/w2ui-1.4.3.min.js"></script>
+        <script type="text/javascript" src="js/fabric.js"></script>
+        <script type="text/javascript" src="js/jquery-ui-1.9.2.custom.js"></script>
+        <script type="text/javascript" src="js/MenuBar.js"></script>
+        <script type="text/javascript" src="js/underscore.js"></script> 
+        <script src="js/NavBar.js"></script>
+        <script type="text/javascript" src="Editor/InitEditor.js"></script>
+        <script type="text/javascript" src="Canvas/InitCanvas.js"></script>
+        <script type="text/javascript" src="SideBar/InitSideBar.js"></script>
+        <script type="text/javascript" src="Elements/AddElements.js"></script>
+        <script type="text/javascript" src="Elements/AddNewElementTransformations.js"></script>
 
-        <script type="text/javascript" src="JS/jquery-1.8.0.min.js "></script>
-        <script type="text/javascript" src="JS/w2ui-1.4.3.min.js"></script>
-        <script type="text/javascript" src="JS/fabric.js"></script>
-        <script type="text/javascript" src="JS/jquery-ui-1.9.2.custom.js"></script>
-
-        <!--JavaScript Local Files-->
-        <script src="MenuBar/MenuBar.js"></script>
-        <script src="Editor/InitEditor.js"></script>
-
-        <script src="Canvas/InitCanvas.js"></script>
-        
-        <script src="JS/underscore.js"></script> 
-        
-        <script src="SideBar/InitSideBar.js"></script>
-
-
-        <!--
-        <script src="Program/AddVariables.js"></script>
-        <script src="Program/ChangeProgramName.js"></script>
-        <script src="Program/AddElements.js"></script> 
-        <script src="Program/AddNewElementTransformations.js"></script> 
-        <script src="Program/CodeFolding.js"></script>
-        <script src="Elements/FlowControlElements.js"></script>
-        <script src="Elements/FlowControlElementStart.js"></script>
-        <script src="Elements/ElementStart.js"></script>
-        <script src="Elements/VplConditions.js"></script>
-        <script src="Program/AssignElementTransformations.js"></script>
-        <script src="Elements/AssignElement.js"></script>
-        <script src="Elements/Array.js"></script>
-        <script src="Program/AddVal.js"></script>
-        <script src="Program/FlowControlElementsTransformations.js"></script>
-        <script src="Elements/Elements.js"></script>
-        <script src="Elements/DoNothingElement.js"></script>
-        <script src="Parenthesis/Parenthesis.js"></script>
-        <script src="Parenthesis/CheckLogicExprIsBalanced.js"></script>
-        <script src="Editor/CreateDialogs.js"></script>
-        <script src="Editor/CreateMenus.js"></script>
-        <script src="DragAndDrop/DragAndDropElements.js"></script>
-        <script src="DragAndDrop/CreateDragElement.js"></script>
-        <script src="DeleteElements/DeleteTranslateElement.js"></script> 
-        <script src="DeleteElements/ChangeElementOpacity.js"></script>
-        -->
-
-        <!-- Json Files -->
-        <script type="text/javascript" src="data.json"></script>
+        <script type="text/javascript" src="JSON/data.json"></script>
 
     </head>
-    <body onload="InitEditor();" ng-app="VPL_tree">
+    <body onload="InitEditor();" ng-app="VPL-tree">
+
         
-        <!-- Menu Bar -->
-        <div id="menuBar" ng-controller="menubarController as ctrl" layout="row" ng-cloak>
-            <md-toolbar class="md-menu-toolbar">
-                <div layout="row">
-                    <div>
-                        <h2 class="md-toolbar-tools" >VPL tree</h2>
-                        <md-menu-bar>
-                            <md-menu>
-                                <button ng-click="$mdOpenMenu()">File</button>
-                                <md-menu-content>
-                                    <md-menu-item>
-                                        <md-button ng-click="ctrl.newMenuBarAction('New Project', $event)">New...</md-button>
-                                    </md-menu-item>
-                                    <md-menu-item>
-                                        <md-button disabled="disabled" ng-click="ctrl.openFileMenuBarAction('Open File', $event)">Open File</md-button>
-                                    </md-menu-item>
-                                    <md-menu-divider></md-menu-divider>
-                                    <md-menu-item>
-                                        <md-menu>
-                                            <md-button ng-click="$mdOpenMenu()">Export...</md-button>
-                                            <md-menu-content>
-                                                <md-menu-item>
-                                                    <md-button ng-click="ctrl.exportTextMenuBarAction('Text', $event)">Text</md-button>
-                                                </md-menu-item>
-                                            </md-menu-content>
-                                        </md-menu>
-                                    </md-menu-item>
-                                </md-menu-content>
-                                
-                            </md-menu>
-                            <md-menu>
-                                <button ng-click="$mdOpenMenu()">Edit</button>
-                                <md-menu-content>
-                                </md-menu-content>
-                            </md-menu>
-                            <md-menu>
-                                <button ng-click="$mdOpenMenu()">View</button>
-                                <md-menu-content>
-                                </md-menu-content>
-                            </md-menu>
-                            <md-menu>
-                                <button ng-click="$mdOpenMenu()">About</button>
-                                <md-menu-content>
-                                </md-menu-content>
-                            </md-menu>
-                        </md-menu-bar>
-                    </div>
+        <div id="container" class="container-fluid"> 
+
+          
+
+<div ng-controller="MenuBarCtrl as ctrl" ng-cloak="" class="menuBarStyle">
+  <md-toolbar class="md-menu-toolbar">
+    <div id="menuBarContainer" layout="row">
+      <md-toolbar-filler layout="" layout-align="center center" class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <md-icon md-svg-icon="call:chat"></md-icon>
+      </md-toolbar-filler>
+      <div>
+        <h2 class="md-toolbar-tools">VPL Tree</h2>
+        <md-menu-bar>
+          <md-menu>
+            <button ng-click="$mdOpenMenu()">
+              File
+            </button>
+            <md-menu-content>
+              <md-menu-item>
+                <md-button ng-click="ctrl.sampleAction('share', $event)">
+                  Share...
+                </md-button>
+              </md-menu-item>
+              <md-menu-divider></md-menu-divider>
+              <md-menu-item>
+                <md-menu>
+                  <md-button ng-click="$mdOpenMenu()">New</md-button>
+                  <md-menu-content>
+                    <md-menu-item><md-button ng-click="ctrl.sampleAction('New Document', $event)">Document</md-button></md-menu-item>
+                    <md-menu-item><md-button ng-click="ctrl.sampleAction('New Spreadsheet', $event)">Spreadsheet</md-button></md-menu-item>
+                    <md-menu-item><md-button ng-click="ctrl.sampleAction('New Presentation', $event)">Presentation</md-button></md-menu-item>
+                    <md-menu-item><md-button ng-click="ctrl.sampleAction('New Form', $event)">Form</md-button></md-menu-item>
+                    <md-menu-item><md-button ng-click="ctrl.sampleAction('New Drawing', $event)">Drawing</md-button></md-menu-item>
+                  </md-menu-content>
+                </md-menu>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="ctrl.sampleAction('Open', $event)">
+                  Open...
+                  <span class="md-alt-text"> {{ 'M-O' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button disabled="disabled" ng-click="ctrl.sampleAction('Rename', $event)">
+                  Rename
+                </md-button>
+              </md-menu-item>
+              <md-menu-divider></md-menu-divider>
+              <md-menu-item>
+                <md-button ng-click="ctrl.sampleAction('Print', $event)">
+                  Print
+                  <span class="md-alt-text">{{ 'M-P' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>
+          <md-menu>
+            <button ng-click="$mdOpenMenu()">
+              Edit
+            </button>
+            <md-menu-content>
+              <md-menu-item class="md-indent">
+                <md-icon md-svg-icon="undo"></md-icon>
+                <md-button ng-click="ctrl.sampleAction('undo', $event)">
+                  Undo
+                  <span class="md-alt-text">{{ 'M-Z' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item class="md-indent">
+                <md-icon md-svg-icon="redo"></md-icon>
+                <md-button ng-click="ctrl.sampleAction('redo', $event)">
+                  Redo
+                  <span class="md-alt-text">{{ 'M-Y' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-divider></md-menu-divider>
+              <md-menu-item class="md-indent">
+                <md-icon md-svg-icon="content-cut"></md-icon>
+                <md-button ng-click="ctrl.sampleAction('cut', $event)">
+                  Cut
+                  <span class="md-alt-text">{{ 'M-X' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item class="md-indent">
+                <md-icon md-svg-icon="content-copy"></md-icon>
+                <md-button ng-click="ctrl.sampleAction('copy', $event)">
+                  Copy
+                  <span class="md-alt-text">{{ 'M-C' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item class="md-indent">
+                <md-icon md-svg-icon="content-paste"></md-icon>
+                <md-button ng-click="ctrl.sampleAction('paste', $event)">
+                  Paste
+                  <span class="md-alt-text">{{ 'M-P' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-divider></md-menu-divider>
+              <md-menu-item class="md-indent">
+                <md-button ng-click="ctrl.sampleAction('Find and replace', $event)">
+                  Find and replace...
+                  <span class="md-alt-text">{{ 'M-S-H' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>
+          <md-menu>
+            <button ng-click="$mdOpenMenu()">
+              View
+            </button>
+            <md-menu-content>
+              <md-menu-item type="checkbox" ng-model="ctrl.settings.printLayout">Print layout</md-menu-item>
+              <md-menu-item class="md-indent">
+                <md-menu>
+                  <md-button ng-click="$mdOpenMenu()">Mode</md-button>
+                  <md-menu-content width="3">
+                    <md-menu-item type="radio" ng-model="ctrl.settings.presentationMode" value="'presentation'">Presentation</md-menu-item>
+                    <md-menu-item type="radio" ng-model="ctrl.settings.presentationMode" value="'edit'">Edit</md-menu-item>
+                    <md-menu-item type="radio" ng-model="ctrl.settings.presentationMode" value="'modifiable'">Modifiable</md-menu-item>
+                  </md-menu-content>
+                </md-menu>
+              </md-menu-item>
+              <md-menu-divider></md-menu-divider>
+              <md-menu-item type="checkbox" ng-model="ctrl.settings.showRuler">Show ruler</md-menu-item>
+              <md-menu-item type="checkbox" ng-model="ctrl.settings.showEquationToolbar">Show equation toolbar</md-menu-item>
+              <md-menu-item type="checkbox" ng-model="ctrl.settings.showSpellingSuggestions">Show spelling suggestions</md-menu-item>
+              <md-menu-divider></md-menu-divider>
+              <md-menu-item type="checkbox" ng-model="ctrl.settings.compactControls">Compact controls</md-menu-item>
+              <md-menu-item type="checkbox" ng-model="ctrl.settings.fullScreen">Full screen</md-menu-item>
+            </md-menu-content>
+          </md-menu>
+          <md-menu>
+            <button ng-click="$mdOpenMenu()">
+              Format
+            </button>
+            <md-menu-content>
+              <md-menu-item>
+                <md-button ng-click="ctrl.sampleAction('bold', $event)">
+                  Bold
+                  <span class="md-alt-text"> {{ 'M-B' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="ctrl.sampleAction('italic', $event)">
+                  Italic
+                  <span class="md-alt-text">{{ 'M-I' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="ctrl.sampleAction('underline', $event)">
+                  Underline
+                  <span class="md-alt-text">{{ 'M-U' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="ctrl.sampleAction('strikethrough', $event)">
+                  Strikethrough
+                  <span class="md-alt-text">{{ 'A-S-5' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="ctrl.sampleAction('superscript', $event)">
+                  Superscript
+                  <span class="md-alt-text">{{ 'M-.' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="ctrl.sampleAction('subscript', $event)">
+                  Subscript
+                  <span class="md-alt-text">{{ 'M-,' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-divider></md-menu-divider>
+              <md-menu-item><md-button ng-click="ctrl.toggleSetting('clearFormatting')">Clear Formatting</md-button></md-menu-item>
+            </md-menu-content>
+          </md-menu>
+        </md-menu-bar>
+      </div>
+    </div>
+  </md-toolbar>
+</div>
+
+
+            <div id="mainContent" class="row"> 
+                <div id="navBarContainer" class="col-xs-12 col-xs-offset-0 col-sm-3 col-sm-offset-0 col-md-3 col-md-offset-0 col-lg-2 col-lg-offset-0"> 
+                    <div id="navBar"> 
+
+
+
+
+<div class="sidebar-nav">
+      <div class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span class="visible-xs navbar-brand">Programs</span>
+        </div>
+        <div class="navbar-collapse collapse sidebar-navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Program 1</a></li>
+            <li ><a href="#">Program 2</a></li>
+            <li><a href="#">Program 3</a></li>
+            <li><a href="#">Reviews <span class="badge">1,118</span></a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+
+
+
+
+
+                    </div> 
+                </div> 
+                <div id="canvasContainer" class="col-xs-12 col-xs-offset-0 col-sm-8 col-sm-offset-1 col-md-8 col-md-offset-1 col-lg-7 col-lg-offset-0">
+                    <canvas id="canvas"></canvas>
                 </div>
-            </md-toolbar>           
-        </div>
+                <div id="sideBarContainer" class="col-xs-12 col-xs-offset-0 col-sm-3 col-sm-offset-0 col-md-3 col-md-offset-0 col-lg-3 col-lg-offset-0"> 
+                    <div id="sideBar"> </div> 
+                </div>
 
-        <!-- Canvas -->
-        <div id="viewport">
-            <canvas id="canvas" ></canvas>
+            </div> 
+          
+            <div id="footerContainer"> 
+                <div id="footer"> 
+                    <p>This is the footer</p>
+                </div> 
+            </div> 
         </div>
-
-        <div id="navigationBar">
-        </div>
-        <!--
-
-        
-        <ul class="menu" id="menu">
-        </ul>
-        <ul id="definedVars" class="menu">
-        </ul>
-          <ul id="arrayNames" class="menu">
-        </ul>
-        <ul id="rightClickMenu" class="menu">
-        </ul>
-        <ul id="addVarsEdit" class="menu">
-        </ul>
-        <ul id="arithOps" class="menu">
-        </ul>
-        <ul id="compOps" class="menu">
-        </ul>
-        <ul id="logicOps" class="menu">
-        </ul>
-        <div id="dialog">
-        </div>
-        <div id="dialogEditNumberValue">
-        </div>
-        <div id="dialogEditTextValue">
-        </div>
-        <div id="newVariable">
-        </div>
-        <div id="dialogAddValue">
-        </div>
-        <div id="dialogAddNumberValue">
-        </div>
-        <div id="dialogAddBooleanValue">
-            <div id="booleanValues"></div>
-        </div>
-        <div id="dialogCannotAddVar">
-           
-        </div>
-        <div id="dialogInvalidNumberValue">
-        </div>
-        -->
-
     </body>
 </html>

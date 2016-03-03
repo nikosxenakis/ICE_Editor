@@ -1,0 +1,85 @@
+/* Extra small devices (phones, less than 768px) */
+/* No media query since this is the default in Bootstrap */
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 0px) {
+
+	#container{
+		background-image: url("backgroundImage.png");
+	}
+
+	#menuBarContainer { 
+		border: thin dashed #006600; 
+		background-image: url("backgroundImage.png");
+
+	}
+
+	#mainContent { 
+
+    	
+    	margin-right: auto;
+    	margin-left: auto;
+
+    	padding-top: 2%;
+		border: thin dashed #006600; 
+		height:400px; 
+	}
+
+	#sideBarContainer{
+		border: thin dashed #006600; 
+		top: 0px;
+	}
+
+	#navBarContainer{
+	//	height:300px;
+		overflow:auto;
+		border: thin dashed #006600; 	
+	}
+
+	#canvasContainer{
+	}
+		#canvas{
+    		border: outset grey 1px; 
+		}
+
+	#footerContainer{
+		padding-top: 1%;
+	}
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+	#mainContent { 
+		height: 650px; 
+	}
+
+	#sideBarContainer{
+		//top: -600px;
+	}
+
+	#canvas{
+		top: -200px;
+	}
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+	#mainContent { 
+		height: 650px; 
+	}
+
+	#sideBarContainer{
+		top: -500px;
+	}
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+	#mainContent { 
+		height: 700px; 
+	}
+
+	#sideBarContainer{
+		top: 0px;
+	}
+}
