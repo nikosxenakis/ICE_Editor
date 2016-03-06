@@ -3,21 +3,9 @@ var CanvasData = [
 		"left":200,
 		"top":200,
 		"horizontalElementsWidth":150,
-		"horizontalElementsHeigth":50,
+		"horizontalElementsHeight":50,
 		"verticalElementsWidth":25,
-		"verticalElementsHeigth":25
-	}
-];
-
-var Group = [
-	{
-        "id": "groupProgram",
-		"left": 0,
-        "top": 0,
-        "angle": 0,
-        "selectable":true,
-        "hasControls": false,
-    	"hasBorders": false
+		"verticalElementsHeight":25
 	}
 ];
 
@@ -27,17 +15,17 @@ var HorizontialElements = [
         "top": CanvasData[0].top,
         "fill": "#0066FF",
         "width": CanvasData[0].horizontalElementsWidth,
-        "height": CanvasData[0].horizontalElementsHeigth,
-        "selectable": false,
+        "height": CanvasData[0].horizontalElementsHeight,
+        "selectable": true,
         "id":"StartProgramElement",
 	},	
 	{
 		"left": CanvasData[0].left ,
-        "top": CanvasData[0].top + CanvasData[0].horizontalElementsHeigth + CanvasData[0].verticalElementsHeigth -2,
+        "top": CanvasData[0].top + CanvasData[0].horizontalElementsHeight + CanvasData[0].verticalElementsHeight -2,
         "fill": "#0066FF",
         "width": CanvasData[0].horizontalElementsWidth,
-        "height": CanvasData[0].horizontalElementsHeigth,
-        "selectable": false,
+        "height": CanvasData[0].horizontalElementsHeight,
+        "selectable": true,
         "id":"EndProgramElement",
         "hasControls": false,
     	"hasBorders": false
@@ -47,11 +35,11 @@ var HorizontialElements = [
 var VerticalElements = [	
 	{
 		"left": CanvasData[0].left ,
-        "top": CanvasData[0].top + CanvasData[0].horizontalElementsHeigth-1,
+        "top": CanvasData[0].top + CanvasData[0].horizontalElementsHeight-1,
         "fill": "#0066FF",
         "width": CanvasData[0].verticalElementsWidth,
-        "height": CanvasData[0].verticalElementsHeigth,
-        "selectable": false,
+        "height": CanvasData[0].verticalElementsHeight,
+        "selectable": true,
         "id":"BodyProgramElement",
         "hasControls": false,
     	"hasBorders": false

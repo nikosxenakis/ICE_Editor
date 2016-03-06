@@ -35,38 +35,67 @@ function initDraggableElements() {
         },
         drag: function (event, ui) {
             console.log("is dragging");
-            var offsetWindowXPos = parseInt( ui.offset.left );
-            var offsetWindowYPos = parseInt( ui.offset.top );
-            console.log( "Offset Window: (" + offsetWindowXPos + ", " + offsetWindowYPos + ")");
 
-            //create the elements
+            var canvasDiv=document.getElementById("canvas");
+
+            var target=event.target;
+            var imageRect={
+                left:ui.offset.left-canvasDiv.getBoundingClientRect().left,
+                top:ui.offset.top-canvasDiv.getBoundingClientRect().top,
+                width:target.width,
+                height:target.height
+            }
+      
             c=Canvas.getInstance();
-            console.log(c.canvas._offset.left , c.canvas._offset.top);
 
-            //mouse in canvas
-            if( rectangleColision( c.canvas._offset.left , c.canvas._offset.top , c.canvas.width , c.canvas.height , event.clientX , event.clientY , 10 , 10 ) ){
-                _.each(
-                    c.horizontalElements, 
-                        function(elem) {
-                            image = ui.helper[0];
-                            x1=image.offsetLeft;//x1=image.x;
-                            y1=image.offsetTop//y1=image.y;
-                            w1=image.width;
-                            h1=image.height;
-                            x2=elem.left;
-                            y2=elem.top;
-                            w2=elem.width;
-                            h2=elem.height;
+            _.each(
+                c.horizontalElements, 
+                function(elem) {       
+                    if( rectangesCollision( elem , imageRect ) ){
+                        console.log(imageRect,elem);
+                        c.elementsUnderDrag.push(elem);
+                    }
+                }
+            )
 
-                            if( rectangleColision( x1 , y1 , w1 , h1 , x2 , y2 , w2 , h2 ) ){
-                                //c.canvas.elementsUnderDragElement.push(elem);
-                                if(elem.id!="groupProgram")
-                                    console.log("collision");
-                            }
-                        }
-                )
+            //call the transformations
+            if( c.elementsUnderDrag.length >= 2){
+                elem1 = c.elementsUnderDrag[0].element;
+                elem2 = c.elementsUnderDrag[1].element;
+                console.log(elem1,elem2);
+
+                //the first in a block
+                if(elem1 == elem2){
+                    //elem1 is above elem2
+                    if(c.elementsUnderDrag[0].getTop() <= c.elementsUnderDrag[1].getTop()){
+                        rectAbove = c.elementsUnderDrag[0]
+                        elem1.addElement(target.id,rectAbove);
+                    }
+                    //elem2 is above elem1
+                    else{
+
+                    }
+                }
+
+                //elem1 is inside elem2
+                else if(elem1.father == elem2){
+
+                }
+
+                //elem2 is inside elem1
+                else if(elem1 == elem2.father){
+
+                }
+
+                //among elem1 and elem2
+                else if(elem1.father == elem2.father){
+
+                }
+
             }
 
+            c.elementsUnderDrag.length = 0;
+            
         },
         stop: function (event, ui) {
             console.log("stop dragging");

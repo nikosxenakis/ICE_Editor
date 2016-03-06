@@ -3,9 +3,9 @@ var Canvas = (function(){
     function Canvas(width, height) {
 
         //construction
+
         this.canvas = new fabric.Canvas('canvas', {
-            hoverCursor: 'pointer',
-            selection: false,
+            //hoverCursor: 'pointer',
             height:height,
             width:width,
             backgroundColor:"white"
@@ -17,7 +17,7 @@ var Canvas = (function(){
 
         //add list of function elements
         
-        //this.elementsUnderDragElement = new Array();
+        this.elementsUnderDrag = new Array();
         //this.makeIntersection = false;
 
         //this.point = new Array(); // the point (x, y) of canvas  that elements will be added
@@ -31,14 +31,34 @@ var Canvas = (function(){
                 console.log(" over started canvas");
             },
             drop: function (event, ui) {
-                //console.log("dropped");
+                console.log("dropped on canvas");
 
                 //canvas = $(this);
                 //canvas.dragElement = $(ui.draggable).clone();
 
                 //$(this).append($(ui.draggable).clone());
-            }
+            },
+            hoverClass:'drop-hover'
         });
+
+        this.canvas.on('mouse:over', function(e) {
+            console.log("over");
+            e.target.setOpacity(0.6);
+            this.renderAll();
+        });
+        
+        this.canvas.on('mouse:out', function(e) {
+            console.log("out");
+            e.target.setOpacity(1);
+            this.renderAll();
+        });
+
+
+
+        this.canvas.on ({ 
+            'object:moving': updateCoordinatesForSubObjects 
+        }); 
+
 
     }
 
@@ -56,6 +76,17 @@ var Canvas = (function(){
         addInitialElements: addInitialElements,
         changeSize: changeSize
     };
+
+    function updateCoordinates(elem){
+            elem.left = elem.getLeft();
+            elem.top = elem.getTop();   
+           
+    } 
+
+    function updateCoordinatesForSubObjects(e){
+        updateCoordinates(e.target);
+
+    }
 
     function changeSize(){
         c = this.getInstance();
@@ -75,20 +106,8 @@ var Canvas = (function(){
     }
 
     function addInitialElements() {
-
-        //create program group
-        var groupProgram = new fabric.Group([], {
-            id: Group[0].id,
-            left: Group[0].left,
-            top: Group[0].top,
-            angle: Group[0].angle,
-            selectable:Group[0].selectable,
-            hasControls: Group[0].hasControls,
-            hasBorders: Group[0].hasBorders,
-            perPixelTargetFind: true
-        });
         
-        //and initial elements to group program        
+        //initial elements    
         HorizontialElements.forEach(function(entry) {
             var elem = new fabric.Rect({
                 left: entry.left,
@@ -102,7 +121,7 @@ var Canvas = (function(){
                 hasBorders: entry.hasBorders
             });
             instance.horizontalElements.push(elem);
-            groupProgram.addWithUpdate(elem);
+            instance.canvas.add(elem);
         });
 
         VerticalElements.forEach(function(entry) {
@@ -118,7 +137,7 @@ var Canvas = (function(){
                 hasBorders: entry.hasBorders
             });
             instance.verticalElements.push(elem);
-            groupProgram.addWithUpdate(elem);
+            instance.canvas.add(elem);
         });
 
         TextElements.forEach(function(entry) {
@@ -136,21 +155,14 @@ var Canvas = (function(){
                 hasBorders: entry.hasBorders
             });
             
-            r = _.find(instance.horizontalElements, function(obj) { return obj.id == 'EndProgramElement' })
+            //r = _.find(instance.horizontalElements, function(obj) { return obj.id == 'EndProgramElement' })
 
             //console.log(canvas.horizontalElements);
 
-            
-            elem.set({
-                originX: 'center',
-                originY: 'center'
-            });
 
             
-            groupProgram.addWithUpdate(elem);
         });
 
-        instance.canvas.add(groupProgram);
 
 }
 

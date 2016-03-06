@@ -19,17 +19,20 @@ function InitEditor() {
     
     Canvas.getInstance($("#canvasContainer").width()-2,$("#canvasContainer").height()-2);
 
-    Canvas.addInitialElements();
+    //Canvas.addInitialElements();
 
-    ImageHolder.getInstance();
+    //test
+    var programElement = new Element("programElement" , ElementFormat.C , ElementType.program , {left:200,top:200} , null);
     
     //CreateOperatorsMenu(canvas.canvas);
     //CreateVarsMenu(canvas.canvas);
     //CreateRightClickMenu(canvas.canvas);
     //CreateFileExplorer(canvas.canvas);
     
-    //test
-    var element1 = new Element("element1" , ElementFormat.C , ElementType.while , null);
+    
+
+
+    ImageHolder.getInstance();
 
 }
 
@@ -56,14 +59,11 @@ function cssModifications(){
 
 }
 
-
-function rectangleColision( x1 , y1 , w1 , h1 , x2 , y2 , w2 , h2 ){
-    if (
-        x1 < x2 + w2 &&
-        x1 + w1 > x2 &&
-        y1 < y2 + h2 &&
-        h1 + y1> y2) {
-        return true;
-    }
-    return false;
+function rectangesCollision(r1,r2){
+    return(!(
+        r1.left           > r2.left+r2.width  ||
+        r1.left+r1.width  < r2.left           ||
+        r1.top           > r2.top+r2.height ||
+        r1.top+r1.height < r2.top
+    ));
 }
