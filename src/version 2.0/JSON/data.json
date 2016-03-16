@@ -5,7 +5,7 @@ var CanvasData = [
 		"horizontalElementsWidth":150,
 		"horizontalElementsHeight":50,
 		"verticalElementsWidth":25,
-		"verticalElementsHeight":25
+		"verticalElementsHeight":0
 	}
 ];
 

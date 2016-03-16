@@ -11,16 +11,29 @@ var Canvas = (function(){
             backgroundColor:"white"
         });
 
-         //elements
+        //this.canvas.setWidth(1192);
+        this.canvas.setHeight(11892);
+
+        fabric.util.addListener(document.getElementById('canvasContainer'), 'scroll', function () {
+            //console.log('scroll');
+            //this.canvas.calcOffset();
+        });
+
+        //elements to check collision with dragged element
         this.verticalElements = new Array();
         this.horizontalElements = new Array();
 
-        //add list of function elements
-        
-        this.elementsUnderDrag = new Array();
-        //this.makeIntersection = false;
+        //bool if there is intersection with dragged element
+        this.intersection = false;
 
-        //this.point = new Array(); // the point (x, y) of canvas  that elements will be added
+        //elements in canvas under dragged element
+        this.elementsUnderDrag = new Array();
+
+        //tmp element in the canvas
+        this.tmpElement = null;
+
+        //main program element
+        this.programElement = null;
 
         $("#canvas").droppable({
             accept: ".draggable",
@@ -28,35 +41,44 @@ var Canvas = (function(){
                 //$(this).append($(ui.draggable).clone());
             },
             over: function( event, ui ) {
-                console.log(" over started canvas");
+                //console.log(" over started canvas");
             },
             drop: function (event, ui) {
-                console.log("dropped on canvas");
-
-                //canvas = $(this);
-                //canvas.dragElement = $(ui.draggable).clone();
-
-                //$(this).append($(ui.draggable).clone());
+                //console.log("dropped on canvas");
             },
-            hoverClass:'drop-hover'
+            //hoverClass:'drop-hover'
         });
 
         this.canvas.on('mouse:over', function(e) {
-            console.log("over");
-            e.target.setOpacity(0.6);
+                        return;
+
+            console.log("mouse over");
+            if(e.target.element){
+                console.log("over "+e.target.element.id);
+
+                e.target.element.setOpacity(0.6);
+            }
+
             this.renderAll();
         });
         
         this.canvas.on('mouse:out', function(e) {
-            console.log("out");
-            e.target.setOpacity(1);
+                        return;
+
+            console.log("mouse out");
+            if(e.target.element){
+                console.log("out "+e.target.element.id);
+
+                e.target.element.setOpacity(1);
+            }
+
             this.renderAll();
         });
 
 
 
         this.canvas.on ({ 
-            'object:moving': updateCoordinatesForSubObjects 
+            'object:moving': updateCoordinates
         }); 
 
 
@@ -74,35 +96,57 @@ var Canvas = (function(){
         },
 
         addInitialElements: addInitialElements,
-        changeSize: changeSize
+        changeSize: changeSize,
+        setCanvasElementsCoords: setCanvasElementsCoords,
+
     };
 
-    function updateCoordinates(elem){
-            elem.left = elem.getLeft();
-            elem.top = elem.getTop();   
-           
+    function updateCoordinates(e){
+        
+        //console.log("dx = ",e.e.movementX," , dy = ",e.e.movementY);
+        dx = e.e.movementX;
+        dy = e.e.movementY;
+
+        rect = e.target;
+        rectangle = rect.rectangle
+        elem = rect.element;
+        //move all rectangles and subelements
+
+        elem.moveElement(rectangle,dx,dy);
+        //moveElement(elem,rectangle,dx,dy);
+
+        setCanvasElementsCoords();
+        instance.canvas.renderAll();  
+ 
     } 
 
-    function updateCoordinatesForSubObjects(e){
-        updateCoordinates(e.target);
+    function setCanvasElementsCoords(){
 
+        for (k=0; k < instance.canvas._objects.length ; k++){
+            instance.canvas._objects[k].setCoords();
+        }
     }
 
     function changeSize(){
         c = this.getInstance();
 
-        diff = c.canvas.width - $("#wrapper").width();
-        if( diff>=-10 && diff<=10 ){
-            //it's maximized
-            c.canvas._offset.left += 220;
-            c.canvas.width -= 220;
+        if(!changeSize.flag){
+                   changeSize.flag=0;
+        }
+
+        if(changeSize.flag==0){
+ 
+            c.canvas.setWidth( $( window ).width() - 222 );
+
+            changeSize.flag = 1;
         }
         else{
-            //it's minimized
-            c.canvas._offset.left = $('#wrapper').left;
-            c.canvas.width = $('#wrapper').width()-2;
+            c.canvas.setWidth( $( window ).width() - 2 );
 
+            changeSize.flag = 0;
         }
+
+        c.canvas.renderAll();
     }
 
     function addInitialElements() {
@@ -163,8 +207,8 @@ var Canvas = (function(){
             
         });
 
-
 }
 
-
 })();
+    
+      

@@ -2,8 +2,8 @@ Features:
 
 	/*to achieve basic functionallity*/
 
-	fix changeSize of canvas
-	fix top & left of rectangles
+	fix changeSize of canvas							ok
+	fix top & left of rectangles						ok
 	fit the new object during by adding it in blur
 	multi-depth side bar
 	define Element{
@@ -21,10 +21,6 @@ Features:
 		1 rect,
 		type(vertical,horizotial),
 		define 3 Area
-	},
-	define Area{
-		id,
-		type(text,box)
 	},
 	scolling while holding an object
 	call API

@@ -5,19 +5,15 @@
 
 @media (min-width: 0px) {
 	
-
-
-
-
 	#container{
 		height:100%;
 		background-image: url("backgroundImage.png");
-		overflow:auto;
+		//overflow:auto;
 	}
 
 	#menuBarContainer { 
 		border: thin dashed #006600; 
-		height:10%;
+		height:9%;
 		background-image: url("backgroundImage.png");
 
 	}
@@ -31,17 +27,20 @@
 		}
 
 	#wrapper{
-		z-index: 0;		
-		height:85%;
-		border: thin dashed #006600; 
+		//z-index: 0;		
+		height:80%;
+		//border: thin dashed #006600; 
 	}
 
 		#canvasContainer{
+    		overflow: auto;
+    		//position: relative;
 
 		}
 			#canvas{
-				background:black;
-    			border: outset grey 1px; 
+				//overflow: auto;
+
+    			//border: outset grey 1px; 
 			}
 
 	#footerContainer{

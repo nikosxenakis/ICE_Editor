@@ -17,18 +17,23 @@ function InitEditor() {
 
     cssModifications();
     
-    Canvas.getInstance($("#canvasContainer").width()-2,$("#canvasContainer").height()-2);
+    c = Canvas.getInstance($("#canvasContainer").width()-2,$("#canvasContainer").height()-2);
 
     //Canvas.addInitialElements();
 
     //test
-    var programElement = new Element("programElement" , ElementFormat.C , ElementType.program , {left:200,top:200} , null);
+    c.programElement = new Element("programElement" , ElementFormat.C , ElementType.program , {left:CanvasData[0].left,top:CanvasData[0].top} , null);
     
+    pos = {
+        left : c.programElement.getRectangle(RectangleType.vertical,0).getLeft()+c.programElement.getRectangle(RectangleType.vertical,0).width,
+        top : c.programElement.getRectangle(RectangleType.vertical,0).getTop()
+    };
+
+    c.programElement.addElement("doNothingImage",pos,1);
+
     //CreateOperatorsMenu(canvas.canvas);
     //CreateVarsMenu(canvas.canvas);
-    //CreateRightClickMenu(canvas.canvas);
-    //CreateFileExplorer(canvas.canvas);
-    
+    //CreateRightClickMenu(canvas.canvas);    
     
 
 
