@@ -43,6 +43,16 @@
     			//border: outset grey 1px; 
 			}
 
+			.deleteIcon{
+				z-index: 1001;		
+			}
+
+			#recycleBin{
+				transform: scale(4,4);
+  				position: fixed;
+				z-index: 1001;		
+			}
+
 	#footerContainer{
 		padding-top: 1%;
 		height:5%;

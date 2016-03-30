@@ -5,7 +5,6 @@
  */
 
 function InitEditor() {
-
     /*
     canvas.VPL_elementsInfo = sideBarSubCategories;
     InitMenuElements(canvas);
@@ -13,28 +12,30 @@ function InitEditor() {
     InitDialogs();
     InitMenus();
     */
-       
-
+           
     cssModifications();
     
-    c = Canvas.getInstance($("#canvasContainer").width()-2,$("#canvasContainer").height()-2);
-
-    //Canvas.addInitialElements();
-
     //test
-    c.programElement = new Element("programElement" , ElementFormat.C , ElementType.program , {left:CanvasData[0].left,top:CanvasData[0].top} , null);
-    
-    pos = {
-        left : c.programElement.getRectangle(RectangleType.vertical,0).getLeft()+c.programElement.getRectangle(RectangleType.vertical,0).width,
-        top : c.programElement.getRectangle(RectangleType.vertical,0).getTop()
-    };
+    c.programElement = new ProgramElement("programElement",0,null,1);
 
-    c.programElement.addElement("doNothingImage",pos,1);
+    c.programElement.addElement("doNothingImage",0,1);
+
+    c.programElement.addElement("whileImage",0,1);
+    c.programElement.addElement("ifImage",1,1);
+    c.programElement.elements[1].addElement("forImage",0,1);
+
+
+    /*test
+    c.programElement.addElement("whileImage",0,1);
+    c.programElement.addElement("ifImage",0,1);
+    c.programElement.addElement("ifImage",2,1);
+
+    c.programElement.elements[0].addElement("ifImage",0,1);
+    */
 
     //CreateOperatorsMenu(canvas.canvas);
     //CreateVarsMenu(canvas.canvas);
     //CreateRightClickMenu(canvas.canvas);    
-    
 
 
     ImageHolder.getInstance();
@@ -49,19 +50,19 @@ function cssModifications(){
 
     $('#sideBarButton').css('z-index', 1);   //to be in the front
 
-
-
     $('#canvasContainer').css('top', $('#wrapper')[0].offsetTop);
     $('#canvasContainer').css('left', $('#wrapper')[0].offsetLeft);
     $('#canvasContainer').css('width', $('#wrapper').width());
     $('#canvasContainer').css('height', $('#wrapper').height());
 
+    $('#recycleBin').css('top', $('#canvasContainer')[0].offsetTop+$('#canvasContainer').height() - 70);
+    $('#recycleBin').css('left', $('#canvasContainer')[0].offsetLeft+$('#canvasContainer').width() - 70);
+
     $('#sidebar-wrapper').css('height', $('#wrapper').height());
 
-    //console.log($("#container").width(),$("#container").height());
-    //console.log($("#wrapper").width(),$("#wrapper").height());
-    //console.log($("#canvasContainer").width(),$("#canvasContainer").height());
+    c = Canvas.getInstance($("#canvasContainer").width()-2,11892);
 
+    
 }
 
 function rectangesCollision(r1,r2){

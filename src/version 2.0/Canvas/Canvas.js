@@ -5,14 +5,10 @@ var Canvas = (function(){
         //construction
 
         this.canvas = new fabric.Canvas('canvas', {
-            //hoverCursor: 'pointer',
             height:height,
             width:width,
             backgroundColor:"white"
         });
-
-        //this.canvas.setWidth(1192);
-        this.canvas.setHeight(11892);
 
         fabric.util.addListener(document.getElementById('canvasContainer'), 'scroll', function () {
             //console.log('scroll');
@@ -50,11 +46,16 @@ var Canvas = (function(){
         });
 
         this.canvas.on('mouse:over', function(e) {
-                        return;
-
             console.log("mouse over");
-            if(e.target.element){
+            if(e.target && e.target.element){
                 console.log("over "+e.target.element.id);
+
+                if(e.target.element.deleteImage)
+                    e.target.element.deleteImage.setDeleteImageVisibility(true);
+
+                if(e.target.element.foldingItem)
+                    e.target.element.foldingItem.setFoldingItemVisibillity(true);
+
 
                 e.target.element.setOpacity(0.6);
             }
@@ -63,28 +64,70 @@ var Canvas = (function(){
         });
         
         this.canvas.on('mouse:out', function(e) {
-                        return;
-
             console.log("mouse out");
-            if(e.target.element){
+
+  
+            if(e.target && e.target.element){
                 console.log("out "+e.target.element.id);
 
+                if(e.target.element.deleteImage)
+                    e.target.element.deleteImage.setDeleteImageVisibility(false);
+
+                if(e.target.element.foldingItem)
+                    e.target.element.foldingItem.setFoldingItemVisibillity(false);
+
                 e.target.element.setOpacity(1);
+
             }
 
             this.renderAll();
         });
 
+        this.canvas.on('mouse:up', function(e) {
 
+            console.log("mouse up");
+            if(e.target && e.target.element){
+                console.log("up "+e.target.element.id);
+
+                e.target.element.setOpacity(1);
+            }
+
+            //check if it is near the clone
+            //else remove the clone
+            
+            this.renderAll();
+        });
+
+        this.canvas.on('mouse:down', function(e) {
+            
+            console.log("mouse down");
+            console.log(e.target);
+
+            if(e.target && e.target.rectangle && e.target.rectangle.Element && e.target.rectangle.deleteIcon != e.target){
+                if(e.target.element.father){
+                    //remove element from father
+                    
+                    //add a grey element
+                    //
+                    //e.target.element.cloneElement();
+                }
+            }
+            else{
+                console.log("undefined mouse down");
+            }
+
+            this.renderAll();
+            
+        });
 
         this.canvas.on ({ 
             'object:moving': updateCoordinates
         }); 
-
-
+    
     }
 
     var instance;
+    
     return {
         getInstance: function(width, height){
             if (instance == null) {
@@ -95,7 +138,6 @@ var Canvas = (function(){
             return instance;
         },
 
-        addInitialElements: addInitialElements,
         changeSize: changeSize,
         setCanvasElementsCoords: setCanvasElementsCoords,
 
@@ -103,21 +145,43 @@ var Canvas = (function(){
 
     function updateCoordinates(e){
         
-        //console.log("dx = ",e.e.movementX," , dy = ",e.e.movementY);
         dx = e.e.movementX;
         dy = e.e.movementY;
 
         rect = e.target;
         rectangle = rect.rectangle
         elem = rect.element;
-        //move all rectangles and subelements
 
-        elem.moveElement(rectangle,dx,dy);
-        //moveElement(elem,rectangle,dx,dy);
+        if( rectangle && elem ){
+            elem.setOpacity(0.6);
+            elem.moveElement(rectangle,dx,dy);
 
-        setCanvasElementsCoords();
-        instance.canvas.renderAll();  
- 
+            setCanvasElementsCoords();
+            //instance.canvas.renderAll();  
+        }
+
+        /*
+        recycleBinRect = {
+            left: $('#recycleBin')[0].offsetLeft,
+            top: $('#recycleBin')[0].offsetTop,
+            width: $('#recycleBin').width(),
+            height: $('#recycleBin').height()
+        };
+        
+        if(elem && rectangesCollision(elem.getElementSize(),recycleBinRect)){
+            //elem.removeElement();
+            //and remove the clone
+        }
+        else{
+            //move all rectangles and subelements
+            elem.setOpacity(0.6);
+            elem.moveElement(rectangle,dx,dy);
+
+            setCanvasElementsCoords();
+            instance.canvas.renderAll();      
+        }
+        */
+       
     } 
 
     function setCanvasElementsCoords(){
@@ -148,66 +212,6 @@ var Canvas = (function(){
 
         c.canvas.renderAll();
     }
-
-    function addInitialElements() {
-        
-        //initial elements    
-        HorizontialElements.forEach(function(entry) {
-            var elem = new fabric.Rect({
-                left: entry.left,
-                top: entry.top,
-                fill: entry.fill,
-                width: entry.width,
-                height: entry.height,
-                selectable: entry.selectable,
-                id: entry.id,
-                hasControls: entry.hasControls,
-                hasBorders: entry.hasBorders
-            });
-            instance.horizontalElements.push(elem);
-            instance.canvas.add(elem);
-        });
-
-        VerticalElements.forEach(function(entry) {
-            var elem = new fabric.Rect({
-                left: entry.left,
-                top: entry.top,
-                fill: entry.fill,
-                width: entry.width,
-                height: entry.height,
-                selectable: entry.selectable,
-                id: entry.id,
-                hasControls: entry.hasControls,
-                hasBorders: entry.hasBorders
-            });
-            instance.verticalElements.push(elem);
-            instance.canvas.add(elem);
-        });
-
-        TextElements.forEach(function(entry) {
-            var elem = new fabric.IText(entry.id,{
-                left: entry.left,
-                top: entry.top,
-                fill: entry.fill,
-                fontSize: entry.fontSize,
-                fontWeight: entry.fontWeight,
-                fontFamily: entry.fontFamily,
-                selectable: entry.selectable,
-                id: entry.id,
-                textAlign:"center",
-                hasControls: entry.hasControls,
-                hasBorders: entry.hasBorders
-            });
-            
-            //r = _.find(instance.horizontalElements, function(obj) { return obj.id == 'EndProgramElement' })
-
-            //console.log(canvas.horizontalElements);
-
-
-            
-        });
-
-}
 
 })();
     

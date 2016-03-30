@@ -62,8 +62,8 @@ function initDraggableElements() {
 
                 c.intersection = true;
 
-                elem1 = c.elementsUnderDrag[0].element;
-                elem2 = c.elementsUnderDrag[1].element;
+                var elem1 = c.elementsUnderDrag[0].element;
+                var elem2 = c.elementsUnderDrag[1].element;
                 //console.log(elem1,elem2);
 
                 //the first in a block
@@ -75,6 +75,10 @@ function initDraggableElements() {
                 }
                 //elem1 is inside elem2 or opposite
                 else if(elem1.father == elem2 || elem1 == elem2.father){
+                    var father;
+                    var fatherRect;
+                    var child;
+                    var childRect;
 
                     if(elem1.father == elem2){
                         father = elem2;
@@ -90,38 +94,36 @@ function initDraggableElements() {
                     }
 
                     if(fatherRect.getTop() <= childRect.getTop() ){
-
-                        //rectAbove = father.getRectangle(RectangleType.horizontial,0);
-                            
-                        pos = {
-                            left : father.getRectangle(RectangleType.vertical,0).getLeft()+father.getRectangle(RectangleType.vertical,0).width,
-                            top : father.getRectangle(RectangleType.vertical,0).getTop()
-                        };
-                        console.log("pos = ",pos);
-                        tmpElement = father.addElement(target.id,pos,0.6);
-                        c.tmpElement = tmpElement;
+                        c.tmpElement = father.addElement(target.id,0,0.6);
                     }
                     else{
-                        console.log("current case last in block");
-
-                        pos = {
-                            left : father.getRectangle(RectangleType.vertical,0).getLeft()+father.getRectangle(RectangleType.vertical,0).width,
-                            top : fatherRect.getTop()
-                        };
-                        console.log("pos = ",pos);
-
-                        //must prevent change top
-                        //must change the height
-                        tmpElement = father.addElement(target.id,pos,0.6);
-                        c.tmpElement = tmpElement;
-
+                        c.tmpElement = father.addElement(target.id,father.elements.length,0.6);
                     } 
                 }
                 else if( elem1.father == elem2.father ){
-                    console.log("Error during undersection , elem1.father == elem2.father ");
-                    c.intersection = false;
-                    c.elementsUnderDrag.length = 0;
-                    c.tmpElement = null;
+                    var firstElem;
+                    var secondElem;
+                    var father;
+
+                    if(elem1.getElementSize().top <= elem2.getElementSize().top){
+                        firstElem = elem1;
+                        secondElem = elem2;
+                    }
+                    else{
+                        firstElem = elem2;
+                        secondElem = elem1;
+                    }
+
+                    father = secondElem.father;
+                    
+                   var offset;
+                   for ( offset = 0; offset < father.elements.length; offset++) {
+                       if(father.elements[offset]==secondElem){
+                            break;
+                       }
+                   };
+                    c.tmpElement = father.addElement(target.id,offset,0.6);
+
                 }
                 else{
                     console.log("Error no such case");
@@ -132,12 +134,13 @@ function initDraggableElements() {
             }
             //no intersection
             else if(c.elementsUnderDrag.length <= 1 && c.intersection==true){
+
                 c.intersection = false;
                 if(!c.tmpElement){
                     console.log("There is no tmp element created for delete");
                 }
                 else{
-                    //c.tmpElement.removeElement();
+                    c.tmpElement.removeElement();
                 }
                 c.tmpElement = null;
             }
@@ -148,6 +151,10 @@ function initDraggableElements() {
             
         },
         stop: function (event, ui) {
+            if(c.tmpElement){
+                c.tmpElement.setOpacity(1);
+                c.canvas.renderAll();
+            }
             c.intersection = false;
             c.elementsUnderDrag.length = 0;
             c.tmpElement = null;
@@ -161,5 +168,11 @@ function initDraggableElements() {
 
 })();
 
+function imageIdToElement(imageId){
 
+    if(images[imageId])
+        return images[imageId];
+    else
+        console.log("this image is not registered in var images of json files");
+};
 

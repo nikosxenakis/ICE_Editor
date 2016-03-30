@@ -1,0 +1,41 @@
+var images = {
+	"programImage":
+		{
+			id:"program",
+			format: "C",
+			type: "program",
+			color:"#008fb3"
+		}
+	,
+	"whileImage":
+		{
+			id:"while",
+			format: "C",
+			type: "while",
+			color:"#cc5200"
+		}
+	,
+	"forImage":
+		{
+			id:"for",
+			format: "C",
+			type: "for",
+			color:"#b3b300"
+		}
+	,
+	"ifImage":
+		{
+			id:"if",
+			format: "C",
+			type: "if",
+			color:"#ff66cc"
+		}
+	,
+	"doNothingImage":
+		{
+			id:"doNothing",
+			format: "I",
+			type: "doNothing",
+			color:"green"
+		}
+};

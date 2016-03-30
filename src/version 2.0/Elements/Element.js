@@ -1,72 +1,74 @@
-/*
-define Element{
-		id,
-		format( I C E ),
-		type(if,while,do,for),
-		a group element{
-			5 Rectangle
-		},
-		father Element,
-		2 lists of Elements
-	}
- */
 var ElementFormat = {
-    I: 0,
-    C: 1,
-    E: 2
+    I: "I",
+    C: "C",
+    E: "E"
 };
 
 var ElementType = {
-    if: 0,
-    while: 1,
-    for: 2,
-    program: 3,
-    doNothing: 4
+    if: "if",
+    while: "while",
+    for: "for",
+    program: "program",
+    doNothing: "doNothing"
 };
     
-function Element (id , format , type , coords , father , opac) {
+var ElementTransformationType = {
+    first: 0,
+    intermediate: 1,
+    last: 2
+};
+
+function Element (id , imageId , elementOffset , father , opac) {
+    
+    var elemInfo = imageIdToElement(imageId);
+
+    if(father)
+        var coords = father.elementOffsetToElementPos(elementOffset);
+    else
+        var coords = {
+            left : CanvasData.left,
+            top : CanvasData.top
+        };
+
+
     this.id = id;
-    this.format = format;
-    this.type = type;
+    this.format = elemInfo.format;
+    this.type = elemInfo.type;
+    this.color = elemInfo.color;
     this.pos = this.setPositions(coords);
     this.father = father;
+    this.opac = opac;
+    
 
-    this.rectangles = this.createRectangles(opac);
+
+    this.rectangles = this.createRectangles();
+   
     this.getElementSize();
+ 
+    if(this.type != ElementType.doNothing){
+        this.deleteImage = new DeleteImage(this);
+    }
+    else{
+        this.deleteImage = null;
+    }
+
+    this.foldingItem = new FoldingItem(this);
 
     this.elements = new Array();
-    //this.elements2 = new Array();
-
-    this.nextElementOffset = 0;
 
     return this;
-}
- 
-Element.prototype.createRectangles = function(opac) {
+};
+
+Element.prototype.createRectangles = function() {
     var rectangles = new Array();
 
     if(this.format == ElementFormat.I){
-        if(this.type == ElementType.doNothing){
-            rectangles.push(new Rectangle(this.id,this.pos.posStart,RectangleType.horizontial,this,"green",opac));
-        }
-        else{
-            console.log("There is no element with type = ",this.type); 
-        }   
+        rectangles.push(new Rectangle(this.id,this.pos.posStart,RectangleType.horizontial,this,RectangleOffset.firstHorizontial));
     }
     else if(this.format == ElementFormat.C){
-        if(this.type == ElementType.program){
-            rectangles.push(new Rectangle(this.id+"_RectangleStart",this.pos.posStart,RectangleType.horizontial,this,"blue",opac));
-            rectangles.push(new Rectangle(this.id+"_RectangleBody",this.pos.posBody,RectangleType.vertical,this,"blue",opac));
-            rectangles.push(new Rectangle(this.id+"_RectangleEnd",this.pos.posEnd,RectangleType.horizontial,this,"blue",opac));
-        }
-        else if(this.type == ElementType.while){
-            rectangles.push(new Rectangle(this.id+"_RectangleStart",this.pos.posStart,RectangleType.horizontial,this,"red",opac));
-            rectangles.push(new Rectangle(this.id+"_RectangleBody",this.pos.posBody,RectangleType.vertical,this,"red",opac));
-            rectangles.push(new Rectangle(this.id+"_RectangleEnd",this.pos.posEnd,RectangleType.horizontial,this,"red",opac));
-        }
-        else{
-            console.log("There is no element with type = ",this.type); 
-        }        
+        rectangles.push(new Rectangle(this.id+"RectangleEnd",this.pos.posEnd,RectangleType.horizontial,this,RectangleOffset.secondHorizontial));
+        rectangles.push(new Rectangle(this.id+"RectangleBody",this.pos.posBody,RectangleType.vertical,this,RectangleOffset.firstVertical));
+        rectangles.push(new Rectangle(this.id+"RectangleStart",this.pos.posStart,RectangleType.horizontial,this,RectangleOffset.firstHorizontial));
     }
     else if(this.format == ElementFormat.E){
         console.log("Under Construction");
@@ -78,232 +80,42 @@ Element.prototype.createRectangles = function(opac) {
     return rectangles;
 };
 
-Element.prototype.getRectanglesInCanvas = function() {
-
-    rects = new Array();
-
-    _.each(
-        this.rectangles, 
-        function(elem) {    
-            rects.push(elem.rectangleInCanvas);
-        }
-    )
-
-    return rects;
-}
-
 Element.prototype.setPositions = function(coords) {
     r = {
         posStart : {
             left : coords.left,
             top : coords.top,
-            width : CanvasData[0].horizontalElementsWidth,
-            height : CanvasData[0].horizontalElementsHeight
+            width : CanvasData.horizontalElementsWidth,
+            height : CanvasData.horizontalElementsHeight
         },
         posBody : {
             left : coords.left, 
-            top : coords.top+CanvasData[0].horizontalElementsHeight,
-            width : CanvasData[0].verticalElementsWidth,
-            height : CanvasData[0].verticalElementsHeight
+            top : coords.top+CanvasData.horizontalElementsHeight,
+            width : CanvasData.verticalElementsWidth,
+            height : CanvasData.verticalElementsHeight
         },
         posEnd : {
             left : coords.left, 
-            top : coords.top+CanvasData[0].horizontalElementsHeight+CanvasData[0].verticalElementsHeight,
-            width : CanvasData[0].horizontalElementsWidth,
-            height : CanvasData[0].horizontalElementsHeight
+            top : coords.top+CanvasData.horizontalElementsHeight+CanvasData.verticalElementsHeight,
+            width : CanvasData.horizontalElementsWidth,
+            height : CanvasData.horizontalElementsHeight
         },
         posBody2 : {
             left : coords.left, 
-            top : coords.top+CanvasData[0].horizontalElementsHeight+CanvasData[0].verticalElementsHeigth+CanvasData[0].horizontalElementsHeight,
-            width : CanvasData[0].verticalElementsWidth,
-            height : CanvasData[0].verticalElementsHeight
+            top : coords.top+CanvasData.horizontalElementsHeight+CanvasData.verticalElementsHeigth+CanvasData.horizontalElementsHeight,
+            width : CanvasData.verticalElementsWidth,
+            height : CanvasData.verticalElementsHeight
         },
         posEnd2 : {
             left : coords.left, 
-            top : coords.top+CanvasData[0].horizontalElementsHeight+CanvasData[0].verticalElementsHeight+CanvasData[0].horizontalElementsHeight+CanvasData[0].horizontalElementsHeight,
-            width : CanvasData[0].horizontalElementsWidth,
-            height : CanvasData[0].horizontalElementsHeight
+            top : coords.top+CanvasData.horizontalElementsHeight+CanvasData.verticalElementsHeight+CanvasData.horizontalElementsHeight+CanvasData.horizontalElementsHeight,
+            width : CanvasData.horizontalElementsWidth,
+            height : CanvasData.horizontalElementsHeight
         }
     };
 
     return r;
-}
-/*
-Element.prototype.updatePositions = function() {
-    for(k=0; k<this.rectangles.length; k++){
-        //update position of each rectangle
-    }
-}
-*/
-function compare(a,b) {
-  if (a.rectangleInCanvas.getTop() <= b.rectangleInCanvas.getTop())
-    return 1;
-  else 
-    return -1;
-}
-
-Element.prototype.getRectangle = function(type , offset) {
-    var r;
-    var i=0;
-
-    this.rectangles.sort(compare);
-
-    for (k=0; k < this.rectangles.length ; k++){
-
-        r = this.rectangles[k];
-
-        if(r.type == type){
-                if(r.rectangleInCanvas){
-                    if(i == offset)
-                        return r.rectangleInCanvas;
-                    i++;
-                }
-        }
-    }
-}
-
-Element.prototype.getNextRect = function() {
-    for (k=0; k < this.element.rectangles.length ; k++){
-        if(this.element.rectangles[k]==this){
-            return this.element.rectangles[k+1];
-        }
-    }
-}
-
-function imageIdToElement(imageId){
-    elemInfo = {};
-    if(imageId == "whileImage"){
-        elemInfo.id = "while";
-        elemInfo.format = ElementFormat.C;
-        elemInfo.type = ElementType.while;
-    }
-    else if(imageId == "forImage"){
-        elemInfo.id = "for";
-        elemInfo.format = ElementFormat.C;
-        elemInfo.type = ElementType.for;
-    }
-    else if(imageId == "doNothingImage"){
-        elemInfo.id = "doNothing";
-        elemInfo.format = ElementFormat.I;
-        elemInfo.type = ElementType.doNothing;
-    }
-    else{
-        console.log("No image with id = ",imageId);
-    }
-    return elemInfo;
-}
-
-function changeElementInsideSpace(elem,offsetHeight,offsetTop){
-    for (k=0; k < elem.rectangles.length ; k++){   
-        if(elem.rectangles[k].rectangleInCanvas.getTop() >= offsetTop)
-  
-        if(elem.rectangles[k].type == RectangleType.vertical){
-            elem.rectangles[k].rectangleInCanvas.setHeight(elem.rectangles[k].rectangleInCanvas.getHeight()+offsetHeight);
-        }
-        else{
-            elem.rectangles[k].rectangleInCanvas.setTop(elem.rectangles[k].rectangleInCanvas.getTop()+offsetHeight);
-            if(elem.rectangles[k].text)
-                elem.rectangles[k].text.setTop(elem.rectangles[k].text.getTop()+offsetHeight);
-        } 
-    }
-
-    if(elem.father){
-        //to avoid moving horizontial objects
-        changeElementInsideSpace(elem.father,offsetHeight,elem.father.getElementSize().top+1);
-    }
-}
-/*
-function changeElementTop(elem,offsetTop){
-    for (l=0; l < elem.rectangles.length ; l++){
-        elem.rectangles[l].rectangleInCanvas.setTop(elem.rectangles[l].rectangleInCanvas.getTop()+offsetTop);
-
-        if(elem.rectangles[l].text)
-            elem.rectangles[l].text.setTop(elem.rectangles[l].text.getTop()+offsetTop);
-    }
-       
-    for (l=0; l < elem.elements.length ; l++){
-        changeElementTop(elem.elements[l],offsetTop);
-    } 
-}
-*/
-Element.prototype.changeElementTop = function(offsetTop){
-    for (l=0; l < this.rectangles.length ; l++){
-        this.rectangles[l].rectangleInCanvas.setTop(this.rectangles[l].rectangleInCanvas.getTop()+offsetTop);
-
-        if(this.rectangles[l].text)
-            this.rectangles[l].text.setTop(this.rectangles[l].text.getTop()+offsetTop);
-    }
-       
-    for (l=0; l < this.elements.length ; l++){
-        this.elements[l].changeElementTop(offsetTop);
-    } 
-}
-
-Element.prototype.changeElementsTop = function(exceptElem,height){
-    for (k=0; k < this.elements.length ; k++){
-        //console.log("k = ", k);
-        if(this.elements[k] == exceptElem){
-            console.log(" the new elem is = ",exceptElem);
-        }
-        else{
-            console.log("sub_elem for increase = ",this.elements[k].id," by height = ",height );
-            //changeElementTop(this.elements[k],height);
-            this.elements[k].changeElementTop(height);
-        } 
-    } 
-
-    if(this.father){
-        this.father.changeElementsTop(this,height);
-    }
-}
-
-Element.prototype.transformElement = function(elem) {
-
-    if(!elem){
-        console.log("No element to transform");
-    }
-
-    size = elem.getElementSize();
-
-    c=Canvas.getInstance();
-   
-    changeElementInsideSpace(this,size.height,size.top);
-
-    Canvas.setCanvasElementsCoords();
-    c.canvas.renderAll(); 
-
-    //changeElementsTop(this,elem,size.height);
-    this.changeElementsTop(elem,size.height);
-  
-    Canvas.setCanvasElementsCoords();
-    c.canvas.renderAll();    
-
-}
-
-Element.prototype.reverseTransformElement = function(elem) {
-    //no reverseTransformElement do as above
-
-    var size = elem.getElementSize();
-    
-    c=Canvas.getInstance();
-    //console.log(size);
-    for (k=0; k < this.rectangles.length ; k++){
-
-        if(this.rectangles[k].rectangleInCanvas.getTop() >= size.top){
-
-            if(this.rectangles[k].type == RectangleType.vertical){
-                this.rectangles[k].rectangleInCanvas.setHeight(this.rectangles[k].rectangleInCanvas.getHeight()-size.height);
-            }
-            else{
-                this.rectangles[k].rectangleInCanvas.setTop(this.rectangles[k].rectangleInCanvas.getTop()-size.height);
-                if(this.rectangles[k].text)
-                    this.rectangles[k].text.setTop(this.rectangles[k].text.getTop()-size.height);
-            }                       
-        }
-    }
-
-    c.canvas.renderAll();
-}
+};
 
 Element.prototype.getElementSize = function() {
     var value = {
@@ -319,13 +131,10 @@ Element.prototype.getElementSize = function() {
                 value.top = this.rectangles[k].rectangleInCanvas.getTop();
             }
         
-
-       
             if( this.rectangles[k].rectangleInCanvas.getLeft() < value.left ){
                 value.left = this.rectangles[k].rectangleInCanvas.getLeft();
             }
         
-
             if( this.rectangles[k].rectangleInCanvas.getWidth() > value.width ){
                 value.width = this.rectangles[k].rectangleInCanvas.getWidth();
             }
@@ -336,179 +145,638 @@ Element.prototype.getElementSize = function() {
     //update
     this.size = value;
     return value;
-}
+};
 
-Element.prototype.addElement = function(imageId,pos,opac) {
+Element.prototype.getInsideElementSize = function() {
+    var value = this.getElementSize();     
 
-    elemInfo = imageIdToElement(imageId);
-    /*
-    pos = {
-        left : this.getRectangle(RectangleType.vertical,0).getLeft()+this.getRectangle(RectangleType.vertical,0).width,
-        top : this.getRectangle(RectangleType.vertical,0).getTop()
+    value.height = 0;
+    value.top += this.getRectangle(RectangleOffset.firstHorizontial).height;
+
+    for (var i = 0; i < this.elements.length; i++) {
+        value.height += this.elements[i].getElementSize().height;
     };
-    */
 
-    elem = new Element(this.id+"_"+elemInfo.id+"_"+this.nextElementOffset , elemInfo.format , elemInfo.type , pos , this , opac);
-    this.nextElementOffset++;
+    return value;
+};
+
+Element.prototype.setElementVisibillity = function(flag) {
+
+    if(this.deleteImage)
+        this.deleteImage.setDeleteImageVisibility(flag);
     
+    if(this.foldingItem)
+        this.foldingItem.setFoldingItemVisibillity(flag);
+
+    for (k=0; k < this.rectangles.length ; k++){
+        this.rectangles[k].setRectangleVisibillity(flag);
+    }
     
-    //if(times() >= 1){
-        console.log("\n------------------------\nStart Transformation");
-        this.transformElement(elem);
-        console.log("End Transformation\n------------------------");
+    for (k=0; k < this.elements.length ; k++){
+        this.elements[k].setElementVisibillity(flag);
+    }
 
-    //}
+};
 
-    this.elements.push(elem);
+Element.prototype.getRectangle = function(rectangleOffset) {
+
+    for (k=0; k < this.rectangles.length ; k++){
+        if(this.rectangles[k].rectangleOffset == rectangleOffset){
+            return this.rectangles[k].rectangleInCanvas;
+        }
+    }
+
+    console.log("Error In Get Rectangle");
+    return null;
+};
+
+//add element functions
+
+Element.prototype.changeElementInsideSpace = function(offsetHeight,offsetTop){
+
+    this.foldingItem.changeSize(offsetHeight);
+
+    for (var k=0; k < this.rectangles.length ; k++){   
+        if(this.rectangles[k].rectangleInCanvas.getTop() >= offsetTop){
+            if(this.rectangles[k].type == RectangleType.vertical){
+                this.rectangles[k].rectangleInCanvas.setHeight(this.rectangles[k].rectangleInCanvas.getHeight()+offsetHeight);
+                this.rectangles[k].rectangleInCanvas.setCoords();
+            }
+            else{
+                this.rectangles[k].moveRectangle(null,offsetHeight);
+            } 
+        }
+    }
+
+    if(this.father){
+        //to avoid moving horizontial objects
+        this.father.changeElementInsideSpace(offsetHeight,this.father.getElementSize().top+1);
+    }
+};
+
+Element.prototype.changeLastElementInsideSpace = function(offsetHeight,offsetTop){
+
+    this.foldingItem.changeSize(offsetHeight);
+
+    for (var k=0; k < this.rectangles.length ; k++){      
+        if(this.rectangles[k].type == RectangleType.vertical){
+            this.rectangles[k].rectangleInCanvas.setHeight(this.rectangles[k].rectangleInCanvas.getHeight()+offsetHeight);
+        }
+        
+        if(this.rectangles[k].rectangleInCanvas.getTop() >= offsetTop){            
+            if(this.rectangles[k].type == RectangleType.horizontial){
+                this.rectangles[k].moveRectangle(null,offsetHeight);
+            } 
+            
+        }
+        
+    }
+
+    if(this.father){
+        //to avoid moving horizontial objects
+        this.father.changeLastElementInsideSpace(offsetHeight,this.father.getElementSize().top+1);
+    }
+};
+
+Element.prototype.changeElementTop = function(offsetTop){
+
+    this.foldingItem.moveFoldingItem(0, offsetTop);
+
+    for (var l=0; l < this.rectangles.length ; l++){
+        this.rectangles[l].moveRectangle(null,offsetTop);
+    }
+       
+    if(this.elements.length > 0){
+        
+        for (var i=0; i < this.elements.length ; i++) { 
+            if(this.elements[i]){
+                this.elements[i].changeElementTop(offsetTop);
+            }
+        }    
+        
+    }
+};
+
+Element.prototype.changeElementsTop = function(exceptElem,height){
+
+    for (var k=0; k < this.elements.length ; k++){
+        if(this.elements[k] != exceptElem){
+            if( this.elements[k].getElementSize().top >= exceptElem.getElementSize().top ){
+                this.elements[k].changeElementTop(height); 
+            }
+        }
+    } 
+
+    if(this.father){
+        this.father.changeElementsTop(this,height);
+    }
+};
+
+Element.prototype.transformElement = function(elem,elementTransformationType) {
+
+    if(!elem){
+        console.log("No element to transform");
+    }
+
+    var size = elem.getElementSize();
+
+    c=Canvas.getInstance();
+   
+    if(elementTransformationType == ElementTransformationType.first)
+        this.changeElementInsideSpace(size.height,size.top);
+    else
+        this.changeLastElementInsideSpace(size.height,size.top);
+
+    Canvas.setCanvasElementsCoords();
+    c.canvas.renderAll(); 
+
+    this.changeElementsTop(elem,size.height);
+  
+    Canvas.setCanvasElementsCoords();
+    c.canvas.renderAll();    
+};
+
+Element.prototype.elementOffsetToElementTransformationType = function(elementOffset){
+    if(elementOffset == 0)
+        return ElementTransformationType.first;
+    else if(elementOffset == this.elements.length)
+        return ElementTransformationType.last;
+    else
+        return ElementTransformationType.intermediate;
+
+};
+
+Element.prototype.elementOffsetToElementPos = function(elementOffset){
+
+    var pos;
+
+    if(elementOffset == 0){
+        pos = {
+            left : this.getRectangle(RectangleOffset.firstVertical).getLeft()+this.getRectangle(RectangleOffset.firstVertical).width,
+            top : this.getRectangle(RectangleOffset.firstVertical).getTop()
+        };
+    }
+    else if(elementOffset == this.elements.length){
+        pos = {
+            left : this.getRectangle(RectangleOffset.firstVertical).getLeft()+this.getRectangle(RectangleOffset.firstVertical).width,
+            top : this.getRectangle(RectangleOffset.secondHorizontial).getTop()
+        };
+    }
+    else{
+
+        pos = {
+            left : this.getRectangle(RectangleOffset.firstVertical).getLeft()+this.getRectangle(RectangleOffset.firstVertical).width,
+            top : this.elements[elementOffset].getRectangle(RectangleOffset.firstHorizontial).getTop()        
+        };
+    }
+
+    return pos;
+};
+
+Element.prototype.addElement = function(imageId,elementOffset,opac) {
+
+    //from offset produce pos and elementTransformationType
+    var pos = this.elementOffsetToElementPos(elementOffset);
+    var elementTransformationType = this.elementOffsetToElementTransformationType(elementOffset);
+
+
+    //remove doNothing element
+    if(this.elements.length == 1 && this.elements[0].type == ElementType.doNothing){
+        if(elementTransformationType != ElementTransformationType.first){
+            pos.top = pos.top - this.elements[0].getElementSize().height;
+        }
+        this.elements[0].removeElement();
+    }
+
+    
+    //choose constructor class
+    var elemInfo = imageIdToElement(imageId);
+    var elem = null;
+    
+    if( elemInfo.type == ElementType.program ){
+        elem = new ProgramElement(this.id+"_"+elemInfo.id,elementOffset,this,opac);
+    }
+    else if( elemInfo.type == ElementType.while ){
+        elem = new WhileElement(this.id+"_"+elemInfo.id,elementOffset,this,opac);
+    }
+    else{
+        elem = new Element(this.id+"_"+elemInfo.id,imageId,elementOffset,this,opac);
+    }
+    
+   
+    this.transformElement(elem,elementTransformationType);
+
+    this.elements.splice(elementOffset, 0, elem);
 
     if(elem.type != ElementType.doNothing){
-                                
-        posDoNothing = {
-            left : elem.getRectangle(RectangleType.vertical,0).getLeft()+elem.getRectangle(RectangleType.vertical,0).width,
-            top : elem.getRectangle(RectangleType.vertical,0).getTop()
-        };
-
-        e = elem.addElement("doNothingImage",posDoNothing,1);
+        var e = elem.addElement("doNothingImage",0,1);
     }
 
     Canvas.setCanvasElementsCoords();
     Canvas.getInstance().canvas.renderAll();  
 
     return elem;
-}
+};
 
-function times() {
-    times.count = ++times.count || 1; // f.count is undefined at first 
-    return times.count;
-}
+//move element functions
+/*
+Element.prototype.moveElementRectangles = function(movedRectangle,dx,dy) {
+    console.log("moving = ",this);
+
+    this.rectangles.sort(compareRectangles);
+
+    for (k=0; k < this.rectangles.length ; k++){
+        if(this.rectangles[k]){
+            
+            if(this.rectangles[k] != movedRectangle){
+                this.rectangles[k].moveRectangleInCanvas(dx,dy);
+            }
+
+            this.rectangles[k].moveRectangleText(dx,dy);
+        }
+    }
+
+    if(this.rectangles.length > 1){
+        for (k=0; k < this.rectangles.length ; k++){
+                
+            if(this.rectangles[k] == movedRectangle){
+
+            
+                //if its the dragging element set it based on the other rectangles
+                if( this.rectangles[k].rectangleInCanvas.getTop() == this.size.top ){
+                    //take the next rectangle from the stack
+                    this.rectangles[k].rectangleInCanvas.setTop(this.rectangles[k-1].rectangleInCanvas.getTop()-this.rectangles[k].rectangleInCanvas.height);
+                    this.rectangles[k].rectangleInCanvas.setLeft(this.rectangles[k-1].rectangleInCanvas.getLeft());
+                }                
+                else{
+                    //take the next rectangle from the stack
+                    this.rectangles[k].rectangleInCanvas.setTop(this.rectangles[k+1].rectangleInCanvas.getTop()+this.rectangles[k].rectangleInCanvas.height);
+                    this.rectangles[k].rectangleInCanvas.setLeft(this.rectangles[k+1].rectangleInCanvas.getLeft());
+                }
 
 
+            }
+        }
+    }
+
+};
+*/
+
+Element.prototype.moveElementRectangles = function(movedRectangle,dx,dy) {
+    console.log("moving = ",this);
+
+    var nextToMovedRectangle = null;
+    var prevToMovedRectangle = null;
+
+    this.rectangles.sort(compareRectangles);
+
+    for (k=0; k < this.rectangles.length ; k++){
+        if(this.rectangles[k]){
+            
+            if(this.rectangles[k] != movedRectangle){
+                this.rectangles[k].moveRectangleInCanvas(dx,dy);
+            }
+            else{
+                if(movedRectangle.rectangleOffset == RectangleOffset.firstHorizontial){
+                    nextToMovedRectangle = this.rectangles[k+1];
+                }
+                else{
+                    prevToMovedRectangle = this.rectangles[k-1];
+                }
+            }
+
+            this.rectangles[k].moveRectangleText(dx,dy);
+        }
+    }
+
+    if(movedRectangle){
+        if(nextToMovedRectangle){
+            movedRectangle.rectangleInCanvas.setTop(nextToMovedRectangle.rectangleInCanvas.getTop()-movedRectangle.rectangleInCanvas.height);
+            movedRectangle.rectangleInCanvas.setLeft(nextToMovedRectangle.rectangleInCanvas.getLeft());
+        }
+        else if(prevToMovedRectangle){
+            movedRectangle.rectangleInCanvas.setTop(prevToMovedRectangle.rectangleInCanvas.getTop()+prevToMovedRectangle.rectangleInCanvas.height);
+            movedRectangle.rectangleInCanvas.setLeft(prevToMovedRectangle.rectangleInCanvas.getLeft());
+        }
+        else{
+            console.log("Error In moveElementRectangles");
+        }
+    }
+
+
+
+};
+
+Element.prototype.moveSubElements = function() {
+    for (var k=0; k < this.elements.length ; k++){
+        if(this.elements[k]){
+            this.elements[k].moveElement(null,dx,dy);
+        }
+    }
+};
+
+Element.prototype.moveElement = function(movedRectangle, dx, dy) {
+
+    this.moveElementRectangles(movedRectangle,dx,dy);
+    
+    if(this.deleteImage)
+        this.deleteImage.moveDeleteImage(dx,dy);
+  
+    if(this.foldingItem)
+        this.foldingItem.moveFoldingItem(dx,dy);
+
+    this.moveSubElements();
+};
+
+//remove element functions
 Element.prototype.removeElement = function() {
     //this.id
     //exists in this.father.elements or this.father.elements2
     //and in horizontial or vertical elements
+    console.log("remove element : ",this);
 
     if(!this.father){
         console.log("There is no father for ",this.id);
         return false;
     }
 
+    //replace the deleting element with doNothing
+    if(this.father.elements.length == 1 && this.father.elements[0] == this && this.opac == 0.6 && this.type != ElementType.doNothing){
+        var e = this.father.addElement("doNothingImage",0,1);
+    }
+
     //revert transformation
     this.father.reverseTransformElement(this);
     
-    //remove each subelement
-    for (k=0; k < this.elements.length ; k++){
-        this.elements[k].removeElement();
-    }
-    /*
-    for (k=0; k < this.elements2.length ; k++){
-        this.elements[k].removeElement();
-    }
-    */
     //search in this.father.elements
-    for (k=0; k < this.father.elements.length ; k++){
+    this.removeElementFromFather();
+
+    this.removeRectangles();
+    this.removeDeleteImage();
+    this.removeFoldingItem();
+
+    return true;
+};
+    
+Element.prototype.removeElementFromFather = function() {
+    for (var k=0; k < this.father.elements.length ; k++){
         
         if( this.father.elements[k] == this ){
             this.father.elements.splice(k, 1);
             break;
-        }
-        
+        }    
     }
-    
-    //search in this.father.elements2
-    /*
-    for (k=0; k < this.father.elements2.length ; k++){
-        
-        if( this.father.elements2[k] == this ){
-            this.father.elements.splice(k, 1);
-            break;
-        }
-        
-    }
-    */
+}
+Element.prototype.removeRectangles = function(){
+
     c=Canvas.getInstance();
 
+
     //search in horizontial and vertical elements
-    for (k=0; k < this.rectangles.length ; k++){
-        c.canvas.remove(this.rectangles[k].text);
+    for (var k=0; k < this.rectangles.length ; k++){
 
-        for (l=0; l < c.horizontalElements.length ; l++){
+        this.rectangles[k].removeRectangle();
+
+        for (var l=0; l < c.horizontalElements.length ; l++){
             if( this.rectangles[k].rectangleInCanvas == c.horizontalElements[l] ){
-                c.canvas.remove( c.horizontalElements[l] );
-
                 c.horizontalElements.splice(l, 1);
-                //c.horizontalElements[l] = null;   
             }
         } 
-        for (m=0; m < c.verticalElements.length ; m++){
+        for (var m=0; m < c.verticalElements.length ; m++){
             if( this.rectangles[k].rectangleInCanvas == c.verticalElements[m] ){
-                c.canvas.remove( c.verticalElements[m] );
-
                 c.horizontalElements.splice(l, 1);
-                //c.verticalElements[l] = null;   
             }
         }     
     }    
 
-    c.canvas.renderAll();
+        //remove each subelement
+    for (k=0; k < this.elements.length ; k++){
+        this.elements[k].removeRectangles();
+    }
 
-    return true;
+    c.canvas.renderAll();   
 }
 
+Element.prototype.removeDeleteImage = function(){
+    if(this.deleteImage){
+
+        c=Canvas.getInstance();
+        c.canvas.remove(this.deleteImage.deleteImageInCanvas);
+
+        //also remove the instance
+    
+        this.deleteImage = null;
+    }
+}
+
+Element.prototype.removeFoldingItem = function(){
+
+    if(this.foldingItem){
+    
+        c=Canvas.getInstance();
+        c.canvas.remove(this.foldingItem.foldingItemBoxInCanvas);
+        c.canvas.remove(this.foldingItem.foldingItemLineInCanvas);
+        c.canvas.remove(this.foldingItem.foldingItemSecondaryLineInCanvas);
+        c.canvas.remove(this.foldingItem.foldingItemInsideBoxHorizontialLineInCanvas);
+        c.canvas.remove(this.foldingItem.foldingItemInsideBoxVerticalLineInCanvas);
+
+        //also remove the instance
+    
+        this.foldingItem = null;
+    }
+}
+
+Element.prototype.reverseElementInsideSpace = function(offsetHeight,offsetTop){
+
+    this.foldingItem.changeSize(-offsetHeight);
+
+    for (var k=0; k < this.rectangles.length ; k++){   
+        if(this.rectangles[k].type == RectangleType.vertical){
+            this.rectangles[k].rectangleInCanvas.setHeight(this.rectangles[k].rectangleInCanvas.getHeight()-offsetHeight);
+            this.rectangles[k].rectangleInCanvas.setCoords();
+        }
+        else{
+            if(this.rectangles[k].rectangleInCanvas.getTop() >= offsetTop){
+                this.rectangles[k].moveRectangle(null,-offsetHeight);
+            } 
+        }
+    }
+
+    if(this.father){
+        //to avoid moving horizontial objects
+        this.father.reverseElementInsideSpace(offsetHeight,this.father.getElementSize().top+1);
+    }
+};
+
+Element.prototype.reverseElementTop = function(offsetTop){
+
+    this.foldingItem.moveFoldingItem(0, -offsetTop);
+
+    console.log("changeElementTop = ",this.id," by height = ",offsetTop," also it contains elements = ",this.elements);
+    if(!this){
+        console.log("Error in changeElementTop");
+    }
+
+    for (var l=0; l < this.rectangles.length ; l++){
+        this.rectangles[l].moveRectangle(null,-offsetTop);
+    }
+       
+    if(this.elements.length > 0){
+        
+        for (var i=0; i < this.elements.length ; i++) { 
+            if(this.elements[i]){
+                console.log("calling changeElementTop for ",this.elements[i]);
+                this.elements[i].reverseElementTop(offsetTop);
+            }
+        }    
+        
+    }
+};
+
+Element.prototype.reverseElementsTop = function(exceptElem,height){
+
+    console.log("changeElementsTop = ",this," except = ",exceptElem," by height = ",height );
+
+    for (var k=0; k < this.elements.length ; k++){
+        //console.log("k = ", k);
+        if(this.elements[k] == exceptElem){
+            console.log(" the new elem is = ",exceptElem);
+        }
+        else{
+            if( this.elements[k].getElementSize().top < exceptElem.getElementSize().top ){
+                console.log("this element is above the new one");  
+            }
+            else{
+                this.elements[k].reverseElementTop(height); 
+            }
+        }
+    } 
+
+    if(this.father){
+        this.father.reverseElementsTop(this,height);
+    }
+};
+
+Element.prototype.reverseTransformElement = function(elem) {
+    //no reverseTransformElement do as above
+
+    if(!elem){
+        console.log("No element to reverse transform");
+    }
+
+    var size = elem.getElementSize();
+
+    c=Canvas.getInstance();
+
+    this.reverseElementsTop(elem,size.height);
+
+    Canvas.setCanvasElementsCoords();
+    c.canvas.renderAll(); 
+
+    this.reverseElementInsideSpace(size.height,size.top);
+  
+    Canvas.setCanvasElementsCoords();
+    c.canvas.renderAll(); 
+
+};
+
+//opacity
 Element.prototype.setOpacity = function(opac) {
 
-    for (k=0; k < this.rectangles.length ; k++){
+    this.opac = opac;
+
+    //console.log("set opacity of : ",this," to : ",opac);
+
+    for (var k=0; k < this.rectangles.length ; k++){
         if(this.rectangles[k])
             if(this.rectangles[k].rectangleInCanvas)
             this.rectangles[k].rectangleInCanvas.setOpacity(opac);
     }
 
-    for (k=0; k < this.elements.length ; k++){
+    for (var k=0; k < this.elements.length ; k++){
         if(this.elements[k])
             this.elements[k].setOpacity(opac);
     }
+};
 
-    /* problem with mouse over
+Element.prototype.cloneElement = function() {
+    console.log("clone : ",this);
+    
+    var father = this.father;
+    var type = this.type;
 
-    for (k=0; k < this.elements2.length ; k++){
-        if(this.elements2[k])
-            this.elements2[k].setOpacity(opac);
+    this.father.reverseTransformElement(this);
+    this.removeElementFromFather();
+    this.father = null;
+    //this.removeElement();
+
+    father.addElement(type+"Image",0,0.6);
+
+};
+
+//folding
+Element.prototype.unfoldAllSubElements = function() {
+
+    if(this.foldingItem.foldingItemState == FoldingItemState.folded){
+        this.unfoldElement(this);
     }
-    */
-}
-/*
-function moveElement(elem, movedRectangle, dx, dy) {
-    
-    for (k=0; k < elem.rectangles.length ; k++){
-        if(elem.rectangles[k]){
-            elem.rectangles[k].rectangleInCanvas.setTop(elem.rectangles[k].rectangleInCanvas.getTop()+dy);
-            elem.rectangles[k].rectangleInCanvas.setLeft(elem.rectangles[k].rectangleInCanvas.getLeft()+dx);
-        }
-    } 
-    
-    for (k=0; k < elem.elements.length ; k++){
-        if(elem.elements[k]){
-            moveElement(elem.elements[k],null,dx,dy);
-        }
-    }
-  
-}
-*/
-Element.prototype.moveElement = function(movedRectangle, dx, dy) {
-    
-    for (k=0; k < this.rectangles.length ; k++){
-        if(this.rectangles[k]){
-            this.rectangles[k].rectangleInCanvas.setTop(this.rectangles[k].rectangleInCanvas.getTop()+dy);
-            this.rectangles[k].rectangleInCanvas.setLeft(this.rectangles[k].rectangleInCanvas.getLeft()+dx);
-        }
-    } 
-    
-    for (k=0; k < this.elements.length ; k++){
-        if(this.elements[k]){
-            this.elements[k].moveElement(null,dx,dy);
-        }
-    }
-  
-}
 
+    for (var k=0; k < this.elements.length ; k++){
+        this.elements[k].unfoldAllSubElements();
+    }
 
+};
+
+Element.prototype.foldElement = function(foldedElement) {
+    console.log("Fold Element : ",this);
+
+    if(this != foldedElement){
+        this.setElementVisibillity(false);
+    }
+
+    if(this == foldedElement){
+        this.unfoldAllSubElements();
+
+        this.reverseElementInsideSpace(this.getInsideElementSize().height,this.getInsideElementSize().top);
+
+        if(this.father){
+            this.father.reverseElementsTop(this,this.getInsideElementSize().height);
+        }
+        
+    }
+
+    for (var k=0; k < this.elements.length ; k++){   
+        this.elements[k].foldElement(foldedElement);
+    }
+    
+    this.foldingItem.foldingItemState = FoldingItemState.folded;
+
+};
+
+Element.prototype.unfoldElement = function(unfoldedElement) {
+    console.log("Unfold Element : ",this);
+
+    if( this != unfoldedElement){
+        if(this.foldingItem.foldingItemState == FoldingItemState.unfolded){
+            this.foldElement(this);
+        }
+
+        this.setElementVisibillity(true);
+    }
+
+    if(this == unfoldedElement){
+        this.changeElementInsideSpace(this.getInsideElementSize().height,this.getInsideElementSize().top);
+        
+        if(this.father){
+            this.father.changeElementsTop(this,this.getInsideElementSize().height);
+        }
+        
+    }
+   
+    for (var k=0; k < this.elements.length ; k++){   
+        this.elements[k].unfoldElement(unfoldedElement);
+    }
+
+    this.foldingItem.foldingItemState = FoldingItemState.unfolded;
+
+};
