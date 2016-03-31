@@ -99,7 +99,7 @@ FoldingItem.prototype.setFoldingItemVisibillity = function (flag){
 }
 
 FoldingItem.prototype.initFoldingItemBoxInCanvas = function (){
-    console.log("creating folding item box");
+
     var pos = this.element.getRectangle(RectangleOffset.firstHorizontial);
 
     var foldingItemBox = new fabric.Rect({
@@ -153,8 +153,6 @@ FoldingItem.prototype.makeLine = function (coords){
 
 FoldingItem.prototype.initFoldingItemInsideBoxHorizontialLineInCanvas = function (){
 
-console.log("creating folding item line");
-
     var foldingItemLine = this.makeLine([ 
         this.foldingItemBoxInCanvas.getLeft() + 2, 
         this.foldingItemBoxInCanvas.getTop() + this.foldingItemBoxInCanvas.height/2, 
@@ -168,8 +166,6 @@ console.log("creating folding item line");
 }
 
 FoldingItem.prototype.initFoldingItemInsideBoxVerticalLineInCanvas = function (){
-
-console.log("creating folding item line");
 
     var foldingItemLine = this.makeLine([ 
         this.foldingItemBoxInCanvas.getLeft() + this.foldingItemBoxInCanvas.width/2, 
@@ -185,8 +181,6 @@ console.log("creating folding item line");
 
 FoldingItem.prototype.initFoldingItemLineInCanvas = function (){
 
-console.log("creating folding item line");
-
     var foldingItemLine = this.makeLine([ 
         this.foldingItemBoxInCanvas.getLeft() + FoldingItemData.foldingItemWidth/2, 
         this.foldingItemBoxInCanvas.getTop() + FoldingItemData.foldingItemHeight, 
@@ -201,9 +195,6 @@ console.log("creating folding item line");
 }
 
 FoldingItem.prototype.initFoldingItemSecondaryLineInCanvas = function (){
-
-console.log("creating folding item secondary line");
-    console.log(this.foldingItemLineInCanvas);
 
     var foldingItemLine = this.makeLine([ 
         this.foldingItemLineInCanvas.x2, 

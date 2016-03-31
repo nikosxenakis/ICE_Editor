@@ -46,9 +46,9 @@ var Canvas = (function(){
         });
 
         this.canvas.on('mouse:over', function(e) {
-            console.log("mouse over");
+
             if(e.target && e.target.element){
-                console.log("over "+e.target.element.id);
+                console.log("mouse over "+e.target.element.id);
 
                 if(e.target.element.deleteImage)
                     e.target.element.deleteImage.setDeleteImageVisibility(true);
@@ -64,11 +64,9 @@ var Canvas = (function(){
         });
         
         this.canvas.on('mouse:out', function(e) {
-            console.log("mouse out");
-
   
             if(e.target && e.target.element){
-                console.log("out "+e.target.element.id);
+                console.log("mouse out "+e.target.element.id);
 
                 if(e.target.element.deleteImage)
                     e.target.element.deleteImage.setDeleteImageVisibility(false);
@@ -85,15 +83,24 @@ var Canvas = (function(){
 
         this.canvas.on('mouse:up', function(e) {
 
-            console.log("mouse up");
             if(e.target && e.target.element){
-                console.log("up "+e.target.element.id);
+                console.log("mouse up "+e.target.element.id);
+                var element = e.target.element;
 
-                e.target.element.setOpacity(1);
+                element.setOpacity(1);
+
+                //if it is mouse up to the void then recover the element
+                if(!element.father && element.dummyElementOriginalPosition){
+                    var offset = 1;
+                    element.dummyElementOriginalPosition.father.addExistingElement(element,offset);
+                    element.dummyElementOriginalPosition.removeElement();
+                    element.dummyElementOriginalPosition = null;
+
+                }
+
             }
 
-            //check if it is near the clone
-            //else remove the clone
+            
             
             this.renderAll();
         });
@@ -101,22 +108,36 @@ var Canvas = (function(){
         this.canvas.on('mouse:down', function(e) {
             
             console.log("mouse down");
-            console.log(e.target);
 
-            if(e.target && e.target.rectangle && e.target.rectangle.Element && e.target.rectangle.deleteIcon != e.target){
-                if(e.target.element.father){
-                    //remove element from father
+            if(e.target && e.target.rectangle && e.target.element && e.target.rectangle.deleteIcon != e.target){
+                var element = e.target.element;
+
+                if(element.father){
+
+                    //removes element from father
+                    var father = element.father;
+                    var type = element.type;
+
+                    element.father.reverseTransformElement(element);
+                    element.removeElementFromFather();
+                    element.father = null;
+
+                    //add gray in this
+                    var offset = 1;
+                    var dummyElementOriginalPosition = father.addElement(type+"Image",offset,0.6);
+
+                    //fold the real element    
+                    element.foldElement(element);
+
+                    //add the dummy element
+                    element.dummyElementOriginalPosition = dummyElementOriginalPosition;
                     
-                    //add a grey element
-                    //
-                    //e.target.element.cloneElement();
                 }
-            }
-            else{
-                console.log("undefined mouse down");
+                            
+                this.renderAll();
+
             }
 
-            this.renderAll();
             
         });
 
@@ -145,12 +166,12 @@ var Canvas = (function(){
 
     function updateCoordinates(e){
         
-        dx = e.e.movementX;
-        dy = e.e.movementY;
+        var dx = e.e.movementX;
+        var dy = e.e.movementY;
 
-        rect = e.target;
-        rectangle = rect.rectangle
-        elem = rect.element;
+        var rect = e.target;
+        var rectangle = rect.rectangle
+        var elem = rect.element;
 
         if( rectangle && elem ){
             elem.setOpacity(0.6);
@@ -159,30 +180,37 @@ var Canvas = (function(){
             setCanvasElementsCoords();
             //instance.canvas.renderAll();  
         }
+        
+        //checkCollisionWithRecycleBin(elem);
 
-        /*
-        recycleBinRect = {
+//HERE
+        //if collision add dummyElementCurrentPosition with rect
+        if(elem && elem.dummyElementOriginalPosition.father){
+            var offset = 0;
+            var dummyElementCurrentPosition = elem.dummyElementOriginalPosition.father.addElement(elem.type+"Image",offset,0.6);
+            elem.dummyElementCurrentPosition = dummyElementCurrentPosition;
+        }
+        //if not collision add dummyElementCurrentPosition with rect
+        if(elem && elem.dummyElementCurrentPosition.father){
+            var offset = 0;
+            elem.dummyElementCurrentPosition.removeElement();
+            elem.dummyElementCurrentPosition = null;
+        }   
+       
+    } 
+    function checkCollisionWithRecycleBin(element){
+         recycleBinRect = {
             left: $('#recycleBin')[0].offsetLeft,
             top: $('#recycleBin')[0].offsetTop,
             width: $('#recycleBin').width(),
             height: $('#recycleBin').height()
         };
         
-        if(elem && rectangesCollision(elem.getElementSize(),recycleBinRect)){
-            //elem.removeElement();
+        if(element && rectangesCollision(element.getElementSize(),recycleBinRect)){
+            //element.removeElement();
             //and remove the clone
         }
-        else{
-            //move all rectangles and subelements
-            elem.setOpacity(0.6);
-            elem.moveElement(rectangle,dx,dy);
-
-            setCanvasElementsCoords();
-            instance.canvas.renderAll();      
-        }
-        */
-       
-    } 
+    }
 
     function setCanvasElementsCoords(){
 

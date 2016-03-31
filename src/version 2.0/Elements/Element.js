@@ -378,52 +378,42 @@ Element.prototype.addElement = function(imageId,elementOffset,opac) {
     return elem;
 };
 
+Element.prototype.addExistingElement = function(element,elementOffset) {
+    console.log("add existing element");
+
+     //from offset produce pos and elementTransformationType
+    var pos = this.elementOffsetToElementPos(elementOffset);
+    var elementTransformationType = this.elementOffsetToElementTransformationType(elementOffset);
+
+    //remove doNothing element
+    if(this.elements.length == 1 && this.elements[0].type == ElementType.doNothing){
+        if(elementTransformationType != ElementTransformationType.first){
+            pos.top = pos.top - this.elements[0].getElementSize().height;
+        }
+        this.elements[0].removeElement();
+    }
+
+    //set the father
+    element.father = this;
+
+    //move the new element
+    var coords = this.elementOffsetToElementPos(elementOffset);
+    var dx = coords.left - element.getElementSize().left;
+    var dy = coords.top - element.getElementSize().top;
+    element.moveElement(null,dx,dy);
+   
+    this.transformElement(element,elementTransformationType);
+
+    this.elements.splice(elementOffset, 0, element);
+
+    Canvas.setCanvasElementsCoords();
+    Canvas.getInstance().canvas.renderAll();  
+
+    return element;
+}
+
 //move element functions
-/*
 Element.prototype.moveElementRectangles = function(movedRectangle,dx,dy) {
-    console.log("moving = ",this);
-
-    this.rectangles.sort(compareRectangles);
-
-    for (k=0; k < this.rectangles.length ; k++){
-        if(this.rectangles[k]){
-            
-            if(this.rectangles[k] != movedRectangle){
-                this.rectangles[k].moveRectangleInCanvas(dx,dy);
-            }
-
-            this.rectangles[k].moveRectangleText(dx,dy);
-        }
-    }
-
-    if(this.rectangles.length > 1){
-        for (k=0; k < this.rectangles.length ; k++){
-                
-            if(this.rectangles[k] == movedRectangle){
-
-            
-                //if its the dragging element set it based on the other rectangles
-                if( this.rectangles[k].rectangleInCanvas.getTop() == this.size.top ){
-                    //take the next rectangle from the stack
-                    this.rectangles[k].rectangleInCanvas.setTop(this.rectangles[k-1].rectangleInCanvas.getTop()-this.rectangles[k].rectangleInCanvas.height);
-                    this.rectangles[k].rectangleInCanvas.setLeft(this.rectangles[k-1].rectangleInCanvas.getLeft());
-                }                
-                else{
-                    //take the next rectangle from the stack
-                    this.rectangles[k].rectangleInCanvas.setTop(this.rectangles[k+1].rectangleInCanvas.getTop()+this.rectangles[k].rectangleInCanvas.height);
-                    this.rectangles[k].rectangleInCanvas.setLeft(this.rectangles[k+1].rectangleInCanvas.getLeft());
-                }
-
-
-            }
-        }
-    }
-
-};
-*/
-
-Element.prototype.moveElementRectangles = function(movedRectangle,dx,dy) {
-    console.log("moving = ",this);
 
     var nextToMovedRectangle = null;
     var prevToMovedRectangle = null;
@@ -462,12 +452,9 @@ Element.prototype.moveElementRectangles = function(movedRectangle,dx,dy) {
             console.log("Error In moveElementRectangles");
         }
     }
-
-
-
 };
 
-Element.prototype.moveSubElements = function() {
+Element.prototype.moveSubElements = function(dx,dy) {
     for (var k=0; k < this.elements.length ; k++){
         if(this.elements[k]){
             this.elements[k].moveElement(null,dx,dy);
@@ -485,14 +472,12 @@ Element.prototype.moveElement = function(movedRectangle, dx, dy) {
     if(this.foldingItem)
         this.foldingItem.moveFoldingItem(dx,dy);
 
-    this.moveSubElements();
+    this.moveSubElements(dx,dy);
 };
 
 //remove element functions
 Element.prototype.removeElement = function() {
-    //this.id
-    //exists in this.father.elements or this.father.elements2
-    //and in horizontial or vertical elements
+
     console.log("remove element : ",this);
 
     if(!this.father){
@@ -612,11 +597,6 @@ Element.prototype.reverseElementTop = function(offsetTop){
 
     this.foldingItem.moveFoldingItem(0, -offsetTop);
 
-    console.log("changeElementTop = ",this.id," by height = ",offsetTop," also it contains elements = ",this.elements);
-    if(!this){
-        console.log("Error in changeElementTop");
-    }
-
     for (var l=0; l < this.rectangles.length ; l++){
         this.rectangles[l].moveRectangle(null,-offsetTop);
     }
@@ -625,7 +605,6 @@ Element.prototype.reverseElementTop = function(offsetTop){
         
         for (var i=0; i < this.elements.length ; i++) { 
             if(this.elements[i]){
-                console.log("calling changeElementTop for ",this.elements[i]);
                 this.elements[i].reverseElementTop(offsetTop);
             }
         }    
@@ -635,18 +614,9 @@ Element.prototype.reverseElementTop = function(offsetTop){
 
 Element.prototype.reverseElementsTop = function(exceptElem,height){
 
-    console.log("changeElementsTop = ",this," except = ",exceptElem," by height = ",height );
-
     for (var k=0; k < this.elements.length ; k++){
-        //console.log("k = ", k);
-        if(this.elements[k] == exceptElem){
-            console.log(" the new elem is = ",exceptElem);
-        }
-        else{
-            if( this.elements[k].getElementSize().top < exceptElem.getElementSize().top ){
-                console.log("this element is above the new one");  
-            }
-            else{
+        if(this.elements[k] != exceptElem){
+            if( this.elements[k].getElementSize().top >= exceptElem.getElementSize().top ){
                 this.elements[k].reverseElementTop(height); 
             }
         }
@@ -685,8 +655,6 @@ Element.prototype.setOpacity = function(opac) {
 
     this.opac = opac;
 
-    //console.log("set opacity of : ",this," to : ",opac);
-
     for (var k=0; k < this.rectangles.length ; k++){
         if(this.rectangles[k])
             if(this.rectangles[k].rectangleInCanvas)
@@ -700,18 +668,7 @@ Element.prototype.setOpacity = function(opac) {
 };
 
 Element.prototype.cloneElement = function() {
-    console.log("clone : ",this);
-    
-    var father = this.father;
-    var type = this.type;
-
-    this.father.reverseTransformElement(this);
-    this.removeElementFromFather();
-    this.father = null;
-    //this.removeElement();
-
-    father.addElement(type+"Image",0,0.6);
-
+    //none
 };
 
 //folding

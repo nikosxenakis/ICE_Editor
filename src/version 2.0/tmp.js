@@ -133,3 +133,46 @@ Element.prototype.addElement = function(imageId,pos,opac,elementTransformationTy
     return elem;
 };
 */
+
+/*
+Element.prototype.moveElementRectangles = function(movedRectangle,dx,dy) {
+    console.log("moving = ",this);
+
+    this.rectangles.sort(compareRectangles);
+
+    for (k=0; k < this.rectangles.length ; k++){
+        if(this.rectangles[k]){
+            
+            if(this.rectangles[k] != movedRectangle){
+                this.rectangles[k].moveRectangleInCanvas(dx,dy);
+            }
+
+            this.rectangles[k].moveRectangleText(dx,dy);
+        }
+    }
+
+    if(this.rectangles.length > 1){
+        for (k=0; k < this.rectangles.length ; k++){
+                
+            if(this.rectangles[k] == movedRectangle){
+
+            
+                //if its the dragging element set it based on the other rectangles
+                if( this.rectangles[k].rectangleInCanvas.getTop() == this.size.top ){
+                    //take the next rectangle from the stack
+                    this.rectangles[k].rectangleInCanvas.setTop(this.rectangles[k-1].rectangleInCanvas.getTop()-this.rectangles[k].rectangleInCanvas.height);
+                    this.rectangles[k].rectangleInCanvas.setLeft(this.rectangles[k-1].rectangleInCanvas.getLeft());
+                }                
+                else{
+                    //take the next rectangle from the stack
+                    this.rectangles[k].rectangleInCanvas.setTop(this.rectangles[k+1].rectangleInCanvas.getTop()+this.rectangles[k].rectangleInCanvas.height);
+                    this.rectangles[k].rectangleInCanvas.setLeft(this.rectangles[k+1].rectangleInCanvas.getLeft());
+                }
+
+
+            }
+        }
+    }
+
+};
+*/

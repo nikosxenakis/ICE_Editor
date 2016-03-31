@@ -4,6 +4,38 @@
  * and open the template in the editor.
  */
 
+function testExistingElement() {
+    var opac = 1;
+    var father = null;
+    var offset = 0;
+
+    c.programElement = new ProgramElement("programElement",offset,father,opac);
+    c.programElement.addElement("doNothingImage",offset,opac);
+
+    var tmp = new WhileElement("whileTmp",offset,father,opac);
+    tmp.addElement("doNothingImage",offset,opac);
+
+    var tmp2 = new WhileElement("whileTmp2",offset,father,opac);
+    tmp2.addElement("doNothingImage",offset,opac);
+
+    c.programElement.addExistingElement(tmp,offset);
+    c.programElement.addExistingElement(tmp2,offset);
+}
+
+function test() {
+    var opac = 1;
+    var father = null;
+    var offset = 0;
+
+    c.programElement = new ProgramElement("programElement",offset,father,opac);
+    c.programElement.addElement("doNothingImage",offset,opac);
+
+    c.programElement.addElement("whileImage",offset,opac);
+    c.programElement.addElement("ifImage",offset+1,opac);
+    c.programElement.elements[1].addElement("forImage",offset,opac);
+  
+}
+
 function InitEditor() {
     /*
     canvas.VPL_elementsInfo = sideBarSubCategories;
@@ -15,23 +47,7 @@ function InitEditor() {
            
     cssModifications();
     
-    //test
-    c.programElement = new ProgramElement("programElement",0,null,1);
-
-    c.programElement.addElement("doNothingImage",0,1);
-
-    c.programElement.addElement("whileImage",0,1);
-    c.programElement.addElement("ifImage",1,1);
-    c.programElement.elements[1].addElement("forImage",0,1);
-
-
-    /*test
-    c.programElement.addElement("whileImage",0,1);
-    c.programElement.addElement("ifImage",0,1);
-    c.programElement.addElement("ifImage",2,1);
-
-    c.programElement.elements[0].addElement("ifImage",0,1);
-    */
+    test();
 
     //CreateOperatorsMenu(canvas.canvas);
     //CreateVarsMenu(canvas.canvas);
