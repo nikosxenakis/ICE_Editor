@@ -1,51 +1,36 @@
 function WhileElement (id , elementOffset , father , opac){
+
     Element.call(this , id , "whileImage" , elementOffset , father , opac);
 
-    this.text = null;
-    this.createTextInCanvas();
+
+
+
+    var firstRect = this.getRectangle(RectangleOffset.firstHorizontial).rectangle;
+
+    var pos = {
+        left: firstRect.rectangleInCanvas.getLeft()+firstRect.rectangleInCanvas.width/16,
+        top: firstRect.rectangleInCanvas.getTop()+firstRect.rectangleInCanvas.height/4
+    };
+
+    var firstLabel = new Label("While Start",pos);
+    firstRect.addElement(firstLabel);
+
+
+
+
+
+    var secondRect = this.getRectangle(RectangleOffset.secondHorizontial).rectangle;
+
+    var pos = {
+        left: secondRect.rectangleInCanvas.getLeft()+secondRect.rectangleInCanvas.width/16,
+        top: secondRect.rectangleInCanvas.getTop()+secondRect.rectangleInCanvas.height/4
+    };
+
+    var secondLabel = new Label("While End",pos);
+    secondRect.addElement(secondLabel);
+
+
 
 }
 
 WhileElement.prototype = Element.prototype;
-
-WhileElement.prototype.createTextInCanvas = function (){
-
-    var c=Canvas.getInstance();
-
-    var rect1 = this.getRectangle(RectangleOffset.firstHorizontial);
-
-	this.text = new fabric.IText("while start",{
-        left: rect1.getLeft()+rect1.width/16,
-        top: rect1.getTop()+rect1.height/4,
-        fill: "white",
-        fontSize: 22,
-        //fontFamily: "Arial",
-        selectable: false,
-        id: this.id,
-        textAlign:"center",
-        hasControls: false,
-        rectangle: this,
-        element: this.element
-    });
-
-    c.canvas.add(this.text);
-
-    var rect2 = this.getRectangle(RectangleOffset.secondHorizontial);
-
-	this.text = new fabric.IText("while end",{
-        left: rect1.getLeft()+rect1.width/16,
-        top: rect1.getTop()+rect1.height/4,
-        fill: "white",
-        fontSize: 22,
-        //fontFamily: "Arial",
-        selectable: false,
-        id: this.id,
-        textAlign:"center",
-        hasControls: false,
-        rectangle: this,
-        element: this.element
-    });
-
-    c.canvas.add(this.text);
-
-}

@@ -61,3 +61,8 @@ DeleteImage.prototype.moveDeleteImage = function (dx,dy){
     this.deleteImageInCanvas.setCoords();
 
 }
+
+DeleteImage.prototype.removeDeleteImage = function (){
+    c=Canvas.getInstance();
+    c.canvas.remove(this.deleteImageInCanvas);
+};

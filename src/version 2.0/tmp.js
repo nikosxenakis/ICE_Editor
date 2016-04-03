@@ -175,4 +175,42 @@ Element.prototype.moveElementRectangles = function(movedRectangle,dx,dy) {
     }
 
 };
+
+Element.prototype.changeElementTop = function(offsetTop){
+
+    this.foldingItem.moveFoldingItem(0, offsetTop);
+
+    for (var l=0; l < this.rectangles.length ; l++){
+        this.rectangles[l].moveRectangle(null,offsetTop);
+    }
+       
+    if(this.elements.length > 0){
+        
+        for (var i=0; i < this.elements.length ; i++) { 
+            if(this.elements[i]){
+                this.elements[i].changeElementTop(offsetTop);
+            }
+        }    
+        
+    }
+};
+
+Element.prototype.reverseElementTop = function(offsetTop){
+
+    this.foldingItem.moveFoldingItem(0, -offsetTop);
+
+    for (var l=0; l < this.rectangles.length ; l++){
+        this.rectangles[l].moveRectangle(null,-offsetTop);
+    }
+       
+    if(this.elements.length > 0){
+        
+        for (var i=0; i < this.elements.length ; i++) { 
+            if(this.elements[i]){
+                this.elements[i].reverseElementTop(offsetTop);
+            }
+        }    
+        
+    }
+};
 */

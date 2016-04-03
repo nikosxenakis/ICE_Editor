@@ -31,9 +31,20 @@ function test() {
     c.programElement.addElement("doNothingImage",offset,opac);
 
     c.programElement.addElement("whileImage",offset,opac);
-    c.programElement.addElement("ifImage",offset+1,opac);
-    c.programElement.elements[1].addElement("forImage",offset,opac);
-  
+    //c.programElement.addElement("ifImage",offset+1,opac);
+    c.programElement.elements[0].addElement("forImage",offset,opac);
+    c.programElement.elements[0].elements[0].addElement("ifImage",offset+1,opac);
+}
+
+function test2() {
+    var opac = 1;
+    var father = null;
+    var offset = 0;
+
+    c.programElement = new ProgramElement("programElement",offset,father,opac);
+    c.programElement.addElement("doNothingImage",offset,opac);
+
+    //c.programElement.addElement("whileImage",offset,opac);
 }
 
 function InitEditor() {
@@ -48,6 +59,7 @@ function InitEditor() {
     cssModifications();
     
     test();
+    //test2();
 
     //CreateOperatorsMenu(canvas.canvas);
     //CreateVarsMenu(canvas.canvas);

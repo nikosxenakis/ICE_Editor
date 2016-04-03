@@ -3,6 +3,7 @@ var CanvasData = {
 	"top":200,
 	"horizontalElementsWidth":300,
 	"horizontalElementsHeight":70,
+	"greyElementsHeight":35,
 	"verticalElementsWidth":25,
 	"verticalElementsHeight":0
 };

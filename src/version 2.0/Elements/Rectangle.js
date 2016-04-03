@@ -17,35 +17,59 @@ function Rectangle (id , pos , type , element, rectangleOffset) {
 	this.element = element;
 	this.type = type;
     this.rectangleOffset = rectangleOffset;
-	this.rectangleInCanvas = this.createRectangleInCanvas(pos);
 
-    this.text = null;
-    //this.createTextInCanvas(pos);
+	this.rectangleInCanvas = this.createRectangleInCanvas(pos);
+    this.elements = new Array();
 
 	return this;
 }
 
+Rectangle.prototype.addElement = function (elem){
+    this.elements.push(elem);
+    elem.rectangle = this;
+    elem.element = this.element;
+
+};
+
+Rectangle.prototype.removeElement = function (elem){
+    console.log("remove",elem);
+    var c=Canvas.getInstance();
+
+    for(var i = 0; i < this.elements.length; i++) {
+        if(this.elements[i] == elem) {
+            this.elements.splice(i, 1);
+        }
+    }
+
+    elem.remove();
+
+};
+
 Rectangle.prototype.setRectangleVisibillity = function (flag){
     this.rectangleInCanvas.visible = flag;
 
-    if(this.text)
-        this.text.visible = flag;
+    for(var k=0; k<this.elements.length;k++){
+        this.elements[k].setVisibillity(flag);
+    }
+
 }
 
 Rectangle.prototype.removeRectangle = function (){
-    var c=Canvas.getInstance();
     
-    c.canvas.remove(this.text);
+    for(var k=0; k<this.elements.length;k++){
+        this.removeElement(this.elements[k]);
+    }
+
     c.canvas.remove( this.rectangleInCanvas );
 
 }
 
 Rectangle.prototype.moveRectangle = function (dx,dy){
     this.moveRectangleInCanvas(dx,dy);
-    this.moveRectangleText(dx,dy);
 
-    if(this.element.deleteImage && this.rectangleOffset == RectangleOffset.firstHorizontial)
-        this.element.deleteImage.moveDeleteImage(dx,dy);
+    for(var k=0; k<this.elements.length;k++){
+        this.elements[k].move(dx,dy);
+    }
 }
 
 Rectangle.prototype.moveRectangleInCanvas = function (dx,dy){
@@ -58,49 +82,6 @@ Rectangle.prototype.moveRectangleInCanvas = function (dx,dy){
 
     this.rectangleInCanvas.setCoords();
 }
-
-Rectangle.prototype.moveRectangleText = function (dx,dy){
-    if(dx){
-        if(this.text)
-            this.text.setLeft(this.text.getLeft() + dx);
-    }
-    if(dy){
-        if(this.text)
-            this.text.setTop(this.text.getTop() + dy);    
-    }
-
-    if(this.text)
-        this.text.setCoords();
-
-}
-
-Rectangle.prototype.createTextInCanvas = function (pos){
-
-    var c=Canvas.getInstance();
-
-    if(this.type == RectangleType.horizontial){
-        this.text = new fabric.IText(this.id,{
-            left: pos.left+1,
-            top: pos.top+1,
-            width:40,
-            height:5,
-            fill: "black",
-            fontSize: 8,
-            fontWeight: 12,
-            fontFamily: "Arial",
-            selectable: false,
-            id: this.id,
-            textAlign:"center",
-            hasControls: false,
-            hasBorders: false,
-            rectangle: this,
-            element: this.element
-        });
-
-        c.canvas.add(this.text);
-    }
-}
-
 
 Rectangle.prototype.createRectangleInCanvas = function (pos){
 

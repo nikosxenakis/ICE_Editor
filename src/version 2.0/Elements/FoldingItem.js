@@ -62,7 +62,16 @@ FoldingItem.prototype.moveFoldingItem = function (dx, dy){
             }
         );
  
+        //var c = Canvas.getInstance();
+        this.foldingItemBoxInCanvas.setCoords();
+        //this.foldingItemLineInCanvas.setCoords();
+        //this.foldingItemSecondaryLineInCanvas.setCoords();
+        //this.foldingItemInsideBoxHorizontialLineInCanvas.setCoords();
+        //this.foldingItemInsideBoxVerticalLineInCanvas.setCoords();
+        //c.canvas.renderAll();
+     
     }
+
    
 
 }
@@ -122,12 +131,16 @@ FoldingItem.prototype.initFoldingItemBoxInCanvas = function (){
 
     //add events
     foldingItemBox.on('mousedown', function(e) {
+        var c = Canvas.getInstance();
         if( this.foldingItem.foldingItemState == FoldingItemState.unfolded ){
             this.element.foldElement(this.element);
         }
         else{
             this.element.unfoldElement(this.element);
-        }          
+        } 
+
+        c.canvas.renderAll();
+         
     });
   
     
@@ -208,3 +221,12 @@ FoldingItem.prototype.initFoldingItemSecondaryLineInCanvas = function (){
     return foldingItemLine;
 
 }
+
+FoldingItem.prototype.removeFoldingItem = function (){
+    c=Canvas.getInstance();
+        c.canvas.remove(this.foldingItemBoxInCanvas);
+        c.canvas.remove(this.foldingItemLineInCanvas);
+        c.canvas.remove(this.foldingItemSecondaryLineInCanvas);
+        c.canvas.remove(this.foldingItemInsideBoxHorizontialLineInCanvas);
+        c.canvas.remove(this.foldingItemInsideBoxVerticalLineInCanvas);
+};

@@ -38,4 +38,12 @@ var images = {
 			type: "doNothing",
 			color:"green"
 		}
+	,
+	"greyImage":
+		{
+			id:"grey",
+			format: "I",
+			type: "grey",
+			color:"grey"
+		}
 };
