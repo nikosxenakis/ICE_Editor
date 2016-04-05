@@ -10,7 +10,8 @@ var ElementType = {
     for: "for",
     program: "program",
     doNothing: "doNothing",
-    grey: "grey"
+    grey: "grey",
+    assign: "assign"
 };
     
 var ElementTransformationType = {
@@ -193,7 +194,6 @@ Element.prototype.getRectangle = function(rectangleOffset) {
         }
     }
 
-    console.log("Error In Get Rectangle");
     return null;
 };
 
@@ -321,6 +321,34 @@ Element.prototype.elementOffsetToElementPos = function(elementOffset){
     return pos;
 };
 
+Element.prototype.elementFactory = function(imageId , elementOffset , opac) {
+
+    //choose constructor class
+    var elemInfo = imageIdToElement(imageId);
+    if(!elemInfo)
+        console.log("error in elementFactory");
+
+    if( elemInfo.type == ElementType.program ){
+        return new ProgramElement(this.id+"_"+elemInfo.id,elementOffset,this,opac);
+    }
+    else if( elemInfo.type == ElementType.while ){
+        return new WhileElement(this.id+"_"+elemInfo.id,elementOffset,this,opac);
+    }
+    else if( elemInfo.type == ElementType.gray ){
+        return new GreyElement(this.id+"_"+elemInfo.id,elementOffset,this,opac);
+    }
+    else if( elemInfo.type == ElementType.assign ){
+        return new AssignElement(this.id+"_"+elemInfo.id,elementOffset,this,opac);
+    }
+    else if( elemInfo.type == ElementType.doNothing ){
+        return new DoNothingElement(this.id+"_"+elemInfo.id,elementOffset,this,opac);
+    }
+    else{
+        return new Element(this.id+"_"+elemInfo.id,imageId,elementOffset,this,opac);
+    }
+
+};
+
 Element.prototype.addElement = function(imageId,elementOffset,opac) {
 
     //from offset produce pos and elementTransformationType
@@ -336,29 +364,13 @@ Element.prototype.addElement = function(imageId,elementOffset,opac) {
         elementOffset = 0;
     }
     
-    //choose constructor class
-    var elemInfo = imageIdToElement(imageId);
-    var elem = null;
-    
-    if( elemInfo.type == ElementType.program ){
-        elem = new ProgramElement(this.id+"_"+elemInfo.id,elementOffset,this,opac);
-    }
-    else if( elemInfo.type == ElementType.while ){
-        elem = new WhileElement(this.id+"_"+elemInfo.id,elementOffset,this,opac);
-    }
-    else if( elemInfo.type == ElementType.gray ){
-        elem = new GreyElement(this.id+"_"+elemInfo.id,imageId,elementOffset,this,opac);
-    }
-    else{
-        elem = new Element(this.id+"_"+elemInfo.id,imageId,elementOffset,this,opac);
-    }
-    
-   
+    var elem = this.elementFactory(imageId,elementOffset,opac);
+
     this.transformElement(elem,elementTransformationType);
 
     this.elements.splice(elementOffset, 0, elem);
 
-    if(elem.type != ElementType.doNothing && elem.type != ElementType.grey){
+    if(elem.format != ElementFormat.I){
         var e = elem.addElement("doNothingImage",0,1);
     }
 
@@ -417,6 +429,8 @@ Element.prototype.moveElementRectangles = function(movedRectangle,dx,dy) {
                 this.rectangles[k].moveRectangle(dx,dy);
             }
             else{
+                this.rectangles[k].moveRectangleElements(dx,dy);
+
                 if(movedRectangle.rectangleOffset == RectangleOffset.firstHorizontial){
                     nextToMovedRectangle = this.rectangles[k+1];
                 }
@@ -458,13 +472,13 @@ Element.prototype.moveElement = function(movedRectangle, dx, dy) {
 
     this.moveElementRectangles(movedRectangle,dx,dy);
     
-    if(this.deleteImage)
+    if(this.type != ElementType.doNothing){
         this.deleteImage.moveDeleteImage(dx,dy);
-  
-    if(this.foldingItem)
         this.foldingItem.moveFoldingItem(dx,dy);
+    }
 
     this.moveSubElements(dx,dy);
+
 };
 
 //remove element functions
@@ -613,8 +627,7 @@ Element.prototype.setOpacity = function(opac) {
 
     for (var k=0; k < this.rectangles.length ; k++){
         if(this.rectangles[k])
-            if(this.rectangles[k].rectangleInCanvas)
-            this.rectangles[k].rectangleInCanvas.setOpacity(opac);
+            this.rectangles[k].setOpacity(opac);
     }
 
     for (var k=0; k < this.elements.length ; k++){
@@ -678,6 +691,10 @@ Element.prototype.unfoldElement = function(unfoldedElement) {
     }
 
     if(this == unfoldedElement){
+        if(this.foldingItem.foldingItemState == FoldingItemState.unfolded){
+            return;
+        }
+
         this.changeElementInsideSpace(this.getInsideElementSize().height,this.getInsideElementSize().top);
         
         if(this.father){
@@ -727,4 +744,12 @@ Element.prototype.getElemetOffset = function(){
     }
 }
 
+Element.prototype.bringToFront = function(){
 
+    for(var k=0; k< this.rectangles.length; k++){
+        this.rectangles[k].bringToFront();
+    }  
+
+    this.deleteImage.bringToFront();
+    this.foldingItem.bringToFront();
+};

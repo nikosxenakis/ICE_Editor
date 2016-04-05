@@ -1,11 +1,18 @@
 var CanvasData = {
 	"left":200,
 	"top":200,
+	"overOpacity":0.8,
 	"horizontalElementsWidth":300,
-	"horizontalElementsHeight":70,
+	"horizontalElementsHeight":60,
 	"greyElementsHeight":35,
-	"verticalElementsWidth":25,
-	"verticalElementsHeight":0
+	"verticalElementsWidth":23,
+	"verticalElementsHeight":0,
+	"ConditionWidth":120,
+	"ConditionHeight":30,
+	"ElementLabelColor":"white",
+	"ElementLabelSize":22,
+	"ConditionLabelColor":"black",
+	"ConditionLabelSize":18
 };
 
 var DeleteImageData = {
@@ -19,4 +26,63 @@ var FoldingItemData = {
 	"id":"foldingItem",
 	"foldingItemWidth":13,
 	"foldingItemHeight":13
+};
+
+var images = {
+	"programImage":
+		{
+			id:"program",
+			format: "C",
+			type: "program",
+			color:"#008fb3"
+		}
+	,
+	"whileImage":
+		{
+			id:"while",
+			format: "C",
+			type: "while",
+			color:"#cc5200"
+		}
+	,
+	"forImage":
+		{
+			id:"for",
+			format: "C",
+			type: "for",
+			color:"#b3b300"
+		}
+	,
+	"ifImage":
+		{
+			id:"if",
+			format: "C",
+			type: "if",
+			color:"#ff66cc"
+		}
+	,
+	"doNothingImage":
+		{
+			id:"doNothing",
+			format: "I",
+			type: "doNothing",
+			color:"green"
+		}
+	,
+	"greyImage":
+		{
+			id:"grey",
+			format: "I",
+			type: "grey",
+			color:"grey"
+		}
+	,
+	"assignImage":
+		{
+			id:"grey",
+			format: "I",
+			type: "assign",
+			color:"green"
+		}
+
 };

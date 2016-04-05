@@ -31,97 +31,26 @@ var Canvas = (function(){
         //main program element
         this.programElement = null;
 
-        $("#canvas").droppable({
-            accept: ".draggable",
-            drag: function (event, ui) {
-                //$(this).append($(ui.draggable).clone());
-            },
-            over: function( event, ui ) {
-                //console.log(" over started canvas");
-            },
-            drop: function (event, ui) {
-                //console.log("dropped on canvas");
-            },
-            //hoverClass:'drop-hover'
-        });
-
         this.canvas.on('mouse:over', function(e) {
 
-            if(e.target && e.target.element){
-                console.log("mouse over "+e.target.element.id);
-
-                if(e.target.element.deleteImage)
-                    e.target.element.deleteImage.setDeleteImageVisibility(true);
-
-                if(e.target.element.foldingItem)
-                    e.target.element.foldingItem.setFoldingItemVisibillity(true);
-
-
-                e.target.element.setOpacity(0.6);
-            }
+            if(e.target && e.target.class)
+                e.target.class.mouseOver();
 
             this.renderAll();
         });
-        
+
         this.canvas.on('mouse:out', function(e) {
             
-            if(e.target && e.target.element){
-                console.log("mouse out "+e.target.element.id);
-
-                if(e.target.element.deleteImage)
-                    e.target.element.deleteImage.setDeleteImageVisibility(false);
-
-                if(e.target.element.foldingItem)
-                    e.target.element.foldingItem.setFoldingItemVisibillity(false);
-
-                e.target.element.setOpacity(1);
-
-            }
+            if(e.target && e.target.class)
+                e.target.class.mouseOut();
 
             this.renderAll();
         });
 
         this.canvas.on('mouse:up', function(e) {
 
-            if(e.target && e.target.element){
-                console.log("mouse up "+e.target.element.id);
-                var element = e.target.element;
-
-                element.setOpacity(1);
-
-
-                if(!element.father){
-                    //if there is a current dummy
-
-                    if(element.dummyElementCurrentPosition){
-
-                        var offset = element.dummyElementCurrentPosition.getElemetOffset();
-                        element.dummyElementCurrentPosition.father.addExistingElement(element,offset);
-                        element.dummyElementCurrentPosition.removeElement();
-                        element.dummyElementCurrentPosition = null;
-
-                        if(element.dummyElementOriginalPosition){
-                            element.dummyElementOriginalPosition.removeElement();
-                            element.dummyElementOriginalPosition = null;
-                        }
-
-                    }
-                    else{
-                        if(element.dummyElementOriginalPosition){
-                            var offset = element.dummyElementOriginalPosition.getElemetOffset();
-                            element.dummyElementOriginalPosition.father.addExistingElement(element,offset);
-                            element.dummyElementOriginalPosition.removeElement();
-                            element.dummyElementOriginalPosition = null;
-                        }
-                    }
-                    
-                    c.intersection = false;
-                    c.tmpElement = null;
-                    c.elementsUnderDrag.length = 0;
-
-                }
-
-            }
+            if(e.target && e.target.class)
+                e.target.class.mouseUp();
 
             this.renderAll();
 
@@ -129,37 +58,10 @@ var Canvas = (function(){
 
         this.canvas.on('mouse:down', function(e) {
 
-            console.log("mouse down");
-
-            if(e.target && e.target.rectangle && e.target.element && e.target.rectangle.deleteIcon != e.target){
-
-                var element = e.target.element;
-
-                if(element.father){
-
-                    //removes element from father
-                    var father = element.father;
-                    var type = element.type;
-                    var offset = element.getElemetOffset();
-                    var opac = 1;
-                    element.father.reverseTransformElement(element);
-                    element.removeElementFromFather();
-                    element.father = null;
-
-                    //add the dummy gray element in this
-                    
-                    element.dummyElementOriginalPosition = father.addElement(type+"Image",offset,opac);
-                    element.dummyElementOriginalPosition.addElement("greyImage",0,opac);
-                    
-                    //fold the real element    
-                    element.foldElement(element);
-                    
-                }
-                            
-            }
+            if(e.target && e.target.class)
+                e.target.class.mouseDown();
 
             this.renderAll();
-     
         });
 
         this.canvas.on ({ 
@@ -187,7 +89,7 @@ var Canvas = (function(){
     };
 
     function updateCoordinates(e){
-        
+
         var dx = e.e.movementX;
         var dy = e.e.movementY;
 
@@ -195,19 +97,15 @@ var Canvas = (function(){
         var rectangle = rect.rectangle
         var elem = rect.element;
 
-        if( rectangle && elem ){
-            elem.setOpacity(0.6);
+        if( rectangle && elem && elem.type != ElementType.doNothing){
             elem.moveElement(rectangle,dx,dy); 
+            //checkCollisionWithRecycleBin(elem);
+            checkCollisionDragNDrop(elem); 
         }
-        
-        //checkCollisionWithRecycleBin(elem);
-
-        checkCollisionDragNDrop(elem); 
     }; 
 
     function checkCollisionDragNDrop(elem){
-        //var c = this.getInstance();
-        //console.log(c);
+
         var c =instance;
 
         if(!elem)
@@ -241,38 +139,11 @@ var Canvas = (function(){
         if(elem && elem.dummyElementOriginalPosition && elem.dummyElementOriginalPosition.father){
             addElementToCanvas(elem.type+"Image");
             elem.dummyElementCurrentPosition = c.tmpElement;
+
+            if(elem.dummyElementCurrentPosition && elem.dummyElementCurrentPosition.elements.length==1 && elem.dummyElementCurrentPosition.elements[0].type == ElementType.doNothing)
+                elem.dummyElementCurrentPosition.addElement("greyImage",0,0.6);
+
         }
-        /*
-        if(elem && elem.dummyElementCurrentPosition && elem.dummyElementCurrentPosition.father){
-            elem.dummyElementCurrentPosition.removeElement();
-            elem.dummyElementCurrentPosition = null;
-            c.tmpElement = null;
-        }
-        */
-
-        /*
-            if(arr.length!=0){
-                console.log(arr);
-            }
-
-            //if collision add dummyElementCurrentPosition with rect
-            if(arr.length==2){
-                if(elem && elem.dummyElementOriginalPosition && elem.dummyElementOriginalPosition.father){
-                    var offset = 0;
-                    var dummyElementCurrentPosition = elem.dummyElementOriginalPosition.father.addElement(elem.type+"Image",offset,0.6);
-                    elem.dummyElementCurrentPosition = dummyElementCurrentPosition;
-                }
-            }
-            //if not collision add dummyElementCurrentPosition with rect
-            else{
-                if(elem && elem.dummyElementCurrentPosition && elem.dummyElementCurrentPosition.father){
-                    var offset = 0;
-                    elem.dummyElementCurrentPosition.removeElement();
-                    elem.dummyElementCurrentPosition = null;
-                }  
-            }
-
-        */
 
     };
 
@@ -282,7 +153,7 @@ var Canvas = (function(){
         _.each(
             instance.horizontalElements, 
             function(elem) {    
-                if( rectangesCollision( elem , rect ) ){
+                if( !elem.element.containsRectangle(rect) && rectangesCollision( elem , rect ) ){
                     c.elementsUnderDrag.push(elem);
                 }
             }
@@ -331,7 +202,7 @@ var Canvas = (function(){
     };
 
     function addElementToCanvas(imageRectId){
-        //var c = this.getInstance();
+
         var c =instance;
 
             if( c.elementsUnderDrag.length >= 2 && c.intersection==false){
@@ -411,7 +282,7 @@ var Canvas = (function(){
                 }
             }
             //no intersection
-            else if(c.elementsUnderDrag.length <= 1 && c.intersection==true){
+            else if(c.elementsUnderDrag.length < 1 && c.intersection==true){
                 
                 if(c.tmpElement)
                     c.tmpElement.removeElement();

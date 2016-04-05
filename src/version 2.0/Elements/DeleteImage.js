@@ -4,14 +4,30 @@ function DeleteImage (element) {
 
     this.deleteImageInCanvas = this.initDeleteImage();
 
-    //add events
-    this.deleteImageInCanvas.on('mousedown', function(e) {
-        this.element.removeElement();
-    });
-
 }
 
+DeleteImage.prototype.bringToFront = function (){
+    this.deleteImageInCanvas.bringToFront();
+};
+
+DeleteImage.prototype.mouseOver = function (){
+    this.element.getRectangle(RectangleOffset.firstHorizontial).rectangle.mouseOver();
+};
+
+DeleteImage.prototype.mouseUp = function (){
+    this.element.getRectangle(RectangleOffset.firstHorizontial).rectangle.mouseUp();
+};
+
+DeleteImage.prototype.mouseDown = function (){
+    this.element.removeElement();
+};
+
+DeleteImage.prototype.mouseOut = function (){
+    this.element.getRectangle(RectangleOffset.firstHorizontial).rectangle.mouseOut();
+};
+
 DeleteImage.prototype.initDeleteImage = function(){
+
     var c=Canvas.getInstance();
     var id = DeleteImageData.id+"_"+this.element.id;
     var pos = this.element.getElementSize();
@@ -30,20 +46,21 @@ DeleteImage.prototype.initDeleteImage = function(){
         visible: false,
         hasControls: false,
         hasBorders: false,
-        element: this.element
+        element: this.element,
+        class: this
     });
             
     c.canvas.add(imgInstance);
     c.canvas.renderAll();
 
     return imgInstance;
-}
+};
 
 DeleteImage.prototype.setDeleteImageVisibility = function (flag){
     if(this.deleteImageInCanvas){
         this.deleteImageInCanvas.visible = flag;
     }
-}
+};
 
 DeleteImage.prototype.moveDeleteImage = function (dx,dy){
     if(!this.deleteImageInCanvas){
@@ -59,8 +76,7 @@ DeleteImage.prototype.moveDeleteImage = function (dx,dy){
     }
 
     this.deleteImageInCanvas.setCoords();
-
-}
+};
 
 DeleteImage.prototype.removeDeleteImage = function (){
     c=Canvas.getInstance();

@@ -1,16 +1,17 @@
-function Label (id,pos){
+function Label (id,pos,color,size){
 
     var c=Canvas.getInstance();
 
 	this.label = new fabric.IText(id,{
         left: pos.left,
         top: pos.top,
-        fill: "white",
-        fontSize: 22,
+        fill: color,
+        fontSize: size,
         selectable: false,
         id: id,
         textAlign:"center",
-        hasControls: false
+        hasControls: false,
+        class: this
     });
 
     c.canvas.add(this.label);
@@ -31,4 +32,22 @@ Label.prototype.remove = function (){
 
 Label.prototype.setVisibillity = function (flag){
 	this.label.visible = flag;
+};
+
+Label.prototype.bringToFront = function (){
+    this.label.bringToFront();
+};
+
+Label.prototype.mouseOver = function (){
+    if(this.element)
+        this.rectangle.mouseOver();
+};
+
+Label.prototype.mouseUp = function (){
+};
+
+Label.prototype.mouseDown = function (){
+};
+
+Label.prototype.mouseOut = function (){
 };

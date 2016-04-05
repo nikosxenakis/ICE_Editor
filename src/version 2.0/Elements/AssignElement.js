@@ -1,5 +1,6 @@
-function ProgramElement(id , elementOffset , father , opac){
-    Element.call(this , id , "programImage" , elementOffset , father , opac);
+function AssignElement (id , elementOffset , father , opac){
+
+    Element.call(this , id , "assignImage" , elementOffset , father , opac);
 
     var firstRect = this.getRectangle(RectangleOffset.firstHorizontial).rectangle;
 
@@ -8,7 +9,7 @@ function ProgramElement(id , elementOffset , father , opac){
         top: firstRect.rectangleInCanvas.getTop()+firstRect.rectangleInCanvas.height/4
     };
 
-    var firstLabel = new Label("Program",pos,CanvasData.ElementLabelColor,CanvasData.ElementLabelSize);
+    var firstLabel = new Label("var",pos,CanvasData.ElementLabelColor,CanvasData.ElementLabelSize);
     firstRect.addElement(firstLabel);
 
     var pos = {
@@ -16,9 +17,9 @@ function ProgramElement(id , elementOffset , father , opac){
         top: firstRect.rectangleInCanvas.getTop()+firstRect.rectangleInCanvas.height/4
     };
 
-    var programName = new TextInput("ProgramName",pos,CanvasData.ElementLabelColor,CanvasData.ElementLabelSize);
-    firstRect.addElement(programName);
+    var firstLabel = new Label("=",pos,CanvasData.ElementLabelColor,CanvasData.ElementLabelSize);
+    firstRect.addElement(firstLabel);
 
 }
 
-ProgramElement.prototype = Element.prototype;
+AssignElement.prototype = Element.prototype;

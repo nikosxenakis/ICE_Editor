@@ -1,9 +1,7 @@
 var ImageHolder = (function(){
 
     function ImageHolder() {
-        this.images = new Array();
-        //read images.json
-        
+        this.images = new Array();        
         initDraggableElements();
     }
 
@@ -12,7 +10,6 @@ var ImageHolder = (function(){
         getInstance: function(){
             if (instance == null) {
                 instance = new ImageHolder();
-                // Hide the constructor so the returned objected can't be new'd...
                 instance.constructor = null;
             }
             return instance;
@@ -27,11 +24,10 @@ function initDraggableElements() {
         helper:"clone",
         start: function (event, ui) {
             c.intersection = false;
-            //console.log("start dragging");            
-
+            c.elementsUnderDrag.length = 0;
+            c.tmpElement = null;
         },
         drag: function (event, ui) {
-            //console.log("is dragging");
 
             var canvasDiv=document.getElementById("canvas");
 
@@ -56,8 +52,6 @@ function initDraggableElements() {
             c.intersection = false;
             c.elementsUnderDrag.length = 0;
             c.tmpElement = null;
-
-            //console.log("stop dragging");
         },
         
     }

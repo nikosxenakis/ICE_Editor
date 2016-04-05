@@ -1,0 +1,27 @@
+var inputPrograms = [
+	{
+		id: "programName",
+		elements: [
+			{
+				id: "while1",
+				type: "whileImage",
+				elements: [
+					{
+						id: "",
+						type: "ifImage"
+					}
+				]
+			},
+			{
+				id: "if1",
+				type: "ifImage",
+				elements: [
+					{
+						id: "for1",
+						type: "forImage"
+					}
+				]			
+			}
+		]
+	}
+];

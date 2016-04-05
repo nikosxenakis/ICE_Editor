@@ -18,6 +18,16 @@ function FoldingItem (element) {
 
 }
 
+FoldingItem.prototype.bringToFront = function (){
+    if( this.element.getRectangle(RectangleOffset.secondHorizontial) ){
+        this.foldingItemBoxInCanvas.bringToFront();
+        this.foldingItemInsideBoxHorizontialLineInCanvas.bringToFront();
+        this.foldingItemInsideBoxVerticalLineInCanvas.bringToFront();
+        this.foldingItemLineInCanvas.bringToFront();
+        this.foldingItemSecondaryLineInCanvas.bringToFront();
+    }
+};
+
 FoldingItem.prototype.moveFoldingItem = function (dx, dy){
 
     if(this.foldingItemBoxInCanvas && this.foldingItemLineInCanvas && this.foldingItemSecondaryLineInCanvas
@@ -62,17 +72,8 @@ FoldingItem.prototype.moveFoldingItem = function (dx, dy){
             }
         );
  
-        //var c = Canvas.getInstance();
         this.foldingItemBoxInCanvas.setCoords();
-        //this.foldingItemLineInCanvas.setCoords();
-        //this.foldingItemSecondaryLineInCanvas.setCoords();
-        //this.foldingItemInsideBoxHorizontialLineInCanvas.setCoords();
-        //this.foldingItemInsideBoxVerticalLineInCanvas.setCoords();
-        //c.canvas.renderAll();
-     
     }
-
-   
 
 }
 
@@ -112,7 +113,7 @@ FoldingItem.prototype.initFoldingItemBoxInCanvas = function (){
     var pos = this.element.getRectangle(RectangleOffset.firstHorizontial);
 
     var foldingItemBox = new fabric.Rect({
-            left: pos.left + FoldingItemData.foldingItemWidth/2,
+            left: pos.left + FoldingItemData.foldingItemWidth/3,
             top: pos.top + pos.height - 2*FoldingItemData.foldingItemHeight,
             fill: 'white',
             stroke: '#808080',
@@ -126,27 +127,38 @@ FoldingItem.prototype.initFoldingItemBoxInCanvas = function (){
             foldingItem: this,
             visible: false,
             lockMovementX: true,
-            lockMovementY: true
+            lockMovementY: true,
+            class:this
     });
-
-    //add events
-    foldingItemBox.on('mousedown', function(e) {
-        var c = Canvas.getInstance();
-        if( this.foldingItem.foldingItemState == FoldingItemState.unfolded ){
-            this.element.foldElement(this.element);
-        }
-        else{
-            this.element.unfoldElement(this.element);
-        } 
-
-        c.canvas.renderAll();
-         
-    });
-  
     
     c.canvas.add(foldingItemBox);
     return foldingItemBox;
 }
+
+FoldingItem.prototype.mouseOver = function (){
+    this.element.getRectangle(RectangleOffset.firstHorizontial).rectangle.mouseOver();
+};
+
+FoldingItem.prototype.mouseUp = function (){
+    this.element.getRectangle(RectangleOffset.firstHorizontial).rectangle.mouseUp();
+};
+
+FoldingItem.prototype.mouseDown = function (){
+        
+    if( this.foldingItemState == FoldingItemState.unfolded ){
+        this.element.foldElement(this.element);
+    }
+    else{
+        this.element.unfoldElement(this.element);
+    } 
+        
+    Canvas.getInstance().canvas.renderAll();
+    this.element.getRectangle(RectangleOffset.firstHorizontial).rectangle.mouseOver();
+};
+
+FoldingItem.prototype.mouseOut = function (){
+    this.element.getRectangle(RectangleOffset.firstHorizontial).rectangle.mouseOut();
+};
 
 FoldingItem.prototype.makeLine = function (coords){
     return new fabric.Line(coords, {
@@ -159,7 +171,8 @@ FoldingItem.prototype.makeLine = function (coords){
         foldingItem: this,
         visible: false,
         lockMovementX: true,
-        lockMovementY: true
+        lockMovementY: true,
+        class: this
     });
 }
 

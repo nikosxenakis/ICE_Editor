@@ -64,20 +64,26 @@
         <script type="text/javascript" src="Elements/FoldingItem.js"></script>
         <script type="text/javascript" src="Elements/DeleteImage.js"></script>
 
-        <script type="text/javascript" src="Elements/AddElement.js"></script>
-
         <script type="text/javascript" src="Elements/Element.js"></script>
 
         <script type="text/javascript" src="Elements/WhileElement.js"></script>
         <script type="text/javascript" src="Elements/ProgramElement.js"></script>
         <script type="text/javascript" src="Elements/GreyElement.js"></script>
+        <script type="text/javascript" src="Elements/AssignElement.js"></script>
+        <script type="text/javascript" src="Elements/DoNothingElement.js"></script>
 
         <script type="text/javascript" src="Elements/Rectangle.js"></script>
         
+        <script type="text/javascript" src="Elements/TextInput.js"></script>
         <script type="text/javascript" src="Elements/Label.js"></script>
+        <script type="text/javascript" src="Elements/Condition.js"></script>
+
+        <script type="text/javascript" src="Parser/Parser.js"></script>
+
         <!-- JSON -->
         <script type="text/javascript" src="json/data.json"></script>
-        <script type="text/javascript" src="json/rectangle.json"></script>
+        <script type="text/javascript" src="json/inputProgram.json"></script>
+        <script type="text/javascript" src="json/outputProgram.json"></script>
 
     </head>
     <body onload="InitEditor();" ng-app="VPL-tree">
@@ -295,7 +301,8 @@
                               <img id="ifImage" width="180px" height="80px" class="draggable" src="images/if.png">
                             </li>
                             <li class="dropdown-header">Statements</li>
-                            <li>                           
+                            <li>              
+                              <img id="assignImage" width="180px" height="80px" class="draggable" src="images/assign.png">
                               <img id="doNothingImage" width="180px" height="80px" class="draggable" src="images/doNothing.png">
                             </li>
                           </ul>
@@ -326,9 +333,9 @@
                     </ul>
                 </nav>
               </div>       
-              
+              <!--
               <i id="recycleBin"  class="fa fa-trash-o"></i>     
-
+              -->
               <div id="canvasContainer">
 
                 <canvas id="canvas">
