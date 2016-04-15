@@ -10,7 +10,6 @@ Parser.prototype.loadProgram = function (inputPrograms){
     
     this.source = inputPrograms;
     
-    var opac = 1;
     var father = null;
     var offset = 0;
 
@@ -18,8 +17,8 @@ Parser.prototype.loadProgram = function (inputPrograms){
     for(var i=0; i<this.source.length; i++){
         console.log("\t",this.source[i].id);
 
-        c.programElement = new ProgramElement(this.source[i].id,offset,father,opac);
-        c.programElement.addElement("doNothingImage",offset,opac);
+        c.programElement = new ProgramElement(this.source[i].id,offset,father);
+        c.programElement.addElement("doNothingImage",offset);
 
         this.loadElements(c.programElement , this.source[i].elements);
     }
@@ -31,10 +30,8 @@ Parser.prototype.loadElements = function (father , elements){
     if(!elements)
         return;
 
-    var opac = 1;
-
     for(var i=0; i<elements.length; i++){
-        var child = father.addElement(elements[i].type,i,opac);
+        var child = father.addElement(elements[i].type,i);
         this.loadElements(child , elements[i].elements);
     }
 

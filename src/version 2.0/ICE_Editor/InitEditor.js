@@ -5,17 +5,18 @@
  */
 
 function test() {
-    var opac = 1;
     var father = null;
     var offset = 0;
 
-    c.programElement = new ProgramElement("programElement",offset,father,opac);
-    c.programElement.addElement("doNothingImage",offset,opac);
+    c.programElement = new ProgramElement("programElement",offset,father);
+    c.programElement.addElement("doNothingImage",offset);
 
-    c.programElement.addElement("whileImage",offset,opac);
-    //c.programElement.addElement("ifImage",offset+1,opac);
-    c.programElement.elements[0].addElement("forImage",offset,opac);
-    c.programElement.elements[0].elements[0].addElement("ifImage",offset+1,opac);
+    c.programElement.addElement("whileImage",offset);
+    c.programElement.addElement("assignImage",offset+1);
+    //c.programElement.elements[0].addElement("forImage",offset);
+    //c.programElement.elements[0].elements[0].addElement("ifImage",offset+1);
+    //
+    $('#example').typeahead()  
 }
 
 function InitEditor() {
@@ -29,12 +30,15 @@ function InitEditor() {
            
     cssModifications();
     
-    //test();
-    
+    test();
+
+    dialogMenu = new DialogMenu();  
+
+    /*
     var parser = new Parser();
     parser.loadProgram(inputPrograms);
     parser.saveProgram(c.programElement);
-
+    */
 
     //CreateOperatorsMenu(canvas.canvas);
     //CreateVarsMenu(canvas.canvas);

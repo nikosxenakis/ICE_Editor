@@ -20,7 +20,7 @@ var ElementTransformationType = {
     last: 2
 };
 
-function Element (id , imageId , elementOffset , father , opac) {
+function Element (id , imageId , elementOffset , father) {
     
     var elemInfo = imageIdToElement(imageId);
 
@@ -39,10 +39,9 @@ function Element (id , imageId , elementOffset , father , opac) {
     this.color = elemInfo.color;
     this.pos = this.setPositions(coords);
     this.father = father;
-    this.opac = opac;
-    
-
-
+    this.opac = CanvasData.highOpacity;
+    this.visibility = true;
+     
     this.rectangles = this.createRectangles();
    
     this.getElementSize();
@@ -170,6 +169,11 @@ Element.prototype.getInsideElementSize = function() {
 
 Element.prototype.setElementVisibillity = function(flag) {
 
+    if(this.visibility == flag)
+        return;
+
+    this.visibility = flag;
+
     if(this.deleteImage)
         this.deleteImage.setDeleteImageVisibility(flag);
     
@@ -276,7 +280,7 @@ Element.prototype.transformElement = function(elem,elementTransformationType) {
         this.changeLastElementInsideSpace(size.height,size.top);
 
     Canvas.setCanvasElementsCoords();
-    c.canvas.renderAll(); 
+    //c.canvas.renderAll(); 
 
     this.changeElementsTop(elem,size.height);
   
@@ -297,23 +301,39 @@ Element.prototype.elementOffsetToElementTransformationType = function(elementOff
 Element.prototype.elementOffsetToElementPos = function(elementOffset){
 
     var pos;
+    var firstHorizontialRect = this.getRectangle(RectangleOffset.firstHorizontial);
+    var firstHorizontialRectLeft = firstHorizontialRect.getLeft();
+    var firstHorizontialRectTop = firstHorizontialRect.getTop();
+
+    var firstVerticalRect = this.getRectangle(RectangleOffset.firstVertical);
+    if(firstVerticalRect){
+        var firstVerticalRectLeft = firstVerticalRect.getLeft();
+        var firstVerticalRectTop = firstVerticalRect.getTop();
+    }
+
+    var secondHorizontialRect = this.getRectangle(RectangleOffset.secondHorizontial);
+    if(firstVerticalRect){
+        var secondHorizontialRectLeft = secondHorizontialRect.getLeft();
+        var secondHorizontialRectTop = secondHorizontialRect.getTop();
+    }
 
     if(elementOffset == 0){
+
         pos = {
-            left : this.getRectangle(RectangleOffset.firstVertical).getLeft()+this.getRectangle(RectangleOffset.firstVertical).width,
-            top : this.getRectangle(RectangleOffset.firstVertical).getTop()
+            left : firstHorizontialRectLeft + CanvasData.verticalElementsWidth,
+            top : firstHorizontialRectTop + CanvasData.horizontalElementsHeight
         };
     }
     else if(elementOffset == this.elements.length){
         pos = {
-            left : this.getRectangle(RectangleOffset.firstVertical).getLeft()+this.getRectangle(RectangleOffset.firstVertical).width,
-            top : this.getRectangle(RectangleOffset.secondHorizontial).getTop()
+            left : firstVerticalRectLeft + CanvasData.verticalElementsWidth,
+            top : secondHorizontialRectTop
         };
     }
     else{
 
         pos = {
-            left : this.getRectangle(RectangleOffset.firstVertical).getLeft()+this.getRectangle(RectangleOffset.firstVertical).width,
+            left : secondHorizontialRectLeft + CanvasData.verticalElementsWidth,
             top : this.elements[elementOffset].getRectangle(RectangleOffset.firstHorizontial).getTop()        
         };
     }
@@ -321,7 +341,7 @@ Element.prototype.elementOffsetToElementPos = function(elementOffset){
     return pos;
 };
 
-Element.prototype.elementFactory = function(imageId , elementOffset , opac) {
+Element.prototype.elementFactory = function(imageId , elementOffset) {
 
     //choose constructor class
     var elemInfo = imageIdToElement(imageId);
@@ -329,27 +349,27 @@ Element.prototype.elementFactory = function(imageId , elementOffset , opac) {
         console.log("error in elementFactory");
 
     if( elemInfo.type == ElementType.program ){
-        return new ProgramElement(this.id+"_"+elemInfo.id,elementOffset,this,opac);
+        return new ProgramElement(this.id+"_"+elemInfo.id,elementOffset,this);
     }
     else if( elemInfo.type == ElementType.while ){
-        return new WhileElement(this.id+"_"+elemInfo.id,elementOffset,this,opac);
+        return new WhileElement(this.id+"_"+elemInfo.id,elementOffset,this);
     }
     else if( elemInfo.type == ElementType.gray ){
-        return new GreyElement(this.id+"_"+elemInfo.id,elementOffset,this,opac);
+        return new GreyElement(this.id+"_"+elemInfo.id,elementOffset,this);
     }
     else if( elemInfo.type == ElementType.assign ){
-        return new AssignElement(this.id+"_"+elemInfo.id,elementOffset,this,opac);
+        return new AssignElement(this.id+"_"+elemInfo.id,elementOffset,this);
     }
     else if( elemInfo.type == ElementType.doNothing ){
-        return new DoNothingElement(this.id+"_"+elemInfo.id,elementOffset,this,opac);
+        return new DoNothingElement(this.id+"_"+elemInfo.id,elementOffset,this);
     }
     else{
-        return new Element(this.id+"_"+elemInfo.id,imageId,elementOffset,this,opac);
+        return new Element(this.id+"_"+elemInfo.id,imageId,elementOffset,this);
     }
 
 };
 
-Element.prototype.addElement = function(imageId,elementOffset,opac) {
+Element.prototype.addElement = function(imageId,elementOffset) {
 
     //from offset produce pos and elementTransformationType
     var pos = this.elementOffsetToElementPos(elementOffset);
@@ -364,14 +384,14 @@ Element.prototype.addElement = function(imageId,elementOffset,opac) {
         elementOffset = 0;
     }
     
-    var elem = this.elementFactory(imageId,elementOffset,opac);
+    var elem = this.elementFactory(imageId,elementOffset);
 
     this.transformElement(elem,elementTransformationType);
 
     this.elements.splice(elementOffset, 0, elem);
 
     if(elem.format != ElementFormat.I){
-        var e = elem.addElement("doNothingImage",0,1);
+        var e = elem.addElement("doNothingImage",0);
     }
 
     Canvas.setCanvasElementsCoords();
@@ -429,7 +449,7 @@ Element.prototype.moveElementRectangles = function(movedRectangle,dx,dy) {
                 this.rectangles[k].moveRectangle(dx,dy);
             }
             else{
-                this.rectangles[k].moveRectangleElements(dx,dy);
+                //this.rectangles[k].moveRectangleElements(dx,dy);
 
                 if(movedRectangle.rectangleOffset == RectangleOffset.firstHorizontial){
                     nextToMovedRectangle = this.rectangles[k+1];
@@ -457,6 +477,8 @@ Element.prototype.moveElementRectangles = function(movedRectangle,dx,dy) {
         else{
             console.log("Error In moveElementRectangles");
         }
+                
+        movedRectangle.moveRectangleElements();
     }
 };
 
@@ -491,7 +513,7 @@ Element.prototype.removeElement = function() {
 
     //replace the deleting element with doNothing
     if(this.father.elements.length == 1 && this.father.elements[0] == this && this.type != ElementType.doNothing){
-        var e = this.father.addElement("doNothingImage",0,1);
+        var e = this.father.addElement("doNothingImage",0);
     }
 
     //revert transformation
@@ -538,7 +560,7 @@ Element.prototype.removeRectangles = function(){
         }     
     }    
 
-        //remove each subelement
+    //remove each subelement
     for (k=0; k < this.elements.length ; k++){
         this.elements[k].removeRectangles();
     }
@@ -616,12 +638,15 @@ Element.prototype.reverseTransformElement = function(elem) {
     this.reverseElementInsideSpace(size.height,size.top);
   
     Canvas.setCanvasElementsCoords();
-    c.canvas.renderAll(); 
+    //c.canvas.renderAll(); 
 
 };
 
 //opacity
 Element.prototype.setOpacity = function(opac) {
+
+    if(this.opac == opac)
+        return;
 
     this.opac = opac;
 
@@ -634,6 +659,7 @@ Element.prototype.setOpacity = function(opac) {
         if(this.elements[k])
             this.elements[k].setOpacity(opac);
     }
+    Canvas.getInstance().canvas.renderAll();
 };
 
 Element.prototype.cloneElement = function() {
@@ -659,6 +685,9 @@ Element.prototype.foldElement = function(foldedElement) {
     if(this != foldedElement){
         this.setElementVisibillity(false);
     }
+
+    if(this.format == ElementFormat.I)
+        return;
 
     if(this == foldedElement){
         this.unfoldAllSubElements();
@@ -689,6 +718,9 @@ Element.prototype.unfoldElement = function(unfoldedElement) {
 
         this.setElementVisibillity(true);
     }
+
+    if(this.format == ElementFormat.I)
+        return;
 
     if(this == unfoldedElement){
         if(this.foldingItem.foldingItemState == FoldingItemState.unfolded){
@@ -752,4 +784,14 @@ Element.prototype.bringToFront = function(){
 
     this.deleteImage.bringToFront();
     this.foldingItem.bringToFront();
+};
+
+Element.prototype.sendToBack = function(){
+
+    for(var k=0; k< this.rectangles.length; k++){
+        this.rectangles[k].sendToBack();
+    }  
+
+    this.deleteImage.sendToBack();
+    this.foldingItem.sendToBack();
 };

@@ -1,25 +1,29 @@
 var CanvasData = {
 	"left":200,
 	"top":200,
-	"overOpacity":0.8,
-	"horizontalElementsWidth":300,
+	"highOpacity":1,
+	"lowOpacity":0.8,
+	"horizontalElementsWidth":310,
 	"horizontalElementsHeight":60,
 	"greyElementsHeight":35,
 	"verticalElementsWidth":23,
 	"verticalElementsHeight":0,
 	"ConditionWidth":120,
-	"ConditionHeight":30,
+	"ConditionHeight":35,
+	"InputBoxWidth":80,
+	"InputBoxHeight":35,
 	"ElementLabelColor":"white",
 	"ElementLabelSize":22,
+	"BigElementLabelSize":30,
 	"ConditionLabelColor":"black",
-	"ConditionLabelSize":18
+	"ConditionLabelSize":18,
 };
 
 var DeleteImageData = {
 	"id":"deleteImage",
 	"deleteImagePath":"images/deleteImage.png",
-	"deleteImageWidth":20,
-	"deleteImageHeight":20
+	"deleteImageWidth":15,
+	"deleteImageHeight":15
 };
 
 var FoldingItemData = {

@@ -97,6 +97,11 @@ var Canvas = (function(){
         var rectangle = rect.rectangle
         var elem = rect.element;
 
+        if(! (rectangle instanceof Rectangle) ){
+            rectangle = rect.class.rectangle;
+            elem = rect.class.element;
+        }
+
         if( rectangle && elem && elem.type != ElementType.doNothing){
             elem.moveElement(rectangle,dx,dy); 
             //checkCollisionWithRecycleBin(elem);
@@ -108,15 +113,25 @@ var Canvas = (function(){
 
         var c =instance;
 
-        if(!elem)
+        //if(!elem || elem.type == ElementType.program)
+        if(!elem || !elem.dummyElementOriginalPosition)
             return;
 
         //define drag elem dimensions
+        if(elem.format == ElementFormat.I){
+            var dragElementRectHeight = CanvasData.horizontalElementsHeight;
+        }
+        else{
+            var dragElementRectHeight = 2*CanvasData.horizontalElementsHeight;
+        }
+
+        var size = elem.getElementSize();
+
         var dragElementRect = {
-            left: elem.getElementSize().left,
-            top: elem.getElementSize().top,
-            width: elem.getElementSize().width,
-            height: elem.getRectangle(RectangleOffset.firstHorizontial).getHeight() + elem.getRectangle(RectangleOffset.secondHorizontial).getHeight()
+            left: size.left,
+            top: size.top,
+            width: size.width,
+            height: dragElementRectHeight
         };
 
         //get the collisioned rects
@@ -124,9 +139,16 @@ var Canvas = (function(){
 
         _.each(
             instance.horizontalElements, 
-            function(rect) {    
-                if( !elem.containsRectangle(rect) && !elem.dummyElementOriginalPosition.containsRectangle(rect) && rectangesCollision( rect , dragElementRect ) ){
-                    c.elementsUnderDrag.push(rect);
+            function(rect) { 
+
+                if( rectangesCollision( rect , dragElementRect ) ){   
+                    if( !elem.containsRectangle(rect) && !elem.dummyElementOriginalPosition.containsRectangle(rect) ){
+                        if( elem.dummyElementCurrentPosition && elem.dummyElementCurrentPosition.containsRectangle(rect) ){
+                            return;
+                        }
+
+                        c.elementsUnderDrag.push(rect);
+                    }
                 }
             }
         )
@@ -139,10 +161,15 @@ var Canvas = (function(){
         if(elem && elem.dummyElementOriginalPosition && elem.dummyElementOriginalPosition.father){
             addElementToCanvas(elem.type+"Image");
             elem.dummyElementCurrentPosition = c.tmpElement;
+            if(elem.dummyElementCurrentPosition)
+                elem.dummyElementCurrentPosition.sendToBack();
+            //elem.bringToFront();
+            /*
+            if(elem.dummyElementCurrentPosition && elem.dummyElementCurrentPosition.elements.length==1 && 
+                elem.dummyElementCurrentPosition.elements[0].type == ElementType.doNothing && elem.format != ElementFormat.I ){
 
-            if(elem.dummyElementCurrentPosition && elem.dummyElementCurrentPosition.elements.length==1 && elem.dummyElementCurrentPosition.elements[0].type == ElementType.doNothing)
-                elem.dummyElementCurrentPosition.addElement("greyImage",0,0.6);
-
+                elem.dummyElementCurrentPosition.addElement("greyImage",0,CanvasData.lowOpacity);
+            }*/
         }
 
     };
@@ -204,7 +231,7 @@ var Canvas = (function(){
     function addElementToCanvas(imageRectId){
 
         var c =instance;
-
+        console.log(c.elementsUnderDrag.length);
             if( c.elementsUnderDrag.length >= 2 && c.intersection==false){
 
                 //console.log("ready for drag, under drag = ",c.elementsUnderDrag);
@@ -217,13 +244,25 @@ var Canvas = (function(){
 
                 //the first in a block
                 if(elem1 == elem2){
+                    /*
+                    if(c.elementsUnderDrag.length == 3){
+                        if( elem1 == c.elementsUnderDrag[2].element.father &&
+                            elem2 == c.elementsUnderDrag[2].element.father
+                        ){
+                        c.tmpElement = elem1.addElement(imageRectId,0);
+
+                        }                    
+                    }
+                    */
                     console.log("Error: it can't be the first in the block"); 
                     c.intersection = false;
                     c.elementsUnderDrag.length = 0;
                     c.tmpElement = null;
+                    
                 }
                 //elem1 is inside elem2 or opposite
-                else if(elem1.father == elem2 || elem1 == elem2.father){
+                else if( (elem1.father && elem1.father == elem2) || (elem2.father && elem1 == elem2.father) ){
+                //else if( ( elem1.father == elem2) || ( elem1 == elem2.father) ){
                     var father;
                     var fatherRect;
                     var child;
@@ -243,13 +282,14 @@ var Canvas = (function(){
                     }
 
                     if(fatherRect.getTop() <= childRect.getTop() ){
-                        c.tmpElement = father.addElement(imageRectId,0,0.6);
+                        c.tmpElement = father.addElement(imageRectId,0);
                     }
                     else{
-                        c.tmpElement = father.addElement(imageRectId,father.elements.length,0.6);
+                        c.tmpElement = father.addElement(imageRectId,father.elements.length);
                     } 
                 }
-                else if( elem1.father == elem2.father ){
+                else if( elem1.father && elem2.father && elem1.father == elem2.father ){
+                //else if( elem1.father == elem2.father ){
                     var firstElem;
                     var secondElem;
                     var father;
@@ -271,7 +311,7 @@ var Canvas = (function(){
                             break;
                        }
                    };
-                    c.tmpElement = father.addElement(imageRectId,offset,0.6);
+                    c.tmpElement = father.addElement(imageRectId,offset);
 
                 }
                 else{
@@ -279,6 +319,10 @@ var Canvas = (function(){
                     c.intersection = false;
                     c.elementsUnderDrag.length = 0;
                     c.tmpElement = null;
+                }
+
+                if(c.tmpElement){
+                    c.tmpElement.setOpacity(CanvasData.lowOpacity);
                 }
             }
             //no intersection

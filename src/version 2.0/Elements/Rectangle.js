@@ -17,7 +17,7 @@ function Rectangle (id , pos , type , element, rectangleOffset) {
 	this.element = element;
 	this.type = type;
     this.rectangleOffset = rectangleOffset;
-
+    this.pos = pos;
 	this.rectangleInCanvas = this.createRectangleInCanvas(pos);
     this.elements = new Array();
 
@@ -28,6 +28,16 @@ Rectangle.prototype.addElement = function (elem){
     this.elements.push(elem);
     elem.rectangle = this;
     elem.element = this.element;
+
+    elem.move(this.rectangleInCanvas.getLeft(),this.rectangleInCanvas.getTop());
+    console.log(elem);
+    //take elem.pos and make a rel pos
+    
+    elem.relPos = {
+        top: elem.getTop() - this.rectangleInCanvas.getTop(),
+        left: elem.getLeft() - this.rectangleInCanvas.getLeft()
+    };
+    
 
 };
 
@@ -68,16 +78,36 @@ Rectangle.prototype.removeRectangle = function (){
     c.canvas.remove( this.rectangleInCanvas );
 
 }
-
+/*
 Rectangle.prototype.moveRectangleElements = function (dx,dy){
     for(var k=0; k<this.elements.length; k++){        
+        this.elements[k].move(dx,dy);
+    }
+};
+*/
+Rectangle.prototype.moveRectangleElements = function (){
+    var rectLeft = this.rectangleInCanvas.getLeft();
+    var rectTop = this.rectangleInCanvas.getTop();
+    console.log("rect = ",rectLeft,rectTop);
+    for(var k=0; k<this.elements.length; k++){    
+        var dx = rectLeft + this.elements[k].relPos.left;
+        var dy = rectTop + this.elements[k].relPos.top; 
+        dx = dx - this.elements[k].getLeft();
+        dy = dy - this.elements[k].getTop();
+
+        //dx = rectLeft + 20 - this.elements[k].getLeft();
+        //dy = rectTop + 20 - this.elements[k].getTop();
+
+        console.log("rel elem = ",this.elements[k],dx,dy);
+
         this.elements[k].move(dx,dy);
     }
 };
 
 Rectangle.prototype.moveRectangle = function (dx,dy){
     this.moveRectangleInCanvas(dx,dy);
-    this.moveRectangleElements(dx,dy);
+    this.moveRectangleElements();
+    //this.moveRectangleElements(dx,dy);
 };
 
 Rectangle.prototype.moveRectangleInCanvas = function (dx,dy){
@@ -113,8 +143,8 @@ Rectangle.prototype.createRectangleInCanvas = function (pos){
         height: pos.height,
         selectable: true,
         hasControls: false,
-        stroke: 'white',
-        strokeWidth: 0,
+        stroke: 'grey',
+        strokeWidth: 1,
         id: this.id,
         rectangle:this,
         element:this.element,
@@ -145,7 +175,7 @@ Rectangle.prototype.mouseOver = function (){
     if(this.element.foldingItem)
         this.element.foldingItem.setFoldingItemVisibillity(true);
 
-    this.element.setOpacity(0.6);
+    this.element.setOpacity(CanvasData.lowOpacity);
 };
 
 Rectangle.prototype.mouseUp = function (){
@@ -186,29 +216,31 @@ Rectangle.prototype.mouseUp = function (){
 };
 
 Rectangle.prototype.mouseDown = function (){
-    
+
     if(this.element.father && this.element.type != ElementType.doNothing){
-        
         //removes element from father
         var father = this.element.father;
         var type = this.element.type;
         var offset = this.element.getElemetOffset();
-        var opac = 1;
         this.element.father.reverseTransformElement(this.element);
         this.element.removeElementFromFather();
         this.element.father = null;
 
         //add the dummy gray element in this 
-        this.element.dummyElementOriginalPosition = father.addElement(type+"Image",offset,opac);
-        this.element.dummyElementOriginalPosition.addElement("greyImage",0,opac);
+        this.element.dummyElementOriginalPosition = father.addElement(type+"Image",offset);
+
+        if(this.element.format != ElementFormat.I)
+            this.element.dummyElementOriginalPosition.addElement("greyImage",0);
                     
+        this.element.dummyElementOriginalPosition.setOpacity(CanvasData.lowOpacity);
+                
         //fold the real element    
         this.element.foldElement(this.element);
                                  
         //bring to front
         this.element.bringToFront(); 
 
-        this.element.setOpacity(0.6);
+        this.element.setOpacity(CanvasData.lowOpacity);
 
     }
 };
@@ -220,7 +252,7 @@ Rectangle.prototype.mouseOut = function (){
     if(this.element.foldingItem)
         this.element.foldingItem.setFoldingItemVisibillity(false);
 
-    this.element.setOpacity(1);
+    this.element.setOpacity(CanvasData.highOpacity);
 };
 
 Rectangle.prototype.bringToFront = function (){
@@ -229,7 +261,14 @@ Rectangle.prototype.bringToFront = function (){
     for(var i = 0; i < this.elements.length; i++) {
         this.elements[i].bringToFront();
     }
+};
 
+Rectangle.prototype.sendToBack = function (){
+    this.rectangleInCanvas.sendToBack();
+
+    for(var i = 0; i < this.elements.length; i++) {
+        this.elements[i].sendToBack();
+    }
 };
 
 function compareRectangles(a,b) {

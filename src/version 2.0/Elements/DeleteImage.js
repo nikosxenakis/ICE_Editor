@@ -10,6 +10,10 @@ DeleteImage.prototype.bringToFront = function (){
     this.deleteImageInCanvas.bringToFront();
 };
 
+DeleteImage.prototype.sendToBack = function (){
+    this.deleteImageInCanvas.sendToBack();
+};
+
 DeleteImage.prototype.mouseOver = function (){
     this.element.getRectangle(RectangleOffset.firstHorizontial).rectangle.mouseOver();
 };
@@ -32,7 +36,11 @@ DeleteImage.prototype.initDeleteImage = function(){
     var id = DeleteImageData.id+"_"+this.element.id;
     var pos = this.element.getElementSize();
 
-    var imageHtmlElement = $('<img/>', {  'id': id, 'class':'deleteIcon','src': DeleteImageData.deleteImagePath }); 
+    var imageHtmlElement = $('<img/>', {  
+        'id': id, 
+        'class':'deleteIcon',
+        'src': DeleteImageData.deleteImagePath 
+    }); 
     $("body").append(imageHtmlElement);
         
     var imgElement = document.getElementById(id);

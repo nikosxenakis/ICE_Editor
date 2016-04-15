@@ -1,6 +1,6 @@
-function GreyElement (id , elementOffset , father , opac){
+function GreyElement (id , elementOffset , father ){
 
-    Element.call(this , id , "greyImage" , elementOffset , father , opac);
+    Element.call(this , id , "greyImage" , elementOffset , father);
 
 
 

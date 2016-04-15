@@ -1,22 +1,24 @@
-function ProgramElement(id , elementOffset , father , opac){
-    Element.call(this , id , "programImage" , elementOffset , father , opac);
+function ProgramElement(id , elementOffset , father){
+    Element.call(this , id , "programImage" , elementOffset , father);
 
     var firstRect = this.getRectangle(RectangleOffset.firstHorizontial).rectangle;
+    var left = firstRect.rectangleInCanvas.getLeft();
+    var top = firstRect.rectangleInCanvas.getTop();
 
-    var pos = {
-        left: firstRect.rectangleInCanvas.getLeft()+firstRect.rectangleInCanvas.width/8,
-        top: firstRect.rectangleInCanvas.getTop()+firstRect.rectangleInCanvas.height/4
+    var relPos = {
+        left: CanvasData.horizontalElementsWidth/8,
+        top: CanvasData.horizontalElementsHeight/2
     };
+    var programLabel = new Label("Program",relPos,CanvasData.ElementLabelColor,CanvasData.ElementLabelSize);
+    programLabel.move(0,-programLabel.label.getHeight()/2);
+    firstRect.addElement(programLabel);
 
-    var firstLabel = new Label("Program",pos,CanvasData.ElementLabelColor,CanvasData.ElementLabelSize);
-    firstRect.addElement(firstLabel);
-
-    var pos = {
-        left: firstRect.rectangleInCanvas.getLeft()+firstRect.rectangleInCanvas.width/2,
-        top: firstRect.rectangleInCanvas.getTop()+firstRect.rectangleInCanvas.height/4
+    var relPos = {
+        left: CanvasData.horizontalElementsWidth/2,
+        top: CanvasData.horizontalElementsHeight/2
     };
-
-    var programName = new TextInput("ProgramName",pos,CanvasData.ElementLabelColor,CanvasData.ElementLabelSize);
+    var programName = new TextInput("ProgramName",relPos,CanvasData.ElementLabelColor,CanvasData.ElementLabelSize);
+    programName.move(0,-programName.text.getHeight()/2);
     firstRect.addElement(programName);
 
 }

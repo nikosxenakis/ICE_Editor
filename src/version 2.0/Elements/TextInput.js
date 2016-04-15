@@ -1,16 +1,23 @@
-function TextInput (id,pos,color,size){
+function TextInput (id,relPos,color,size){
 
     var c=Canvas.getInstance();
 
+    this.relPos = relPos;
+
 	this.text = new fabric.IText(id,{
-        left: pos.left,
-        top: pos.top,
+        left: relPos.left,
+        top: relPos.top,
         fill: color,
         fontSize: size,
-        selectable: false,
+        selectable: true,
         id: id,
+        strokeWidth:3,
+        transparentCorners: true,
         textAlign:"center",
-        hasControls: true,
+        hasControls: false,
+        cornersize:0,
+        lockMovementX: true,
+        lockMovementY: true,
         class: this
     });
 
@@ -18,7 +25,16 @@ function TextInput (id,pos,color,size){
 
 };
 
+TextInput.prototype.getLeft = function (){
+    return this.text.getLeft();
+};
+
+TextInput.prototype.getTop = function (){
+    return this.text.getTop();
+};
+
 TextInput.prototype.move = function (dx,dy){
+    
 	this.text.setLeft(this.text.getLeft() + dx);
     this.text.setTop(this.text.getTop() + dy);
     this.text.setCoords();
@@ -39,6 +55,9 @@ TextInput.prototype.bringToFront = function (){
 };
 
 TextInput.prototype.mouseOver = function (){
+
+    this.text.fill = "green";
+
     if(this.element)
         this.rectangle.mouseOver();
 };
@@ -50,4 +69,5 @@ TextInput.prototype.mouseDown = function (){
 };
 
 TextInput.prototype.mouseOut = function (){
+    this.text.fill = "white";
 };

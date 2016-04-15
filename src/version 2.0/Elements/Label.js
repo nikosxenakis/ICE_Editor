@@ -1,13 +1,15 @@
-function Label (id,pos,color,size){
+function Label (id,relPos,color,size){
 
     var c=Canvas.getInstance();
 
+    this.relPos = relPos;
+
 	this.label = new fabric.IText(id,{
-        left: pos.left,
-        top: pos.top,
+        left: relPos.left,
+        top: relPos.top,
         fill: color,
         fontSize: size,
-        selectable: false,
+        selectable: true,
         id: id,
         textAlign:"center",
         hasControls: false,
@@ -18,9 +20,27 @@ function Label (id,pos,color,size){
 
 };
 
+Label.prototype.getLeft = function (){
+    return this.label.getLeft();
+};
+
+Label.prototype.getTop = function (){
+    return this.label.getTop();
+};
+
+Label.prototype.setFontSize = function (size){
+    this.label.setFontSize(size);
+};
+
+Label.prototype.getFontSize = function (flag){
+    return this.label.getFontSize(size);
+};
+
 Label.prototype.move = function (dx,dy){
-	this.label.setLeft(this.label.getLeft() + dx);
+
+    this.label.setLeft(this.label.getLeft() + dx);
     this.label.setTop(this.label.getTop() + dy);
+
     this.label.setCoords();
 };
 
@@ -39,14 +59,18 @@ Label.prototype.bringToFront = function (){
 };
 
 Label.prototype.mouseOver = function (){
-    if(this.element)
+    if(this.rectangle)
         this.rectangle.mouseOver();
 };
 
 Label.prototype.mouseUp = function (){
+    if(this.rectangle)
+        this.rectangle.mouseUp();
 };
 
 Label.prototype.mouseDown = function (){
+    if(this.rectangle)
+        this.rectangle.mouseDown();
 };
 
 Label.prototype.mouseOut = function (){

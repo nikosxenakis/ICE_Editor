@@ -7,8 +7,12 @@ var inputPrograms = [
 				type: "whileImage",
 				elements: [
 					{
-						id: "",
-						type: "ifImage"
+						id: "assign1",
+						type: "assignImage"
+					},
+					{
+						id: "while2",
+						type: "whileImage"
 					}
 				]
 			},
@@ -17,8 +21,8 @@ var inputPrograms = [
 				type: "ifImage",
 				elements: [
 					{
-						id: "for1",
-						type: "forImage"
+						id: "assign2",
+						type: "assignImage"
 					}
 				]			
 			}

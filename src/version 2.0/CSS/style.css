@@ -47,15 +47,11 @@ html {
   -o-transition: all 0.5s ease;
   -webkit-transition: all 0.5s ease;
   background: #1a1a1a;
-  //height: 650px;
-  //left: 220px;
   margin-left: -220px;
   overflow-x: hidden;
   overflow-y: auto;
   transition: all 0.5s ease;
   width: 0;
-  //z-index: 2;
-
 }
 #sidebar-wrapper::-webkit-scrollbar {
   display: none;
@@ -169,9 +165,7 @@ html {
   height: 32px;
   margin-left: 15px;
   position: fixed;
-  //top: 20px;
   width: 32px;
-  //z-index: 999;
 }
 .hamburger:hover {
   outline: none;
@@ -237,19 +231,19 @@ html {
 .hamburger.is-open .hamb-top {
   -webkit-transform: rotate(45deg);
   -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.73, 1, 0.28, 0.08);
-  background-color: rgba(0, 77, 77, 0.7);;
+  background-color: rgba(0, 77, 77, 0.7);
 
   margin-top: -2px;
   top: 50%;
 }
 .hamburger.is-open .hamb-middle {
-  background-color: rgba(0, 77, 77, 0.7);;
+  background-color: rgba(0, 77, 77, 0.7);
   display: none;
 }
 .hamburger.is-open .hamb-bottom {
   -webkit-transform: rotate(-45deg);
   -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.73, 1, 0.28, 0.08);
-  background-color: rgba(0, 77, 77, 0.7);;
+  background-color: rgba(0, 77, 77, 0.7);
   margin-top: -2px;
   top: 50%;
 }
@@ -283,7 +277,6 @@ html {
   left: 0;
   right: 0;
   bottom: 0;
-  //background-color: rgba(0, 0, 0, 0.4);       /*no fade in the main content*/
   z-index: 1;
 }
 /* SOME DEMO STYLES - NOT REQUIRED */

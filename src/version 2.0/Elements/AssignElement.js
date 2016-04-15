@@ -1,24 +1,46 @@
-function AssignElement (id , elementOffset , father , opac){
+function AssignElement (id , elementOffset , father){
 
-    Element.call(this , id , "assignImage" , elementOffset , father , opac);
+    Element.call(this , id , "assignImage" , elementOffset , father);
 
     var firstRect = this.getRectangle(RectangleOffset.firstHorizontial).rectangle;
+    var top = firstRect.rectangleInCanvas.getTop() + CanvasData.horizontalElementsHeight/2;
+    var left = firstRect.rectangleInCanvas.getLeft();
+    var leftOffset = 2;
 
-    var pos = {
-        left: firstRect.rectangleInCanvas.getLeft()+firstRect.rectangleInCanvas.width/8,
-        top: firstRect.rectangleInCanvas.getTop()+firstRect.rectangleInCanvas.height/4
+    var relPos = {
+        left: leftOffset*(CanvasData.horizontalElementsWidth/32),
+        top: CanvasData.horizontalElementsHeight/2
     };
+    var varLabel = new Label("var",relPos,CanvasData.ElementLabelColor,CanvasData.ElementLabelSize);
+    varLabel.move(0,-varLabel.label.height/2);
+    firstRect.addElement(varLabel);
 
-    var firstLabel = new Label("var",pos,CanvasData.ElementLabelColor,CanvasData.ElementLabelSize);
-    firstRect.addElement(firstLabel);
-
-    var pos = {
-        left: firstRect.rectangleInCanvas.getLeft()+firstRect.rectangleInCanvas.width/2,
-        top: firstRect.rectangleInCanvas.getTop()+firstRect.rectangleInCanvas.height/4
+    leftOffset+=5;
+    var relPos = {
+        left: leftOffset*(CanvasData.horizontalElementsWidth/32),
+        top: CanvasData.horizontalElementsHeight/2
     };
+    var inputBoxVarName = new InputBox("name",relPos,CanvasData.ElementLabelSize);
+    inputBoxVarName.move(0,-inputBoxVarName.box.height/2);
+    firstRect.addElement(inputBoxVarName);
 
-    var firstLabel = new Label("=",pos,CanvasData.ElementLabelColor,CanvasData.ElementLabelSize);
-    firstRect.addElement(firstLabel);
+    leftOffset+=10;
+    var relPos = {
+        left: leftOffset*(CanvasData.horizontalElementsWidth/32),
+        top: CanvasData.horizontalElementsHeight/2
+    };
+    var equalLabel = new Label("=",relPos,CanvasData.ElementLabelColor,CanvasData.ElementLabelSize);
+    equalLabel.move(0,-equalLabel.label.height/2);
+    firstRect.addElement(equalLabel);
+
+    leftOffset+=3;
+    var relPos = {
+        left: leftOffset*(CanvasData.horizontalElementsWidth/32),
+        top: CanvasData.horizontalElementsHeight/2
+    };
+    var inputBoxVarValue = new InputBox("value",relPos,CanvasData.ElementLabelSize);
+    inputBoxVarValue.move(0,-inputBoxVarValue.box.height/2);
+    firstRect.addElement(inputBoxVarValue);
 
 }
 

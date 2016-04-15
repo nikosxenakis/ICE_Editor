@@ -4,117 +4,22 @@ var FoldingItemState = {
 };
 
 function FoldingItem (element) {
+
     this.element = element;
     this.foldingItemState = FoldingItemState.unfolded;
 
-    if( this.element.getRectangle(RectangleOffset.secondHorizontial) ){
-        this.foldingItemBoxInCanvas = this.initFoldingItemBoxInCanvas();
-        this.foldingItemInsideBoxHorizontialLineInCanvas = this.initFoldingItemInsideBoxHorizontialLineInCanvas();
-        this.foldingItemInsideBoxVerticalLineInCanvas = this.initFoldingItemInsideBoxVerticalLineInCanvas();
-
-        this.foldingItemLineInCanvas = this.initFoldingItemLineInCanvas();
-        this.foldingItemSecondaryLineInCanvas = this.initFoldingItemSecondaryLineInCanvas();
+    if( !this.element.getRectangle(RectangleOffset.secondHorizontial) ){
+        return;
     }
 
-}
-
-FoldingItem.prototype.bringToFront = function (){
-    if( this.element.getRectangle(RectangleOffset.secondHorizontial) ){
-        this.foldingItemBoxInCanvas.bringToFront();
-        this.foldingItemInsideBoxHorizontialLineInCanvas.bringToFront();
-        this.foldingItemInsideBoxVerticalLineInCanvas.bringToFront();
-        this.foldingItemLineInCanvas.bringToFront();
-        this.foldingItemSecondaryLineInCanvas.bringToFront();
-    }
-};
-
-FoldingItem.prototype.moveFoldingItem = function (dx, dy){
-
-    if(this.foldingItemBoxInCanvas && this.foldingItemLineInCanvas && this.foldingItemSecondaryLineInCanvas
-        && this.foldingItemInsideBoxHorizontialLineInCanvas && this.foldingItemInsideBoxVerticalLineInCanvas){
-
-        this.foldingItemBoxInCanvas.setLeft( this.foldingItemBoxInCanvas.getLeft() + dx );
-        this.foldingItemBoxInCanvas.setTop( this.foldingItemBoxInCanvas.getTop() + dy );
-
-        this.foldingItemLineInCanvas.set(
-            { 
-                'x1': this.foldingItemLineInCanvas.x1 + dx,
-                'x2': this.foldingItemLineInCanvas.x2 + dx,
-                'y1': this.foldingItemLineInCanvas.y1 + dy,
-                'y2': this.foldingItemLineInCanvas.y2 + dy
-            }
-        );
-
-        this.foldingItemSecondaryLineInCanvas.set(
-            { 
-                'x1': this.foldingItemSecondaryLineInCanvas.x1 + dx,
-                'x2': this.foldingItemSecondaryLineInCanvas.x2 + dx,
-                'y1': this.foldingItemSecondaryLineInCanvas.y1 + dy,
-                'y2': this.foldingItemSecondaryLineInCanvas.y2 + dy
-            }
-        );
-
-        this.foldingItemInsideBoxHorizontialLineInCanvas.set(
-            { 
-                'x1': this.foldingItemInsideBoxHorizontialLineInCanvas.x1 + dx,
-                'x2': this.foldingItemInsideBoxHorizontialLineInCanvas.x2 + dx,
-                'y1': this.foldingItemInsideBoxHorizontialLineInCanvas.y1 + dy,
-                'y2': this.foldingItemInsideBoxHorizontialLineInCanvas.y2 + dy
-            }
-        );
-
-        this.foldingItemInsideBoxVerticalLineInCanvas.set(
-            { 
-                'x1': this.foldingItemInsideBoxVerticalLineInCanvas.x1 + dx,
-                'x2': this.foldingItemInsideBoxVerticalLineInCanvas.x2 + dx,
-                'y1': this.foldingItemInsideBoxVerticalLineInCanvas.y1 + dy,
-                'y2': this.foldingItemInsideBoxVerticalLineInCanvas.y2 + dy
-            }
-        );
- 
-        this.foldingItemBoxInCanvas.setCoords();
-    }
-
-}
-
-FoldingItem.prototype.changeSize = function (dy){
-        
-    if(this.foldingItemBoxInCanvas && this.foldingItemLineInCanvas && this.foldingItemSecondaryLineInCanvas){
-
-        y2 = this.foldingItemLineInCanvas.y2;
-
-        this.foldingItemLineInCanvas.set({ 'y2': y2+dy });
-
-        this.foldingItemSecondaryLineInCanvas.set({ 'y1': y2+dy ,'y2': y2+dy });
-
-        c.canvas.renderAll();
-    }
-}
-
-FoldingItem.prototype.setFoldingItemVisibillity = function (flag){
-    if(this.foldingItemBoxInCanvas && this.foldingItemLineInCanvas && this.foldingItemSecondaryLineInCanvas
-        && this.foldingItemInsideBoxHorizontialLineInCanvas && this.foldingItemInsideBoxVerticalLineInCanvas ){
-        
-        this.foldingItemBoxInCanvas.visible = flag;
-
-        this.foldingItemInsideBoxHorizontialLineInCanvas.visible = flag;
-        this.foldingItemInsideBoxVerticalLineInCanvas.visible = flag;
-        if(this.foldingItemState == FoldingItemState.unfolded){
-            this.foldingItemInsideBoxVerticalLineInCanvas.visible = false;
-        }
-        
-        this.foldingItemLineInCanvas.visible = flag;
-        this.foldingItemSecondaryLineInCanvas.visible = flag;
-    }
-}
-
-FoldingItem.prototype.initFoldingItemBoxInCanvas = function (){
-
+    var c = Canvas.getInstance();
     var pos = this.element.getRectangle(RectangleOffset.firstHorizontial);
+    var left = pos.left + FoldingItemData.foldingItemWidth/3;
+    var top = pos.top + pos.height - 2*FoldingItemData.foldingItemHeight;
 
-    var foldingItemBox = new fabric.Rect({
-            left: pos.left + FoldingItemData.foldingItemWidth/3,
-            top: pos.top + pos.height - 2*FoldingItemData.foldingItemHeight,
+    this.foldingItemBoxInCanvas = new fabric.Rect({
+            left: left,
+            top: top,
             fill: 'white',
             stroke: '#808080',
             strokeWidth: 1,
@@ -122,7 +27,7 @@ FoldingItem.prototype.initFoldingItemBoxInCanvas = function (){
             height: FoldingItemData.foldingItemHeight,
             hasControls: false,
             hasBorders:false,
-            opacity: 0.6,
+            opacity: CanvasData.lowOpacity,
             element: this.element,
             foldingItem: this,
             visible: false,
@@ -131,8 +36,134 @@ FoldingItem.prototype.initFoldingItemBoxInCanvas = function (){
             class:this
     });
     
-    c.canvas.add(foldingItemBox);
-    return foldingItemBox;
+    this.foldingItemInsideBoxHorizontialLineInCanvas = this.makeLine([ 
+        this.foldingItemBoxInCanvas.getLeft() + 2, 
+        this.foldingItemBoxInCanvas.getTop() + this.foldingItemBoxInCanvas.height/2, 
+        this.foldingItemBoxInCanvas.getLeft() + this.foldingItemBoxInCanvas.width - 2, 
+        this.foldingItemBoxInCanvas.getTop() + this.foldingItemBoxInCanvas.height/2
+    ]);
+
+    this.foldingItemInsideBoxVerticalLineInCanvas = this.makeLine([ 
+        this.foldingItemBoxInCanvas.getLeft() + this.foldingItemBoxInCanvas.width/2, 
+        this.foldingItemBoxInCanvas.getTop() + 2, 
+        this.foldingItemBoxInCanvas.getLeft() + this.foldingItemBoxInCanvas.width/2, 
+        this.foldingItemBoxInCanvas.getTop() + this.foldingItemBoxInCanvas.height - 2, 
+    ]);
+
+    this.foldingItem = new fabric.Group(
+        [   this.foldingItemBoxInCanvas, 
+            this.foldingItemInsideBoxHorizontialLineInCanvas, 
+            this.foldingItemInsideBoxVerticalLineInCanvas
+        ], { 
+            left: left, 
+            top: top,
+            lockMovementX: true,
+            lockMovementY: true,
+            hasControls: false,
+            hasBorders:false,
+            class: this
+    });
+
+    this.foldingItemLineInCanvas = this.makeLine([ 
+        this.foldingItem.getLeft() + FoldingItemData.foldingItemWidth/2, 
+        this.foldingItem.getTop() + FoldingItemData.foldingItemHeight, 
+        this.foldingItem.getLeft() + FoldingItemData.foldingItemWidth/2, 
+        this.element.getRectangle(RectangleOffset.secondHorizontial).getTop() + this.element.getRectangle(RectangleOffset.secondHorizontial).height/2
+    ]);
+
+    this.foldingItemSecondaryLineInCanvas = this.makeLine([ 
+        this.foldingItemLineInCanvas.x2, 
+        this.foldingItemLineInCanvas.y2, 
+        this.foldingItemLineInCanvas.x2+10, 
+        this.foldingItemLineInCanvas.y2
+    ]);
+
+
+    c.canvas.add(this.foldingItem);
+    c.canvas.add(this.foldingItemLineInCanvas);
+    c.canvas.add(this.foldingItemSecondaryLineInCanvas);
+}
+
+FoldingItem.prototype.bringToFront = function (){
+
+    if( ! this.element.getRectangle(RectangleOffset.secondHorizontial) )
+        return;
+
+    this.foldingItem.bringToFront();
+    this.foldingItemLineInCanvas.bringToFront();
+    this.foldingItemSecondaryLineInCanvas.bringToFront();
+};
+
+FoldingItem.prototype.sendToBack = function (){
+
+    if( ! this.element.getRectangle(RectangleOffset.secondHorizontial) )
+        return;
+
+    this.foldingItem.sendToBack();
+    this.foldingItemLineInCanvas.sendToBack();
+    this.foldingItemSecondaryLineInCanvas.sendToBack();
+};
+
+FoldingItem.prototype.moveFoldingItem = function (dx, dy){
+
+    if( ! this.element.getRectangle(RectangleOffset.secondHorizontial) )
+        return;
+
+    this.foldingItem.setLeft(this.foldingItem.getLeft()+dx);
+    this.foldingItem.setTop(this.foldingItem.getTop()+dy);
+
+    this.foldingItemLineInCanvas.set({ 
+        'x1': this.foldingItemLineInCanvas.x1 + dx,
+        'x2': this.foldingItemLineInCanvas.x2 + dx,
+        'y1': this.foldingItemLineInCanvas.y1 + dy,
+        'y2': this.foldingItemLineInCanvas.y2 + dy
+    });
+
+    this.foldingItemSecondaryLineInCanvas.set({ 
+        'x1': this.foldingItemSecondaryLineInCanvas.x1 + dx,
+        'x2': this.foldingItemSecondaryLineInCanvas.x2 + dx,
+        'y1': this.foldingItemSecondaryLineInCanvas.y1 + dy,
+        'y2': this.foldingItemSecondaryLineInCanvas.y2 + dy
+    });
+
+    this.foldingItem.setCoords();
+    this.foldingItemLineInCanvas.setCoords();
+    this.foldingItemSecondaryLineInCanvas.setCoords();
+}
+
+FoldingItem.prototype.changeSize = function (dy){
+
+    if( ! this.element.getRectangle(RectangleOffset.secondHorizontial) )
+        return;
+
+    var y2 = this.foldingItemLineInCanvas.y2;
+
+    this.foldingItemLineInCanvas.set({ 'y2': y2+dy });
+    this.foldingItemSecondaryLineInCanvas.set({ 'y1': y2+dy ,'y2': y2+dy });
+
+    this.foldingItemLineInCanvas.setCoords();
+    this.foldingItemSecondaryLineInCanvas.setCoords();
+
+    //c.canvas.renderAll();
+    
+}
+
+FoldingItem.prototype.setFoldingItemVisibillity = function (flag){
+
+    if( ! this.element.getRectangle(RectangleOffset.secondHorizontial) )
+        return;
+
+    this.foldingItemBoxInCanvas.visible = flag;
+    this.foldingItemInsideBoxHorizontialLineInCanvas.visible = flag;
+    this.foldingItemInsideBoxVerticalLineInCanvas.visible = flag;
+
+    if(this.foldingItemState == FoldingItemState.unfolded){
+        this.foldingItemInsideBoxVerticalLineInCanvas.visible = false;
+    }
+        
+    this.foldingItemLineInCanvas.visible = flag;
+    this.foldingItemSecondaryLineInCanvas.visible = flag;
+    
 }
 
 FoldingItem.prototype.mouseOver = function (){
@@ -163,7 +194,7 @@ FoldingItem.prototype.mouseOut = function (){
 FoldingItem.prototype.makeLine = function (coords){
     return new fabric.Line(coords, {
         fill: 'white',
-        stroke: 'white',
+        stroke: 'grey',
         strokeWidth: 1,
         selectable: false,
         opacity: 1,
@@ -176,70 +207,15 @@ FoldingItem.prototype.makeLine = function (coords){
     });
 }
 
-
-FoldingItem.prototype.initFoldingItemInsideBoxHorizontialLineInCanvas = function (){
-
-    var foldingItemLine = this.makeLine([ 
-        this.foldingItemBoxInCanvas.getLeft() + 2, 
-        this.foldingItemBoxInCanvas.getTop() + this.foldingItemBoxInCanvas.height/2, 
-        this.foldingItemBoxInCanvas.getLeft() + this.foldingItemBoxInCanvas.width - 2, 
-        this.foldingItemBoxInCanvas.getTop() + this.foldingItemBoxInCanvas.height/2
-    ]);
-
-    c.canvas.add(foldingItemLine);
-    return foldingItemLine;
-
-}
-
-FoldingItem.prototype.initFoldingItemInsideBoxVerticalLineInCanvas = function (){
-
-    var foldingItemLine = this.makeLine([ 
-        this.foldingItemBoxInCanvas.getLeft() + this.foldingItemBoxInCanvas.width/2, 
-        this.foldingItemBoxInCanvas.getTop() + 2, 
-        this.foldingItemBoxInCanvas.getLeft() + this.foldingItemBoxInCanvas.width/2, 
-        this.foldingItemBoxInCanvas.getTop() + this.foldingItemBoxInCanvas.height - 2, 
-    ]);
-
-    c.canvas.add(foldingItemLine);
-    return foldingItemLine;
-
-}
-
-FoldingItem.prototype.initFoldingItemLineInCanvas = function (){
-
-    var foldingItemLine = this.makeLine([ 
-        this.foldingItemBoxInCanvas.getLeft() + FoldingItemData.foldingItemWidth/2, 
-        this.foldingItemBoxInCanvas.getTop() + FoldingItemData.foldingItemHeight, 
-        this.foldingItemBoxInCanvas.getLeft() + FoldingItemData.foldingItemWidth/2, 
-        this.element.getRectangle(RectangleOffset.secondHorizontial).getTop() + this.element.getRectangle(RectangleOffset.secondHorizontial).height/2
-    ]);
-
-
-    c.canvas.add(foldingItemLine);
-    return foldingItemLine;
-
-}
-
-FoldingItem.prototype.initFoldingItemSecondaryLineInCanvas = function (){
-
-    var foldingItemLine = this.makeLine([ 
-        this.foldingItemLineInCanvas.x2, 
-        this.foldingItemLineInCanvas.y2, 
-        this.foldingItemLineInCanvas.x2+10, 
-        this.foldingItemLineInCanvas.y2
-    ]);
-
-
-    c.canvas.add(foldingItemLine);
-    return foldingItemLine;
-
-}
-
 FoldingItem.prototype.removeFoldingItem = function (){
+    if( ! this.element.getRectangle(RectangleOffset.secondHorizontial) )
+        return;
+
     c=Canvas.getInstance();
-        c.canvas.remove(this.foldingItemBoxInCanvas);
-        c.canvas.remove(this.foldingItemLineInCanvas);
-        c.canvas.remove(this.foldingItemSecondaryLineInCanvas);
-        c.canvas.remove(this.foldingItemInsideBoxHorizontialLineInCanvas);
-        c.canvas.remove(this.foldingItemInsideBoxVerticalLineInCanvas);
+    c.canvas.remove(this.foldingItem);
+    //c.canvas.remove(this.foldingItemBoxInCanvas);
+    c.canvas.remove(this.foldingItemLineInCanvas);
+    c.canvas.remove(this.foldingItemSecondaryLineInCanvas);
+    //c.canvas.remove(this.foldingItemInsideBoxHorizontialLineInCanvas);
+    //c.canvas.remove(this.foldingItemInsideBoxVerticalLineInCanvas);
 };
