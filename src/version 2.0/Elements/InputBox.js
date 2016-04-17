@@ -1,8 +1,18 @@
-function InputBox (id,pos,size){
+var InputBoxType = {
+    all: 0,
+    variable: 1,
+    valueVariable: 2,
+    valueNumber: 3,
+    valueText: 4,
+    valueBoolean: 5
+};
+
+function InputBox (id,pos,type){
 
     var c=Canvas.getInstance();
 
     this.pos = pos;
+    this.type = type;
 
     this.box = new fabric.Rect({
         left: pos.left,
@@ -14,17 +24,17 @@ function InputBox (id,pos,size){
         hasControls: false,
         hasRotatingPoint: false,
         stroke: 'grey',
-        strokeWidth: 3,
+        strokeWidth: 2,
         id: id,
         class: this
     });
 
-	this.text = new fabric.Text(id,{
-        left: pos.left,// + this.box.width/2,
-        top: pos.top,// + this.box.height/2,
+    this.text = new fabric.Text(id,{
+        left: pos.left + 4,// + this.box.width/2,
+        top: pos.top + 4,// + this.box.height/2,
         fill: 'grey',
-        fontSize: size,
-        selectable: true,
+        fontSize: CanvasData.ElementLabelSize,
+        selectable: false,
         id: id,
         textAlign:"center",
         hasControls: false,
@@ -32,24 +42,41 @@ function InputBox (id,pos,size){
         lockMovementY: true,
         class: this
     });
-       
-    //this.text.scaleToHeight(CanvasData.InputBoxHeight / this.text.height);
-    this.text.scaleToWidth(CanvasData.InputBoxWidth / this.text.width);
-    //this.text.scaleToHeight(CanvasData.InputBoxHeight);
-    //this.text.setCoords();
 
-    //this.text.setLeft(this.text.getLeft() - this.text.width/2);
-    //this.text.setTop(this.text.getTop() - this.text.height/2);
 
-    this.text.on('changed', function(e) {
-        //var box = this.class.box;
-        //this.setLeft( box.getLeft() + box.getWidth()/2 - this.width/2);
-        //this.setCoords();
-    });
-    
+    this.fixText();
+
     c.canvas.add(this.box);
     c.canvas.add(this.text);
+
+
+};
+
+InputBox.prototype.fixText = function (){
+
+    var scale = this.text.getScaleX();
+    var scaleDiff = 0.1;
+
+    while( scale*this.text.width + 20 > this.box.width ){
+        scale = scale - scaleDiff;
+        this.text.setScaleX(scale);
+    }
+
     
+    scale = this.text.getScaleX();
+    while( scale*this.text.width + 20 < this.box.width ){
+        scale = scale + scaleDiff;
+        this.text.setScaleX(scale);
+        if(scale > 1)   break;
+    }
+    
+    scale = this.text.getScaleX();
+    this.text.setLeft(this.box.getLeft() + this.box.width/2 - scale*this.text.width/2);
+    this.text.setTop(this.box.getTop() + this.box.height/2 - this.text.height/2);
+    this.text.setCoords();
+
+    Canvas.getInstance().canvas.renderAll();
+
 };
 
 InputBox.prototype.getLeft = function (){
@@ -68,22 +95,22 @@ InputBox.prototype.move = function (dx,dy){
     this.box.setLeft(this.pos.left);
     this.box.setTop(this.pos.top);
     this.box.setCoords();
-	
+    
     this.text.setLeft(this.text.getLeft() + dx);
     this.text.setTop(this.text.getTop() + dy);
     this.text.setCoords();
 };
 
 InputBox.prototype.remove = function (){
-	var c=Canvas.getInstance();
-	c.canvas.remove(this.text);
+    var c=Canvas.getInstance();
+    c.canvas.remove(this.text);
     c.canvas.remove(this.box);
-	this.text = null;
+    this.text = null;
     this.box = null;
 };
 
 InputBox.prototype.setVisibillity = function (flag){
-	this.text.visible = flag;
+    this.text.visible = flag;
     this.box.visible = flag;
 };
 
@@ -103,13 +130,26 @@ InputBox.prototype.mouseOver = function (){
 InputBox.prototype.mouseUp = function (){
 };
 
+InputBox.prototype.activate = function (){
+    this.box.set('stroke','#494A4A');
+    this.box.setShadow("5px 5px 7px #494A4A");
+    Canvas.getInstance().canvas.renderAll();
+};
+
+InputBox.prototype.deactivate = function (){
+    this.box.set('stroke','grey');
+    this.box.setShadow("0px");
+    Canvas.getInstance().canvas.renderAll();
+};
+
 InputBox.prototype.mouseDown = function (){
     //show and initialize dialog
     //this.box.setStrokeWidth(2);
-    this.box.setShadow("2px 2px 7px rgba(234, 237, 78,1)");
-    dialogMenu.openDialogMenu(this.text);
+    this.activate();
+
+    dialogMenu.openDialogMenu(this);
 };
 
 InputBox.prototype.mouseOut = function (){
-    this.text.fill = "black";
+    this.text.fill = "grey";
 };

@@ -11,7 +11,8 @@ var ElementType = {
     program: "program",
     doNothing: "doNothing",
     grey: "grey",
-    assign: "assign"
+    assign: "assign",
+    array: "array"
 };
     
 var ElementTransformationType = {
@@ -359,6 +360,9 @@ Element.prototype.elementFactory = function(imageId , elementOffset) {
     }
     else if( elemInfo.type == ElementType.assign ){
         return new AssignElement(this.id+"_"+elemInfo.id,elementOffset,this);
+    }
+    else if( elemInfo.type == ElementType.array ){
+        return new ArrayElement(this.id+"_"+elemInfo.id,elementOffset,this);
     }
     else if( elemInfo.type == ElementType.doNothing ){
         return new DoNothingElement(this.id+"_"+elemInfo.id,elementOffset,this);

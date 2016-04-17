@@ -1,28 +1,28 @@
-function AssignElement (id , elementOffset , father){
+function ArrayElement (id , elementOffset , father){
 
-    Element.call(this , id , "assignImage" , elementOffset , father);
+    Element.call(this , id , "arrayImage" , elementOffset , father);
 
     var firstRect = this.getRectangle(RectangleOffset.firstHorizontial).rectangle;
     var top = firstRect.rectangleInCanvas.getTop() + CanvasData.horizontalElementsHeight/2;
     var left = firstRect.rectangleInCanvas.getLeft();
-    var leftOffset = 2;
+    var leftOffset = 1;
 
     var relPos = {
         left: leftOffset*(CanvasData.horizontalElementsWidth/32),
         top: CanvasData.horizontalElementsHeight/2
     };
-    var varLabel = new Label("var",relPos,CanvasData.ElementLabelColor,CanvasData.ElementLabelSize);
-    varLabel.move(0,-varLabel.label.height/2);
-    firstRect.addElement(varLabel);
+    var arrayLabel = new Label("array",relPos,CanvasData.ElementLabelColor,CanvasData.ElementLabelSize);
+    arrayLabel.move(0,-arrayLabel.label.height/2);
+    firstRect.addElement(arrayLabel);
 
-    leftOffset+=5;
+    leftOffset+=6;
     var relPos = {
         left: leftOffset*(CanvasData.horizontalElementsWidth/32),
         top: CanvasData.horizontalElementsHeight/2
     };
-    var inputBoxVarName = new InputBox("name",relPos,InputBoxType.variable);
-    inputBoxVarName.move(0,-inputBoxVarName.box.height/2);
-    firstRect.addElement(inputBoxVarName);
+    var inputBoxArrayName = new InputBox("name",relPos,InputBoxType.variable);
+    inputBoxArrayName.move(0,-inputBoxArrayName.box.height/2);
+    firstRect.addElement(inputBoxArrayName);
 
     leftOffset+=10;
     var relPos = {
@@ -38,10 +38,11 @@ function AssignElement (id , elementOffset , father){
         left: leftOffset*(CanvasData.horizontalElementsWidth/32),
         top: CanvasData.horizontalElementsHeight/2
     };
+    
     var inputBoxVarValue = new InputBox("value",relPos,InputBoxType.all);
     inputBoxVarValue.move(0,-inputBoxVarValue.box.height/2);
     firstRect.addElement(inputBoxVarValue);
-
+    
 }
 
-AssignElement.prototype = Element.prototype;
+ArrayElement.prototype = Element.prototype;

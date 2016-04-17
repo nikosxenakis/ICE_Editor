@@ -64,7 +64,12 @@ DeleteImage.prototype.initDeleteImage = function(){
     return imgInstance;
 };
 
-DeleteImage.prototype.setDeleteImageVisibility = function (flag){
+DeleteImage.prototype.setVisibility = function (flag){
+    if(this.visible == flag)
+        return;
+
+    this.visible = flag;
+    
     if(this.deleteImageInCanvas){
         this.deleteImageInCanvas.visible = flag;
     }

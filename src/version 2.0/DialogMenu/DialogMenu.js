@@ -1,162 +1,96 @@
-
-
-function createHtmlElement(attributes){
-	var element = $("<"+attributes.format+">", {
-		id: attributes.id, 
-		class: attributes.className,
-		html: attributes.text,
-		value: attributes.value,
-		type: attributes.type,
-		name: attributes.name,
-		color: attributes.color,
-		style: attributes.style,
-		placeholder: attributes.placeholder
-	});
-	
-	$(attributes.father).append(element);
-
-	element.css('top', attributes.top);
-	element.css('left', attributes.left);
-	element.css('width', attributes.width);
-	element.css('height', attributes.height);
-	element.css('border', attributes.border);
-	element.css('text-align',attributes.textAllign);
-
-	return element;
-};
-
-function createRadioHtmlElement(attributes){
-	
-	var radioDiv = createHtmlElement({
-		format: "div",
-		id: attributes.id+"Div",
-		className: "row",
-		father: attributes.father
-	});	
-	/*
-		id: "radioBoolean",
-		text: "boolean",
-		father:radioForm
-
-
-	*/
-	var radio = createHtmlElement({
-		format: "input",
-		id: attributes.id,
-		value: attributes.value,
-		name: attributes.name,
-		className: attributes.className+" col-sm-2",
-		father: radioDiv,
-		type: "radio"
-	});
-
-	if(attributes.checked)
-		$(radio).prop("checked", attributes.checked);
-
-	var radioText = createHtmlElement({
-		format: "text",
-		id: attributes.id+"Text",
-		className: "col-sm-10",
-		text: attributes.text,
-		father: radioDiv
-	});
-
-    $(radioDiv).css('padding-left', 20);
-
-	return radioDiv;
-};
-
 function DialogMenu(){
 
 	this.object = null;
 
-	var dialogMenuId = "dialogMenu";
-	var dialogMenuTop = 200;
-	var dialogMenuLeft = 200;
-	var dialogMenuWidth = 350;
-	var dialogMenuHeight = 200;
+	this.dialogMenuId = "dialogMenu";
+	this.dialogMenuTop = 200;
+	this.dialogMenuLeft = 200;
+	this.dialogMenuWidth = 350;
+	this.dialogMenuHeight = 200;
 
-	var dialogContentId = "dialogContent";
+	this.dialogContentId = "dialogContent";	
 
-
-	var dialogMenuDiv = createHtmlElement({
+	this.dialogMenuDiv = createHtmlElement({
 		format: "div",
-		id: dialogMenuId,
+		id: this.dialogMenuId,
 		className: "modal",
 		father: "body",
-		top:dialogMenuTop,
-		left:dialogMenuLeft,
-		width:dialogMenuWidth,
-		height:dialogMenuHeight,
+		top: this.dialogMenuTop,
+		left: this.dialogMenuLeft,
+		width: this.dialogMenuWidth,
+		height: this.dialogMenuHeight,
+		border: "2px solid #a1a1a1",
+		boxShadow: "5px 5px 5px #888888",
+		borderRadius: "10px"
 	});
 
-	$(dialogMenuDiv).draggable();
+	$(this.dialogMenuDiv).draggable();
 
 
-	var dialogContentDiv = createHtmlElement({
+	this.dialogContentDiv = createHtmlElement({
 		format: "div",
-		id: dialogContentId,
+		id: this.dialogContentId,
 		className: "modal-content container",
 		//border: "thin dashed #006600",
-		father: dialogMenuDiv,
-		width:dialogMenuWidth,
-		height:dialogMenuHeight
+		father: this.dialogMenuDiv,
+		width: this.dialogMenuWidth,
+		height: this.dialogMenuHeight
 	});
 
-	var dialogTitle = createHtmlElement({
+	this.dialogTitle = createHtmlElement({
 		format: "h2",
 		id: "dialogTitle",
 		className: "",
-		father: dialogContentDiv,
+		father: this.dialogContentDiv,
 		text:"Edit Value",
 		textAllign:"center",
 		//border: "thin dashed #006600",
-		height:dialogMenuHeight/8
+		height: this.dialogMenuHeight/8
 	});
-	$(dialogTitle).css('margin-top', 10);
-	$(dialogTitle).css('color', '#985b5b');
+	$(this.dialogTitle).css('margin-top', 10);
+	$(this.dialogTitle).css('color', '#985b5b');
 
-    $(dialogTitle).css('margin-bottom', 20);
+    $(this.dialogTitle).css('margin-bottom', 20);
 
-	var buttonClose = createHtmlElement({
+	this.buttonClose = createHtmlElement({
 		format: "span",
 		id: "buttonClose",
 		className: "close",
 		text: "x",
-		father: dialogTitle
+		father: this.dialogTitle
 	});
 
-	$(buttonClose).mousedown(function() {
-    	$(dialogMenuDiv).css('display', "none");
+	$(this.buttonClose).mousedown(function() {
+        dialogMenu.closeDialogMenu();
 	});
 
 
-	var dialogBody = createHtmlElement({
+	this.dialogBody = createHtmlElement({
 		format: "div",
 		id: "dialogBody",
 		className: "row",
-		father: dialogContentDiv,
+		father: this.dialogContentDiv,
 		//border: "thin dashed #006600",
-		height:4*dialogMenuHeight/8
+		height:4*this.dialogMenuHeight/8
 	});
 	    
-	$(dialogBody).css('margin-bottom', 10);
+	$(this.dialogBody).css('margin-bottom', 10);
 
 
-	var dialogBodyLeft = createHtmlElement({
+	this.dialogBodyLeft = createHtmlElement({
 		format: "div",
 		id: "dialogBodyLeft",
 		className: "col-sm-4",
-		father: dialogBody,
+		father: this.dialogBody,
 		//border: "thin dashed #006600",
-		height:dialogBody.height()
+		height: this.dialogBody.height()
 	});
 
 
-	var radioForm = createHtmlElement({
+	this.radioForm = createHtmlElement({
 		format: "form",
 		id: "radioForm",
-		father: dialogBodyLeft
+		father: this.dialogBodyLeft
 	});
 /*
 	var radioBoolean = createRadioHtmlElement({
@@ -168,83 +102,159 @@ function DialogMenu(){
 		father:radioForm
 	});
 */
-	var radioVariable = createRadioHtmlElement({
+	this.radioVariable = createRadioHtmlElement({
 		id: "radioVariable",
 		text: "variable",
 		name: 'type',
-		checked: true,
-		father:radioForm
+		father: this.radioForm
 	});
 
-	var radioNumber = createRadioHtmlElement({
+	this.radioNumber = createRadioHtmlElement({
 		id: "radioNumber",
 		text: "number",
 		name: 'type',
-		father:radioForm
+		father: this.radioForm
 	});
 
-	var radioText = createRadioHtmlElement({
+	this.radioText = createRadioHtmlElement({
 		id: "radioText",
 		text: "text",
 		name: 'type',
-		father:radioForm
+		father: this.radioForm
 	});
 
-	var radioBoolean = createRadioHtmlElement({
+	this.radioBoolean = createRadioHtmlElement({
 		id: "radioBoolean",
 		text: "boolean",
 		name: 'type',
-		father:radioForm
+		father: this.radioForm
 	});
 
-	var dialogBodyRight = createHtmlElement({
+	this.dialogBodyRight = createHtmlElement({
 		format: "div",
 		id: "dialogBodyRight",
 		className: "col-sm-8",
-		father: dialogBody,
+		father: this.dialogBody,
 		//border: "thin dashed #006600",
-		height:dialogBody.height()
+		height: this.dialogBody.height()
 	});
 
-	var dialogTextInput = createHtmlElement({
+	this.dialogTextInput = createHtmlElement({
 		format: "input",
 		type: "text",
 		id: "dialogTextInput",
 		placeholder: "value",
-		father: dialogBodyRight
+		father: this.dialogBodyRight
 	});
 
-    $(dialogTextInput).css('max-width', '100%');
-    $(dialogTextInput).css('margin-top', 30);
-    $(dialogTextInput).css('margin-left', 10);
+	this.dialogBooleanRight = createHtmlElement({
+		format: "div",
+		id: "dialogBooleanRight",
+		className: "col-sm-12",
+		father: this.dialogBodyRight,
+		//height:dialogBodyRight.height()
+	});
 
-	var dialogEnd = createHtmlElement({
+	this.radioTrue = createRadioHtmlElement({
+		id: "radioTrue",
+		text: "true",
+		name: 'type',
+		hide: true,
+		father: this.dialogBooleanRight
+	});
+
+	this.radioFalse = createRadioHtmlElement({
+		id: "radioFalse",
+		text: "false",
+		name: 'type',
+		hide: true,
+		father: this.dialogBooleanRight
+	});
+
+    $(this.dialogTextInput).css('max-width', '100%');
+    $(this.dialogTextInput).css('margin-top', 30);
+    
+    $(this.dialogBooleanRight).css('margin-top', 20);
+    $(this.dialogBooleanRight).css('margin-left', 20);
+
+    $(this.dialogTextInput).css('margin-top', 30);
+
+	this.dialogEnd = createHtmlElement({
 		format: "div",
 		id: "dialogEnd",
 		className: "",
-		father: dialogContentDiv,
+		father: this.dialogContentDiv,
 		//border: "thin dashed #006600",
-		height:dialogMenuHeight/8
+		height: this.dialogMenuHeight/8
 	});
 
-	var buttonOk = createHtmlElement({
+	this.buttonOk = createHtmlElement({
 		format: "button",
 		id: "buttonOk",
 		text: "Ok",
-		father: dialogEnd,
-		left: 9*dialogMenuWidth/12
+		father: this.dialogEnd,
+		top: '-10px',
+		left: '237px'
 	});
-    $(buttonOk).css('position', "relative");
-    $(buttonOk).css('width', 65);
+    $(this.buttonOk).css('position', "relative");
+    $(this.buttonOk).css('width', 65);
 
-	$(buttonOk).mousedown(function() {
-        $(dialogMenuDiv).css('display', "none");
-        dialogMenu.object.setText( $('#dialogTextInput').val() );
+    $(this.radioVariable).mousedown(function() {
+    	$(dialogMenu.dialogTextInput).show();
+    	$(dialogMenu.radioTrue).hide();
+    	$(dialogMenu.radioFalse).hide();
+    });
 
-    	//dialogMenu.object.scaleToWidth(CanvasData.InputBoxWidth / dialogMenu.object.width);
-        //dialogMenu.object.scaleToWidth(CanvasData.InputBoxWidth);
-    	//dialogMenu.object.scaleToHeight(CanvasData.InputBoxHeight);
-    	dialogMenu.object.setCoords();
+    $(this.radioNumber).mousedown(function() {
+    	$(dialogMenu.dialogTextInput).show();
+    	$(dialogMenu.radioTrue).hide();
+    	$(dialogMenu.radioFalse).hide();
+    });
+
+	$(this.radioText).mousedown(function() {
+    	$(dialogMenu.dialogTextInput).show();
+    	$(dialogMenu.radioTrue).hide();
+    	$(dialogMenu.radioFalse).hide();
+    });
+
+    $(this.radioBoolean).mousedown(function() {
+    	$(dialogMenu.dialogTextInput).hide();
+    	$(dialogMenu.radioTrue).show();
+    	$(dialogMenu.radioFalse).show();
+	    $(this.radioTrue).children('input[type=radio]').prop("checked", true);
+    });
+
+	$(this.buttonOk).mousedown(function() {
+
+        var outputText = $('#dialogTextInput').val();
+
+        if( $('#dialogMenu').find('#radioVariable').prop("checked") == true ){
+        	dialogMenu.object.text.setText( outputText );
+        	dialogMenu.object.type = InputBoxType.valueVariable;
+        }
+        else if( $('#dialogMenu').find('#radioNumber').prop("checked") == true && !isNaN(outputText) ){
+        	dialogMenu.object.text.setText( outputText );
+        	dialogMenu.object.type = InputBoxType.valueNumber;
+        }
+        else if( $('#dialogMenu').find('#radioText').prop("checked") == true ){
+        	dialogMenu.object.text.setText( "\""+outputText+"\"" );
+        	dialogMenu.object.type = InputBoxType.valueText;
+        }
+        else if( $('#dialogMenu').find('#radioBoolean').prop("checked") == true ){
+        	dialogMenu.object.type = InputBoxType.valueBoolean;
+        	if( $('#dialogMenu').find('#radioTrue').prop("checked") == true )
+        		dialogMenu.object.text.setText( "true" );
+        	else if( $('#dialogMenu').find('#radioFalse').prop("checked") == true )
+        		dialogMenu.object.text.setText( "false" );
+        }
+        else{
+        	//dialogMenu.object.text.setText( "" );
+        }
+
+    	dialogMenu.object.text.setCoords();
+        dialogMenu.object.fixText();
+
+        dialogMenu.closeDialogMenu();
 
         Canvas.getInstance().canvas.renderAll();
 	});
@@ -253,23 +263,103 @@ function DialogMenu(){
 
 	window.onclick = function(event) {
 	    if (event.target == dialogMenu) {
-	        $(dialogMenuDiv).css('display', "none");
+	        $(this.dialogMenuDiv).css('display', "none");
 	    }
 	}
 
 	window.onload = function(event) {
-	    $(dialogMenuDiv).css('display', "block");
+	    $(this.dialogMenuDiv).css('display', "block");
 	}
 
 	return this;
 };
 
-DialogMenu.prototype.openDialogMenu = function(object) {
-    $('#dialogMenu').css('display', "block");
+DialogMenu.prototype.fixRadioButtons = function(){
 
-    $(dialogTextInput).val("");
+	$(this.radioTrue).hide();
+    $(this.radioFalse).hide();
+    $(this.dialogTextInput).show();
 
-    $(dialogTextInput).attr("placeholder" , object.getText());
+	if(this.object.type == InputBoxType.all){
+	    $('#dialogMenu').find('#radioVariable').attr("disabled", false);
+	    $('#dialogMenu').find('#radioNumber').attr('disabled',false);
+	    $('#dialogMenu').find('#radioText').attr("disabled", false);
+	    $('#dialogMenu').find('#radioBoolean').attr('disabled',false);
 
-    this.object = object;
+	   	$('#dialogMenu').find('#radioVariable').prop("checked", true);
+	    $(this.radioTrue).children('input[type=radio]').prop("checked", true);
+	}
+	else if(this.object.type == InputBoxType.variable){
+	    $('#dialogMenu').find('#radioVariable').attr("disabled", false);
+	    $('#dialogMenu').find('#radioNumber').attr('disabled',true);
+	    $('#dialogMenu').find('#radioText').attr("disabled", true);
+	    $('#dialogMenu').find('#radioBoolean').attr('disabled',true);
+
+	   	$('#dialogMenu').find('#radioVariable').prop("checked", true);
+	    $(this.radioTrue).children('input[type=radio]').prop("checked", true);
+	}
+	else if(this.object.type == InputBoxType.valueVariable){
+	    $('#dialogMenu').find('#radioVariable').attr("disabled", false);
+	    $('#dialogMenu').find('#radioNumber').attr('disabled',false);
+	    $('#dialogMenu').find('#radioText').attr("disabled", false);
+	    $('#dialogMenu').find('#radioBoolean').attr('disabled',false);
+
+	   	$('#dialogMenu').find('#radioVariable').prop("checked", true);
+	    $(this.radioTrue).children('input[type=radio]').prop("checked", true);
+	}
+	else if(this.object.type == InputBoxType.valueNumber){
+	    $('#dialogMenu').find('#radioVariable').attr("disabled", false);
+	    $('#dialogMenu').find('#radioNumber').attr('disabled',false);
+	    $('#dialogMenu').find('#radioText').attr("disabled", false);
+	    $('#dialogMenu').find('#radioBoolean').attr('disabled',false);
+
+	   	$('#dialogMenu').find('#radioNumber').prop("checked", true);
+	    $(this.radioTrue).children('input[type=radio]').prop("checked", true);
+	}
+	else if(this.object.type == InputBoxType.valueText){
+	    $('#dialogMenu').find('#radioVariable').attr("disabled", false);
+	    $('#dialogMenu').find('#radioNumber').attr('disabled',false);
+	    $('#dialogMenu').find('#radioText').attr("disabled", false);
+	    $('#dialogMenu').find('#radioBoolean').attr('disabled',false);
+
+	   	$('#dialogMenu').find('#radioText').prop("checked", true);
+	    $(this.radioTrue).children('input[type=radio]').prop("checked", true);
+	}
+	else if(this.object.type == InputBoxType.valueBoolean){
+		$(this.radioTrue).show();
+    	$(this.radioFalse).show();
+    	$(this.dialogTextInput).hide();
+
+	    $('#dialogMenu').find('#radioVariable').attr("disabled", false);
+	    $('#dialogMenu').find('#radioNumber').attr('disabled',false);
+	    $('#dialogMenu').find('#radioText').attr("disabled", false);
+	    $('#dialogMenu').find('#radioBoolean').attr('disabled',false);
+
+	   	$('#dialogMenu').find('#radioBoolean').prop("checked", true);
+
+	    if(this.object.text.getText() == 'true')
+	    	$(this.radioTrue).children('input[type=radio]').prop("checked", true);
+		else if(this.object.text.getText() == 'false')
+	    	$(this.radioFalse).children('input[type=radio]').prop("checked", true);	
+	}
+};
+
+DialogMenu.prototype.closeDialogMenu = function(){
+    $(dialogMenu.dialogMenuDiv).css('display', "none");
+    dialogMenu.object.deactivate();
+	dialogMenu.object = null;
+};
+
+DialogMenu.prototype.openDialogMenu = function(object){
+
+	this.object = object;
+
+	this.fixRadioButtons();
+
+    $('#dialogMenu').css('display', "block");	
+
+    $(this.dialogTextInput).val("");
+    $(this.dialogTextInput).attr("placeholder" , this.object.text.getText());
+	$(this.dialogTextInput).focus();
+
 };

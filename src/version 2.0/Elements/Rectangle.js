@@ -123,12 +123,23 @@ Rectangle.prototype.moveRectangleInCanvas = function (dx,dy){
 
 Rectangle.prototype.setOpacity = function (opac){
 
+    if(this.element.deleteImage){
+        if(opac == CanvasData.highOpacity)
+            this.element.deleteImage.setVisibility(false);
+        else
+            this.element.deleteImage.setVisibility(true);
+    }
+
+    if(this.element.foldingItem){
+        if(opac == CanvasData.highOpacity)
+            this.element.foldingItem.setVisibility(false);
+        else
+            this.element.foldingItem.setVisibility(true);
+    }
+
     if(this.rectangleInCanvas)
         this.rectangleInCanvas.setOpacity(opac);
-    
-    for(var k=0; k<this.elements.length;k++){
-        //this.elements[k].setOpacity(opac);
-    }
+
 }
 
 Rectangle.prototype.createRectangleInCanvas = function (pos){
@@ -169,12 +180,6 @@ Rectangle.prototype.createRectangleInCanvas = function (pos){
 };
 
 Rectangle.prototype.mouseOver = function (){
-    if(this.element.deleteImage)
-        this.element.deleteImage.setDeleteImageVisibility(true);
-
-    if(this.element.foldingItem)
-        this.element.foldingItem.setFoldingItemVisibillity(true);
-
     this.element.setOpacity(CanvasData.lowOpacity);
 };
 
@@ -246,12 +251,6 @@ Rectangle.prototype.mouseDown = function (){
 };
 
 Rectangle.prototype.mouseOut = function (){
-    if(this.element.deleteImage)
-        this.element.deleteImage.setDeleteImageVisibility(false);
-
-    if(this.element.foldingItem)
-        this.element.foldingItem.setFoldingItemVisibillity(false);
-
     this.element.setOpacity(CanvasData.highOpacity);
 };
 

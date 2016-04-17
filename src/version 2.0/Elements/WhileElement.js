@@ -21,9 +21,15 @@ function WhileElement (id , elementOffset , father){
         left: CanvasData.horizontalElementsWidth/2,
         top: CanvasData.horizontalElementsHeight/2
     };
+    /*
     var condition = new Condition("condition",relPos);
     condition.move(0,-condition.condition.getHeight()/2);
     firstRect.addElement(condition);
+    */
+    var condition = new InputBox("condition",relPos,InputBoxType.all);
+    condition.move(0,-condition.box.height/2);
+    firstRect.addElement(condition);
+
 
     var relPos = {
         left: CanvasData.horizontalElementsWidth/8,

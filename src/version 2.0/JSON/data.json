@@ -83,10 +83,17 @@ var images = {
 	,
 	"assignImage":
 		{
-			id:"grey",
+			id:"assign",
 			format: "I",
 			type: "assign",
 			color:"green"
 		}
-
+	,
+	"arrayImage":
+		{
+			id:"array",
+			format: "I",
+			type: "array",
+			color:"orange"
+		}
 };

@@ -148,8 +148,13 @@ FoldingItem.prototype.changeSize = function (dy){
     
 }
 
-FoldingItem.prototype.setFoldingItemVisibillity = function (flag){
+FoldingItem.prototype.setVisibility = function (flag){
 
+    if(this.visible == flag)
+        return;
+
+    this.visible = flag;
+    
     if( ! this.element.getRectangle(RectangleOffset.secondHorizontial) )
         return;
 

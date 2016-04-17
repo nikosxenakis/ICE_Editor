@@ -11,8 +11,9 @@ function test() {
     c.programElement = new ProgramElement("programElement",offset,father);
     c.programElement.addElement("doNothingImage",offset);
 
-    c.programElement.addElement("whileImage",offset);
-    c.programElement.addElement("assignImage",offset+1);
+    c.programElement.addElement("arrayImage",offset);
+    c.programElement.addElement("whileImage",offset+1);
+    c.programElement.addElement("assignImage",offset+2);
     //c.programElement.elements[0].addElement("forImage",offset);
     //c.programElement.elements[0].elements[0].addElement("ifImage",offset+1);
     //
