@@ -74,4 +74,10 @@ Label.prototype.mouseDown = function (){
 };
 
 Label.prototype.mouseOut = function (){
+    if(this.element)
+        this.rectangle.mouseOut();
+};
+
+Label.prototype.sendToBack = function (){
+    this.label.sendToBack();
 };

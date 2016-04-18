@@ -1,12 +1,3 @@
-var InputBoxType = {
-    all: 0,
-    variable: 1,
-    valueVariable: 2,
-    valueNumber: 3,
-    valueText: 4,
-    valueBoolean: 5
-};
-
 function InputBox (id,pos,type){
 
     var c=Canvas.getInstance();
@@ -43,6 +34,7 @@ function InputBox (id,pos,type){
         class: this
     });
 
+    this.input = new InputElement(id , type);
 
     this.fixText();
 
@@ -121,8 +113,6 @@ InputBox.prototype.bringToFront = function (){
 
 InputBox.prototype.mouseOver = function (){
 
-    this.text.fill = "grey";
-
     if(this.element)
         this.rectangle.mouseOver();
 };
@@ -142,14 +132,26 @@ InputBox.prototype.deactivate = function (){
     Canvas.getInstance().canvas.renderAll();
 };
 
-InputBox.prototype.mouseDown = function (){
-    //show and initialize dialog
-    //this.box.setStrokeWidth(2);
-    this.activate();
+InputBox.prototype.update = function (){
+    this.deactivate();
+    this.text.setText(this.input.getText());
+    this.fixText();
+};
 
-    dialogMenu.openDialogMenu(this);
+InputBox.prototype.mouseDown = function (){
+
+    this.activate();
+    dialogMenu.open(this);
+
 };
 
 InputBox.prototype.mouseOut = function (){
-    this.text.fill = "grey";
+
+    if(this.element)
+        this.rectangle.mouseOut();
+};
+
+InputBox.prototype.sendToBack = function (){
+    this.text.sendToBack();
+    this.box.sendToBack();
 };

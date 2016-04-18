@@ -59,12 +59,3 @@ function initDraggableElements() {
 }
 
 })();
-
-function imageIdToElement(imageId){
-
-    if(images[imageId])
-        return images[imageId];
-    else
-        console.log("this image is not registered in var images of json files");
-};
-

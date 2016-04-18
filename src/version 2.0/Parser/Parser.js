@@ -17,18 +17,23 @@ Parser.prototype.loadProgram = function (inputPrograms){
     for(var i=0; i<this.source.length; i++){
         console.log("\t",this.source[i].id);
 
-        c.programElement = new ProgramElement(this.source[i].id,offset,father);
-        c.programElement.addElement("doNothingImage",offset);
+        var programElement = new ProgramElement(this.source[i].id,offset,father);
+        Canvas.addElement(programElement);
+        Canvas.setActiveElement(programElement);
+        var activeElement = Canvas.getActiveElement();        
 
-        this.loadElements(c.programElement , this.source[i].elements);
+        activeElement.addElement("doNothing",0);
+
+        this.loadElements(activeElement , this.source[i].elements);
     }
 
 };
 
 Parser.prototype.loadElements = function (father , elements){
 
-    if(!elements)
+    if(!elements){
         return;
+    }
 
     for(var i=0; i<elements.length; i++){
         var child = father.addElement(elements[i].type,i);

@@ -1,6 +1,6 @@
 function ArrayElement (id , elementOffset , father){
 
-    Element.call(this , id , "arrayImage" , elementOffset , father);
+    Element.call(this , id , "array" , elementOffset , father);
 
     var firstRect = this.getRectangle(RectangleOffset.firstHorizontial).rectangle;
     var top = firstRect.rectangleInCanvas.getTop() + CanvasData.horizontalElementsHeight/2;
@@ -15,16 +15,16 @@ function ArrayElement (id , elementOffset , father){
     arrayLabel.move(0,-arrayLabel.label.height/2);
     firstRect.addElement(arrayLabel);
 
-    leftOffset+=6;
+    leftOffset+=5;
     var relPos = {
         left: leftOffset*(CanvasData.horizontalElementsWidth/32),
         top: CanvasData.horizontalElementsHeight/2
     };
-    var inputBoxArrayName = new InputBox("name",relPos,InputBoxType.variable);
+    var inputBoxArrayName = new InputBox("name",relPos,InputType.variable);
     inputBoxArrayName.move(0,-inputBoxArrayName.box.height/2);
     firstRect.addElement(inputBoxArrayName);
 
-    leftOffset+=10;
+    leftOffset+=11;
     var relPos = {
         left: leftOffset*(CanvasData.horizontalElementsWidth/32),
         top: CanvasData.horizontalElementsHeight/2
@@ -38,8 +38,8 @@ function ArrayElement (id , elementOffset , father){
         left: leftOffset*(CanvasData.horizontalElementsWidth/32),
         top: CanvasData.horizontalElementsHeight/2
     };
-    
-    var inputBoxVarValue = new InputBox("value",relPos,InputBoxType.all);
+    //[ 1 , true , 3 , \"hello\"]"
+    var inputBoxVarValue = new InputBox("[ 1 , true ...]",relPos,InputType.valueVariable);
     inputBoxVarValue.move(0,-inputBoxVarValue.box.height/2);
     firstRect.addElement(inputBoxVarValue);
     

@@ -4,25 +4,54 @@ var inputPrograms = [
 		elements: [
 			{
 				id: "while1",
-				type: "whileImage",
+				type: "while",
 				elements: [
 					{
 						id: "assign1",
-						type: "assignImage"
+						type: "assign"
 					},
 					{
-						id: "while2",
-						type: "whileImage"
+						id: "array1",
+						type: "array"
 					}
 				]
 			},
 			{
-				id: "if1",
-				type: "ifImage",
+				id: "while2",
+				type: "while",
 				elements: [
 					{
 						id: "assign2",
-						type: "assignImage"
+						type: "assign"
+					}
+				]			
+			}
+		]
+	},
+	{
+		id: "programName2",
+		elements: [
+			{
+				id: "while1",
+				type: "while",
+				elements: [
+					{
+						id: "assign1",
+						type: "assign"
+					},
+					{
+						id: "array1",
+						type: "array"
+					}
+				]
+			},
+			{
+				id: "while2",
+				type: "while",
+				elements: [
+					{
+						id: "assign2",
+						type: "assign"
 					}
 				]			
 			}

@@ -8,15 +8,19 @@ function test() {
     var father = null;
     var offset = 0;
 
-    c.programElement = new ProgramElement("programElement",offset,father);
-    c.programElement.addElement("doNothingImage",offset);
+    var programElement = new ProgramElement("program",offset,father);
+    Canvas.addElement(programElement);
+    Canvas.setActiveElement(programElement);
+    var activeElement = Canvas.getActiveElement();
 
-    c.programElement.addElement("arrayImage",offset);
-    c.programElement.addElement("whileImage",offset+1);
-    c.programElement.addElement("assignImage",offset+2);
-    //c.programElement.elements[0].addElement("forImage",offset);
-    //c.programElement.elements[0].elements[0].addElement("ifImage",offset+1);
-    //
+    activeElement.addElement("doNothing",offset);
+    activeElement.addElement("while",offset);
+    activeElement.addElement("while",offset+1);
+
+    activeElement.elements[0].addElement("assign",offset);
+    activeElement.elements[0].addElement("array",offset);
+    activeElement.elements[1].addElement("assign",offset);
+
     $('#example').typeahead()  
 }
 
@@ -27,25 +31,25 @@ function InitEditor() {
     CreateDialogs();
     InitDialogs();
     InitMenus();
+    CreateOperatorsMenu(canvas.canvas);
+    CreateVarsMenu(canvas.canvas);
+    CreateRightClickMenu(canvas.canvas);    
     */
            
     cssModifications();
     
-    test();
+    //test();
 
     dialogMenu = new DialogMenu();  
+    doNothingDialogMenu = new DoNothingDialogMenu();  
 
-    /*
     var parser = new Parser();
     parser.loadProgram(inputPrograms);
-    parser.saveProgram(c.programElement);
-    */
+    //parser.saveProgram(Canvas.getActiveElement());
 
-    //CreateOperatorsMenu(canvas.canvas);
-    //CreateVarsMenu(canvas.canvas);
-    //CreateRightClickMenu(canvas.canvas);    
-
-
+    var elem = Canvas.getElement('programName');
+    Canvas.setActiveElement(elem);
+    
     ImageHolder.getInstance();
 
 }

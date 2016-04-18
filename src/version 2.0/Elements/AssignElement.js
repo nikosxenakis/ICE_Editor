@@ -1,11 +1,11 @@
 function AssignElement (id , elementOffset , father){
 
-    Element.call(this , id , "assignImage" , elementOffset , father);
+    Element.call(this , id , "assign" , elementOffset , father);
 
     var firstRect = this.getRectangle(RectangleOffset.firstHorizontial).rectangle;
     var top = firstRect.rectangleInCanvas.getTop() + CanvasData.horizontalElementsHeight/2;
     var left = firstRect.rectangleInCanvas.getLeft();
-    var leftOffset = 2;
+    var leftOffset = 1;
 
     var relPos = {
         left: leftOffset*(CanvasData.horizontalElementsWidth/32),
@@ -20,11 +20,11 @@ function AssignElement (id , elementOffset , father){
         left: leftOffset*(CanvasData.horizontalElementsWidth/32),
         top: CanvasData.horizontalElementsHeight/2
     };
-    var inputBoxVarName = new InputBox("name",relPos,InputBoxType.variable);
+    var inputBoxVarName = new InputBox("name",relPos,InputType.variable);
     inputBoxVarName.move(0,-inputBoxVarName.box.height/2);
     firstRect.addElement(inputBoxVarName);
 
-    leftOffset+=10;
+    leftOffset+=11;
     var relPos = {
         left: leftOffset*(CanvasData.horizontalElementsWidth/32),
         top: CanvasData.horizontalElementsHeight/2
@@ -38,7 +38,7 @@ function AssignElement (id , elementOffset , father){
         left: leftOffset*(CanvasData.horizontalElementsWidth/32),
         top: CanvasData.horizontalElementsHeight/2
     };
-    var inputBoxVarValue = new InputBox("value",relPos,InputBoxType.all);
+    var inputBoxVarValue = new InputBox("value",relPos,InputType.valueVariable);
     inputBoxVarValue.move(0,-inputBoxVarValue.box.height/2);
     firstRect.addElement(inputBoxVarValue);
 

@@ -21,9 +21,17 @@ var ElementTransformationType = {
     last: 2
 };
 
-function Element (id , imageId , elementOffset , father) {
+function elementIdToElement(elementId){
+
+    if(elements[elementId])
+        return elements[elementId];
+    else
+        console.log("this element is not registered in var elements of json files");
+};
+
+function Element (id , elementId , elementOffset , father) {
     
-    var elemInfo = imageIdToElement(imageId);
+    var elemInfo = elementIdToElement(elementId);
 
     if(father)
         var coords = father.elementOffsetToElementPos(elementOffset);
@@ -47,7 +55,7 @@ function Element (id , imageId , elementOffset , father) {
    
     this.getElementSize();
  
-    if(this.type != ElementType.doNothing){
+    if(this.type != ElementType.doNothing && this.type != ElementType.program){
         this.deleteImage = new DeleteImage(this);
     }
     else{
@@ -176,16 +184,17 @@ Element.prototype.setElementVisibillity = function(flag) {
     this.visibility = flag;
 
     if(this.deleteImage)
-        this.deleteImage.setDeleteImageVisibility(flag);
+        this.deleteImage.setVisibility(flag);
     
     if(this.foldingItem)
-        this.foldingItem.setFoldingItemVisibillity(flag);
+        this.foldingItem.setVisibility(flag);
 
-    for (k=0; k < this.rectangles.length ; k++){
+    for (var k=0; k < this.rectangles.length ; k++){
         this.rectangles[k].setRectangleVisibillity(flag);
     }
     
-    for (k=0; k < this.elements.length ; k++){
+    for (var k=0; k < this.elements.length ; k++){
+        console.log(this.elements[k]);
         this.elements[k].setElementVisibillity(flag);
     }
 
@@ -193,7 +202,7 @@ Element.prototype.setElementVisibillity = function(flag) {
 
 Element.prototype.getRectangle = function(rectangleOffset) {
 
-    for (k=0; k < this.rectangles.length ; k++){
+    for (var k=0; k < this.rectangles.length ; k++){
         if(this.rectangles[k].rectangleOffset == rectangleOffset){
             return this.rectangles[k].rectangleInCanvas;
         }
@@ -342,10 +351,10 @@ Element.prototype.elementOffsetToElementPos = function(elementOffset){
     return pos;
 };
 
-Element.prototype.elementFactory = function(imageId , elementOffset) {
+Element.prototype.elementFactory = function(elementId , elementOffset) {
 
     //choose constructor class
-    var elemInfo = imageIdToElement(imageId);
+    var elemInfo = elementIdToElement(elementId);
     if(!elemInfo)
         console.log("error in elementFactory");
 
@@ -368,12 +377,12 @@ Element.prototype.elementFactory = function(imageId , elementOffset) {
         return new DoNothingElement(this.id+"_"+elemInfo.id,elementOffset,this);
     }
     else{
-        return new Element(this.id+"_"+elemInfo.id,imageId,elementOffset,this);
+        return new Element(this.id+"_"+elemInfo.id,elementId,elementOffset,this);
     }
 
 };
 
-Element.prototype.addElement = function(imageId,elementOffset) {
+Element.prototype.addElement = function(elementId,elementOffset) {
 
     //from offset produce pos and elementTransformationType
     var pos = this.elementOffsetToElementPos(elementOffset);
@@ -388,14 +397,14 @@ Element.prototype.addElement = function(imageId,elementOffset) {
         elementOffset = 0;
     }
     
-    var elem = this.elementFactory(imageId,elementOffset);
+    var elem = this.elementFactory(elementId,elementOffset);
 
     this.transformElement(elem,elementTransformationType);
 
     this.elements.splice(elementOffset, 0, elem);
 
     if(elem.format != ElementFormat.I){
-        var e = elem.addElement("doNothingImage",0);
+        var e = elem.addElement("doNothing",0);
     }
 
     Canvas.setCanvasElementsCoords();
@@ -499,7 +508,8 @@ Element.prototype.moveElement = function(movedRectangle, dx, dy) {
     this.moveElementRectangles(movedRectangle,dx,dy);
     
     if(this.type != ElementType.doNothing){
-        this.deleteImage.moveDeleteImage(dx,dy);
+        if(this.type != ElementType.program)
+            this.deleteImage.moveDeleteImage(dx,dy);
         this.foldingItem.moveFoldingItem(dx,dy);
     }
 
@@ -517,7 +527,7 @@ Element.prototype.removeElement = function() {
 
     //replace the deleting element with doNothing
     if(this.father.elements.length == 1 && this.father.elements[0] == this && this.type != ElementType.doNothing){
-        var e = this.father.addElement("doNothingImage",0);
+        var e = this.father.addElement("doNothing",0);
     }
 
     //revert transformation
@@ -649,7 +659,7 @@ Element.prototype.reverseTransformElement = function(elem) {
 //opacity
 Element.prototype.setOpacity = function(opac) {
 
-    if(this.opac == opac)
+    if(this.opac == opac || this.visibility == false)
         return;
 
     this.opac = opac;
@@ -663,6 +673,7 @@ Element.prototype.setOpacity = function(opac) {
         if(this.elements[k])
             this.elements[k].setOpacity(opac);
     }
+
     Canvas.getInstance().canvas.renderAll();
 };
 
@@ -746,10 +757,10 @@ Element.prototype.unfoldElement = function(unfoldedElement) {
     this.foldingItem.foldingItemState = FoldingItemState.unfolded;
 
     if(this.deleteImage)
-        this.deleteImage.setDeleteImageVisibility(false);
+        this.deleteImage.setVisibility(false);
 
     if(this.foldingItem)
-        this.foldingItem.setFoldingItemVisibillity(false);
+        this.foldingItem.setVisibility(false);
 
 };
 

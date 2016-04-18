@@ -3,14 +3,14 @@ var CanvasData = {
 	"top":200,
 	"highOpacity":1,
 	"lowOpacity":0.8,
-	"horizontalElementsWidth":310,
+	"horizontalElementsWidth":330,
 	"horizontalElementsHeight":60,
 	"greyElementsHeight":35,
 	"verticalElementsWidth":23,
 	"verticalElementsHeight":0,
 	"ConditionWidth":120,
 	"ConditionHeight":35,
-	"InputBoxWidth":80,
+	"InputBoxWidth":100,
 	"InputBoxHeight":35,
 	"ElementLabelColor":"white",
 	"ElementLabelSize":22,
@@ -32,8 +32,8 @@ var FoldingItemData = {
 	"foldingItemHeight":13
 };
 
-var images = {
-	"programImage":
+var elements = {
+	"program":
 		{
 			id:"program",
 			format: "C",
@@ -41,7 +41,7 @@ var images = {
 			color:"#008fb3"
 		}
 	,
-	"whileImage":
+	"while":
 		{
 			id:"while",
 			format: "C",
@@ -49,7 +49,7 @@ var images = {
 			color:"#cc5200"
 		}
 	,
-	"forImage":
+	"for":
 		{
 			id:"for",
 			format: "C",
@@ -57,7 +57,7 @@ var images = {
 			color:"#b3b300"
 		}
 	,
-	"ifImage":
+	"if":
 		{
 			id:"if",
 			format: "C",
@@ -65,7 +65,7 @@ var images = {
 			color:"#ff66cc"
 		}
 	,
-	"doNothingImage":
+	"doNothing":
 		{
 			id:"doNothing",
 			format: "I",
@@ -73,7 +73,7 @@ var images = {
 			color:"green"
 		}
 	,
-	"greyImage":
+	"grey":
 		{
 			id:"grey",
 			format: "I",
@@ -81,7 +81,7 @@ var images = {
 			color:"grey"
 		}
 	,
-	"assignImage":
+	"assign":
 		{
 			id:"assign",
 			format: "I",
@@ -89,7 +89,7 @@ var images = {
 			color:"green"
 		}
 	,
-	"arrayImage":
+	"array":
 		{
 			id:"array",
 			format: "I",

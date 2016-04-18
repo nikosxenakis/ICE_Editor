@@ -1,6 +1,6 @@
 function DoNothingElement (id , elementOffset , father){
 
-    Element.call(this , id , "doNothingImage" , elementOffset , father);
+    Element.call(this , id , "doNothing" , elementOffset , father);
 
     var firstRect = this.getRectangle(RectangleOffset.firstHorizontial).rectangle;
     var left = firstRect.rectangleInCanvas.getLeft();

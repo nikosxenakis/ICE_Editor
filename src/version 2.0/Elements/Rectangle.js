@@ -30,7 +30,6 @@ Rectangle.prototype.addElement = function (elem){
     elem.element = this.element;
 
     elem.move(this.rectangleInCanvas.getLeft(),this.rectangleInCanvas.getTop());
-    console.log(elem);
     //take elem.pos and make a rel pos
     
     elem.relPos = {
@@ -88,17 +87,14 @@ Rectangle.prototype.moveRectangleElements = function (dx,dy){
 Rectangle.prototype.moveRectangleElements = function (){
     var rectLeft = this.rectangleInCanvas.getLeft();
     var rectTop = this.rectangleInCanvas.getTop();
-    console.log("rect = ",rectLeft,rectTop);
+    //console.log("rect = ",rectLeft,rectTop);
     for(var k=0; k<this.elements.length; k++){    
         var dx = rectLeft + this.elements[k].relPos.left;
         var dy = rectTop + this.elements[k].relPos.top; 
         dx = dx - this.elements[k].getLeft();
         dy = dy - this.elements[k].getTop();
 
-        //dx = rectLeft + 20 - this.elements[k].getLeft();
-        //dy = rectTop + 20 - this.elements[k].getTop();
-
-        console.log("rel elem = ",this.elements[k],dx,dy);
+        //console.log("rel elem = ",this.elements[k],dx,dy);
 
         this.elements[k].move(dx,dy);
     }
@@ -232,10 +228,10 @@ Rectangle.prototype.mouseDown = function (){
         this.element.father = null;
 
         //add the dummy gray element in this 
-        this.element.dummyElementOriginalPosition = father.addElement(type+"Image",offset);
+        this.element.dummyElementOriginalPosition = father.addElement(type,offset);
 
         if(this.element.format != ElementFormat.I)
-            this.element.dummyElementOriginalPosition.addElement("greyImage",0);
+            this.element.dummyElementOriginalPosition.addElement("grey",0);
                     
         this.element.dummyElementOriginalPosition.setOpacity(CanvasData.lowOpacity);
                 
@@ -247,6 +243,9 @@ Rectangle.prototype.mouseDown = function (){
 
         this.element.setOpacity(CanvasData.lowOpacity);
 
+    }
+    if(this.element.type == ElementType.doNothing){
+        doNothingDialogMenu.open(this.element);
     }
 };
 

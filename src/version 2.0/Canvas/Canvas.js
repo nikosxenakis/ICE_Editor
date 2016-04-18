@@ -29,7 +29,8 @@ var Canvas = (function(){
         this.tmpElement = null;
 
         //main program element
-        this.programElement = null;
+        this.activeElement = null;
+        this.elements = new Array();
 
         this.canvas.on('mouse:over', function(e) {
 
@@ -83,9 +84,46 @@ var Canvas = (function(){
         },
 
         changeSize: changeSize,
+        getActiveElement: getActiveElement,
+        setActiveElement: setActiveElement,
+        getElement: getElement,
+        addElement: addElement,
         setCanvasElementsCoords: setCanvasElementsCoords,
         rectangleCollisionWithHorizontialElements: rectangleCollisionWithHorizontialElements,
         addElementToCanvas: addElementToCanvas
+    };
+
+    function getElement(id){
+        for(var k=0; k<instance.elements.length; k++){
+            if(instance.elements[k].id == id)
+                return instance.elements[k];
+        }
+    };
+
+    function getActiveElement(){
+        return instance.activeElement;
+    };
+
+    function setActiveElement(element){
+
+        for(var k=0; k<instance.elements.length; k++){
+            if(instance.elements[k] == element){
+                if(instance.activeElement)
+                    instance.activeElement.setElementVisibillity(false);
+                instance.activeElement = element;
+                element.setElementVisibillity(true);
+                instance.canvas.renderAll();
+                return;
+            }
+        }
+
+        console.log("There is no such element in canvas");
+        
+    };
+
+    function addElement(element){
+        instance.elements.push(element);
+        element.setElementVisibillity(false);
     };
 
     function updateCoordinates(e){
@@ -159,17 +197,10 @@ var Canvas = (function(){
         //c.elementsUnderDrag.length = 0;
 
         if(elem && elem.dummyElementOriginalPosition && elem.dummyElementOriginalPosition.father){
-            addElementToCanvas(elem.type+"Image");
+            addElementToCanvas(elem.type);
             elem.dummyElementCurrentPosition = c.tmpElement;
             if(elem.dummyElementCurrentPosition)
                 elem.dummyElementCurrentPosition.sendToBack();
-            //elem.bringToFront();
-            /*
-            if(elem.dummyElementCurrentPosition && elem.dummyElementCurrentPosition.elements.length==1 && 
-                elem.dummyElementCurrentPosition.elements[0].type == ElementType.doNothing && elem.format != ElementFormat.I ){
-
-                elem.dummyElementCurrentPosition.addElement("greyImage",0,CanvasData.lowOpacity);
-            }*/
         }
 
     };
@@ -228,7 +259,7 @@ var Canvas = (function(){
         c.canvas.renderAll();
     };
 
-    function addElementToCanvas(imageRectId){
+    function addElementToCanvas(elementId){
 
         var c =instance;
         console.log(c.elementsUnderDrag.length);
@@ -244,16 +275,7 @@ var Canvas = (function(){
 
                 //the first in a block
                 if(elem1 == elem2){
-                    /*
-                    if(c.elementsUnderDrag.length == 3){
-                        if( elem1 == c.elementsUnderDrag[2].element.father &&
-                            elem2 == c.elementsUnderDrag[2].element.father
-                        ){
-                        c.tmpElement = elem1.addElement(imageRectId,0);
 
-                        }                    
-                    }
-                    */
                     console.log("Error: it can't be the first in the block"); 
                     c.intersection = false;
                     c.elementsUnderDrag.length = 0;
@@ -282,10 +304,10 @@ var Canvas = (function(){
                     }
 
                     if(fatherRect.getTop() <= childRect.getTop() ){
-                        c.tmpElement = father.addElement(imageRectId,0);
+                        c.tmpElement = father.addElement(elementId,0);
                     }
                     else{
-                        c.tmpElement = father.addElement(imageRectId,father.elements.length);
+                        c.tmpElement = father.addElement(elementId,father.elements.length);
                     } 
                 }
                 else if( elem1.father && elem2.father && elem1.father == elem2.father ){
@@ -311,7 +333,7 @@ var Canvas = (function(){
                             break;
                        }
                    };
-                    c.tmpElement = father.addElement(imageRectId,offset);
+                    c.tmpElement = father.addElement(elementId,offset);
 
                 }
                 else{
@@ -335,8 +357,7 @@ var Canvas = (function(){
                 c.tmpElement = null;
             }
 
-            c.elementsUnderDrag.length = 0;
-            
+            c.elementsUnderDrag.length = 0;      
     };
 
 })();

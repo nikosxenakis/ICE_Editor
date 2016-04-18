@@ -70,4 +70,6 @@ TextInput.prototype.mouseDown = function (){
 
 TextInput.prototype.mouseOut = function (){
     this.text.fill = "white";
+    if(this.element)
+        this.rectangle.mouseOut();
 };

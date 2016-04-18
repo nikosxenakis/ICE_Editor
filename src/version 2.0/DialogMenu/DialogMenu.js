@@ -1,7 +1,5 @@
 function DialogMenu(){
 
-	this.object = null;
-
 	this.dialogMenuId = "dialogMenu";
 	this.dialogMenuTop = 200;
 	this.dialogMenuLeft = 200;
@@ -228,35 +226,28 @@ function DialogMenu(){
 
         var outputText = $('#dialogTextInput').val();
 
-        if( $('#dialogMenu').find('#radioVariable').prop("checked") == true ){
-        	dialogMenu.object.text.setText( outputText );
-        	dialogMenu.object.type = InputBoxType.valueVariable;
+        if( $(dialogMenu.dialogMenuDiv).find('#radioVariable').prop("checked") == true && isNaN(outputText)){
+        	dialogMenu.object.input.setType(InputType.valueVariable);
+        	dialogMenu.object.input.setText(outputText);
         }
-        else if( $('#dialogMenu').find('#radioNumber').prop("checked") == true && !isNaN(outputText) ){
-        	dialogMenu.object.text.setText( outputText );
-        	dialogMenu.object.type = InputBoxType.valueNumber;
+        else if( $(dialogMenu.dialogMenuDiv).find('#radioNumber').prop("checked") == true && !isNaN(outputText) ){
+        	dialogMenu.object.input.setType(InputType.valueNumber);
+        	dialogMenu.object.input.setText(outputText);
         }
-        else if( $('#dialogMenu').find('#radioText').prop("checked") == true ){
-        	dialogMenu.object.text.setText( "\""+outputText+"\"" );
-        	dialogMenu.object.type = InputBoxType.valueText;
+        else if( $(dialogMenu.dialogMenuDiv).find('#radioText').prop("checked") == true ){
+        	dialogMenu.object.input.setType(InputType.valueText);
+        	dialogMenu.object.input.setText(outputText);
         }
-        else if( $('#dialogMenu').find('#radioBoolean').prop("checked") == true ){
-        	dialogMenu.object.type = InputBoxType.valueBoolean;
-        	if( $('#dialogMenu').find('#radioTrue').prop("checked") == true )
-        		dialogMenu.object.text.setText( "true" );
-        	else if( $('#dialogMenu').find('#radioFalse').prop("checked") == true )
-        		dialogMenu.object.text.setText( "false" );
+        else if( $(dialogMenu.dialogMenuDiv).find('#radioBoolean').prop("checked") == true ){
+        	dialogMenu.object.input.setType(InputType.valueBoolean);
+        	if( $(dialogMenu.dialogMenuDiv).find('#radioTrue').prop("checked") == true )
+        		dialogMenu.object.input.setText('true');
+        	else if( $(dialogMenu.dialogMenuDiv).find('#radioFalse').prop("checked") == true )
+        		dialogMenu.object.input.setText('false');
         }
-        else{
-        	//dialogMenu.object.text.setText( "" );
-        }
-
-    	dialogMenu.object.text.setCoords();
-        dialogMenu.object.fixText();
-
+        
         dialogMenu.closeDialogMenu();
 
-        Canvas.getInstance().canvas.renderAll();
 	});
 
 
@@ -280,86 +271,78 @@ DialogMenu.prototype.fixRadioButtons = function(){
     $(this.radioFalse).hide();
     $(this.dialogTextInput).show();
 
-	if(this.object.type == InputBoxType.all){
-	    $('#dialogMenu').find('#radioVariable').attr("disabled", false);
-	    $('#dialogMenu').find('#radioNumber').attr('disabled',false);
-	    $('#dialogMenu').find('#radioText').attr("disabled", false);
-	    $('#dialogMenu').find('#radioBoolean').attr('disabled',false);
+	if(this.object.input.type == InputType.variable){
+	    $(dialogMenu.dialogMenuDiv).find('#radioVariable').attr("disabled", false);
+	    $(dialogMenu.dialogMenuDiv).find('#radioNumber').attr('disabled',true);
+	    $(dialogMenu.dialogMenuDiv).find('#radioText').attr("disabled", true);
+	    $(dialogMenu.dialogMenuDiv).find('#radioBoolean').attr('disabled',true);
 
-	   	$('#dialogMenu').find('#radioVariable').prop("checked", true);
+	   	$(dialogMenu.dialogMenuDiv).find('#radioVariable').prop("checked", true);
+	    $(this.radioTrue).children('input[type=radio]').prop("checked", false);
+	}
+	else if(this.object.input.type == InputType.valueVariable){
+	    $(dialogMenu.dialogMenuDiv).find('#radioVariable').attr("disabled", false);
+	    $(dialogMenu.dialogMenuDiv).find('#radioNumber').attr('disabled',false);
+	    $(dialogMenu.dialogMenuDiv).find('#radioText').attr("disabled", false);
+	    $(dialogMenu.dialogMenuDiv).find('#radioBoolean').attr('disabled',false);
+
+	   	$(dialogMenu.dialogMenuDiv).find('#radioVariable').prop("checked", true);
 	    $(this.radioTrue).children('input[type=radio]').prop("checked", true);
 	}
-	else if(this.object.type == InputBoxType.variable){
-	    $('#dialogMenu').find('#radioVariable').attr("disabled", false);
-	    $('#dialogMenu').find('#radioNumber').attr('disabled',true);
-	    $('#dialogMenu').find('#radioText').attr("disabled", true);
-	    $('#dialogMenu').find('#radioBoolean').attr('disabled',true);
+	else if(this.object.input.type == InputType.valueNumber){
+	    $(dialogMenu.dialogMenuDiv).find('#radioVariable').attr("disabled", false);
+	    $(dialogMenu.dialogMenuDiv).find('#radioNumber').attr('disabled',false);
+	    $(dialogMenu.dialogMenuDiv).find('#radioText').attr("disabled", false);
+	    $(dialogMenu.dialogMenuDiv).find('#radioBoolean').attr('disabled',false);
 
-	   	$('#dialogMenu').find('#radioVariable').prop("checked", true);
+	   	$(dialogMenu.dialogMenuDiv).find('#radioNumber').prop("checked", true);
 	    $(this.radioTrue).children('input[type=radio]').prop("checked", true);
 	}
-	else if(this.object.type == InputBoxType.valueVariable){
-	    $('#dialogMenu').find('#radioVariable').attr("disabled", false);
-	    $('#dialogMenu').find('#radioNumber').attr('disabled',false);
-	    $('#dialogMenu').find('#radioText').attr("disabled", false);
-	    $('#dialogMenu').find('#radioBoolean').attr('disabled',false);
+	else if(this.object.input.type == InputType.valueText){
+	    $(dialogMenu.dialogMenuDiv).find('#radioVariable').attr("disabled", false);
+	    $(dialogMenu.dialogMenuDiv).find('#radioNumber').attr('disabled',false);
+	    $(dialogMenu.dialogMenuDiv).find('#radioText').attr("disabled", false);
+	    $(dialogMenu.dialogMenuDiv).find('#radioBoolean').attr('disabled',false);
 
-	   	$('#dialogMenu').find('#radioVariable').prop("checked", true);
+	   	$(dialogMenu.dialogMenuDiv).find('#radioText').prop("checked", true);
 	    $(this.radioTrue).children('input[type=radio]').prop("checked", true);
 	}
-	else if(this.object.type == InputBoxType.valueNumber){
-	    $('#dialogMenu').find('#radioVariable').attr("disabled", false);
-	    $('#dialogMenu').find('#radioNumber').attr('disabled',false);
-	    $('#dialogMenu').find('#radioText').attr("disabled", false);
-	    $('#dialogMenu').find('#radioBoolean').attr('disabled',false);
-
-	   	$('#dialogMenu').find('#radioNumber').prop("checked", true);
-	    $(this.radioTrue).children('input[type=radio]').prop("checked", true);
-	}
-	else if(this.object.type == InputBoxType.valueText){
-	    $('#dialogMenu').find('#radioVariable').attr("disabled", false);
-	    $('#dialogMenu').find('#radioNumber').attr('disabled',false);
-	    $('#dialogMenu').find('#radioText').attr("disabled", false);
-	    $('#dialogMenu').find('#radioBoolean').attr('disabled',false);
-
-	   	$('#dialogMenu').find('#radioText').prop("checked", true);
-	    $(this.radioTrue).children('input[type=radio]').prop("checked", true);
-	}
-	else if(this.object.type == InputBoxType.valueBoolean){
+	else if(this.object.input.type == InputType.valueBoolean){
 		$(this.radioTrue).show();
     	$(this.radioFalse).show();
     	$(this.dialogTextInput).hide();
 
-	    $('#dialogMenu').find('#radioVariable').attr("disabled", false);
-	    $('#dialogMenu').find('#radioNumber').attr('disabled',false);
-	    $('#dialogMenu').find('#radioText').attr("disabled", false);
-	    $('#dialogMenu').find('#radioBoolean').attr('disabled',false);
+	    $(dialogMenu.dialogMenuDiv).find('#radioVariable').attr("disabled", false);
+	    $(dialogMenu.dialogMenuDiv).find('#radioNumber').attr('disabled',false);
+	    $(dialogMenu.dialogMenuDiv).find('#radioText').attr("disabled", false);
+	    $(dialogMenu.dialogMenuDiv).find('#radioBoolean').attr('disabled',false);
 
-	   	$('#dialogMenu').find('#radioBoolean').prop("checked", true);
+	   	$(dialogMenu.dialogMenuDiv).find('#radioBoolean').prop("checked", true);
 
-	    if(this.object.text.getText() == 'true')
+	    if(this.object.input.getText() == 'true')
 	    	$(this.radioTrue).children('input[type=radio]').prop("checked", true);
-		else if(this.object.text.getText() == 'false')
+		else if(this.object.input.getText() == 'false')
 	    	$(this.radioFalse).children('input[type=radio]').prop("checked", true);	
 	}
 };
 
 DialogMenu.prototype.closeDialogMenu = function(){
     $(dialogMenu.dialogMenuDiv).css('display', "none");
-    dialogMenu.object.deactivate();
+
+	dialogMenu.object.update();
 	dialogMenu.object = null;
 };
 
-DialogMenu.prototype.openDialogMenu = function(object){
-
+DialogMenu.prototype.open = function(object){
+	//object must have a object.input && object.update(input)
 	this.object = object;
 
 	this.fixRadioButtons();
 
-    $('#dialogMenu').css('display', "block");	
+    $(dialogMenu.dialogMenuDiv).css('display', "block");	
 
     $(this.dialogTextInput).val("");
-    $(this.dialogTextInput).attr("placeholder" , this.object.text.getText());
-	$(this.dialogTextInput).focus();
+    $(this.dialogTextInput).attr("placeholder" , this.object.input.getText());
+	//$(this.dialogTextInput).focus();
 
 };
