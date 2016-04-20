@@ -2,84 +2,75 @@
 /* No media query since this is the default in Bootstrap */
 
 /* Small devices (tablets, 768px and up) */
-@media (min-width: 0px) {
 
+@media (min-width: 0px) {
+	
 	#container{
+		height:100%;
 		background-image: url("backgroundImage.png");
+		//overflow:auto;
 	}
 
 	#menuBarContainer { 
 		border: thin dashed #006600; 
+		height:9%;
 		background-image: url("backgroundImage.png");
 
 	}
-
-	#mainContent { 
-
-    	
-    	margin-right: auto;
-    	margin-left: auto;
-
-    	padding-top: 2%;
-		border: thin dashed #006600; 
-		height:400px; 
-	}
-
-	#sideBarContainer{
-		border: thin dashed #006600; 
-		top: 0px;
-	}
-
-	#navBarContainer{
-	//	height:300px;
-		overflow:auto;
-		border: thin dashed #006600; 	
-	}
-
-	#canvasContainer{
-	}
-		#canvas{
-    		border: outset grey 1px; 
+		
+		.dropdown-menu{
+			z-index: 0;		//for drag&drop
 		}
+
+		#image{
+			z-index: 1001;		
+		}
+
+	#wrapper{
+		//z-index: 0;		
+		height:80%;
+		//border: thin dashed #006600; 
+	}
+
+		#canvasContainer{
+    		overflow: auto;
+    		//position: relative;
+
+		}
+			#canvas{
+				//overflow: auto;
+
+    			//border: outset grey 1px; 
+			}
+
+			.deleteIcon{
+				z-index: 1001;		
+			}
+
+			#recycleBin{
+				transform: scale(4,4);
+  				position: fixed;
+				z-index: 1001;		
+			}
 
 	#footerContainer{
 		padding-top: 1%;
+		height:5%;
 	}
+	
 }
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
-	#mainContent { 
-		height: 650px; 
-	}
-
-	#sideBarContainer{
-		//top: -600px;
-	}
-
-	#canvas{
-		top: -200px;
-	}
+	
 }
 
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {
-	#mainContent { 
-		height: 650px; 
-	}
-
-	#sideBarContainer{
-		top: -500px;
-	}
+	
 }
 
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
-	#mainContent { 
-		height: 700px; 
-	}
-
-	#sideBarContainer{
-		top: 0px;
-	}
+	
 }
