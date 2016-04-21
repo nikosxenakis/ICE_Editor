@@ -1,0 +1,91 @@
+var CanvasData = {
+	"left":200,
+	"top":200,
+
+	"highOpacity":1,
+	"lowOpacity":0.8,
+
+	"horizontalElementsWidth":330,
+	"horizontalElementsHeight":60,
+	"verticalElementsWidth":23,
+	"verticalElementsHeight":0,
+
+	"greyElementsHeight":35,
+
+	"InputBoxConditionWidth":170,
+	"InputBoxConditionHeight":35,
+	"InputBoxWidth":100,
+	"InputBoxHeight":35,
+
+	"ElementLabelColor":"white",
+	"ElementLabelSize":22,
+
+	"InputBoxTextSize":20,
+	"InputBoxTextColor":"grey",
+
+};
+
+var DialogMenuData = {
+	"doNothingDialogMenuWidth": 350,
+	"lValueDialogMenuWidth": 400
+};
+
+var DeleteImageData = {
+	"id":"deleteImage",
+	"deleteImagePath":"images/deleteImage.png",
+	"deleteImageWidth":15,
+	"deleteImageHeight":15
+};
+
+var FoldingItemData = {
+	"id":"foldingItem",
+	"foldingItemWidth":13,
+	"foldingItemHeight":13
+};
+
+var Elements = {
+	"program":
+		{
+			id:"program",
+			format: "C",
+			type: "program",
+			color:"#008fb3",
+			class: ProgramElement
+		}
+	,
+	"while":
+		{
+			id:"while",
+			format: "C",
+			type: "while",
+			color:"#cc5200",
+			class: WhileElement
+		}
+	,
+	"doNothing":
+		{
+			id:"doNothing",
+			format: "I",
+			type: "doNothing",
+			color:"green",
+			class: DoNothingElement
+		}
+	,
+	"grey":
+		{
+			id:"grey",
+			format: "I",
+			type: "grey",
+			color:"grey",
+			class: GreyElement
+		}
+	,
+	"assign":
+		{
+			id:"assign",
+			format: "I",
+			type: "assign",
+			color:"green",
+			class: AssignElement
+		}
+};
