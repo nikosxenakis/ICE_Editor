@@ -8,7 +8,8 @@ function createHtmlElement(attributes){
 		name: attributes.name,
 		color: attributes.color,
 		style: attributes.style,
-		placeholder: attributes.placeholder
+		placeholder: attributes.placeholder,
+		object: attributes.object
 	});
 	
 	$(attributes.father).append(element);

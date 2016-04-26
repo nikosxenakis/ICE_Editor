@@ -75,18 +75,17 @@ DeleteImage.prototype.setVisibility = function (flag){
     }
 };
 
-DeleteImage.prototype.moveDeleteImage = function (dx,dy){
+DeleteImage.prototype.moveDeleteImage = function (){
     if(!this.deleteImageInCanvas){
         console.log("error in move delete image");
         return;
     }
 
-    if(dx){
-        this.deleteImageInCanvas.setLeft(this.deleteImageInCanvas.getLeft() + dx);
-    }
-    if(dy){
-        this.deleteImageInCanvas.setTop(this.deleteImageInCanvas.getTop() + dy);    
-    }
+    var left = this.element.getRectangle(RectangleOffset.firstHorizontial).getLeft();
+    var top = this.element.getRectangle(RectangleOffset.firstHorizontial).getTop();
+
+    this.deleteImageInCanvas.setLeft(left + CanvasData.horizontalElementsWidth - DeleteImageData.deleteImageWidth - 2);
+    this.deleteImageInCanvas.setTop(top + 2);    
 
     this.deleteImageInCanvas.setCoords();
 };

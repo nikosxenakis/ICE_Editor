@@ -40,13 +40,12 @@ function Element (id , elementId , elementOffset , father) {
     this.pos = this.setPositions(coords);
     this.father = father;
     this.opac = CanvasData.highOpacity;
-    this.visibility = true;
      
     this.rectangles = this.createRectangles();
    
     this.getElementSize();
  
-    if(this.type != ElementType.doNothing && this.type != ElementType.program){
+    if(this.type != ElementType.doNothing && this.type != ElementType.grey && this.type != ElementType.program){
         this.deleteImage = new DeleteImage(this);
     }
     else{
@@ -169,17 +168,19 @@ Element.prototype.getInsideElementSize = function() {
 
 Element.prototype.setElementVisibillity = function(flag) {
 
-    if(this.visibility == flag)
+    if(this.visibility && this.visibility == flag)
         return;
 
     this.visibility = flag;
-
-    if(this.deleteImage)
-        this.deleteImage.setVisibility(flag);
     
-    if(this.foldingItem)
-        this.foldingItem.setVisibility(flag);
-
+    if(flag == false){
+        if(this.deleteImage)
+            this.deleteImage.setVisibility(flag);
+        
+        if(this.foldingItem)
+            this.foldingItem.setVisibility(flag);
+    }
+    
     for (var k=0; k < this.rectangles.length ; k++){
         this.rectangles[k].setVisibillity(flag);
     }
@@ -445,8 +446,6 @@ Element.prototype.moveElementRectangles = function(movedRectangle,dx,dy) {
     }
 
     if(movedRectangle){
-        var dx;
-        var dy;
 
         if(nextToMovedRectangle){
             movedRectangle.rectangleInCanvas.setTop(nextToMovedRectangle.rectangleInCanvas.getTop()-movedRectangle.rectangleInCanvas.height);
@@ -457,7 +456,9 @@ Element.prototype.moveElementRectangles = function(movedRectangle,dx,dy) {
             movedRectangle.rectangleInCanvas.setLeft(prevToMovedRectangle.rectangleInCanvas.getLeft());
         }
         else{
-            console.log("Error In moveElementRectangles");
+            //console.log("Error In moveElementRectangles");
+            if(this.format == ElementFormat.I)
+                this.rectangles[0].moveRectangleInCanvas(dx,dy);
         }
                 
         movedRectangle.moveRectangleElements();
@@ -476,9 +477,9 @@ Element.prototype.moveElement = function(movedRectangle, dx, dy) {
 
     this.moveElementRectangles(movedRectangle,dx,dy);
     
-    if(this.type != ElementType.doNothing){
+    if(this.type != ElementType.doNothing && this.type != ElementType.grey){
         if(this.type != ElementType.program)
-            this.deleteImage.moveDeleteImage(dx,dy);
+            this.deleteImage.moveDeleteImage();
         this.foldingItem.moveFoldingItem(dx,dy);
     }
 
@@ -633,6 +634,20 @@ Element.prototype.setOpacity = function(opac) {
 
     this.opac = opac;
 
+    if(this.deleteImage){
+        if(opac == CanvasData.highOpacity)
+            this.deleteImage.setVisibility(false);
+        else if(opac == CanvasData.lowOpacity)
+            this.deleteImage.setVisibility(true);
+    }
+
+    if(this.foldingItem){
+        if(opac == CanvasData.highOpacity)
+            this.foldingItem.setVisibility(false);
+        else if(opac == CanvasData.lowOpacity)
+            this.foldingItem.setVisibility(true);
+    }
+
     for (var k=0; k < this.rectangles.length ; k++){
         if(this.rectangles[k])
             this.rectangles[k].setOpacity(opac);
@@ -669,11 +684,7 @@ Element.prototype.foldElement = function(foldedElement) {
     if(this != foldedElement){
         this.setElementVisibillity(false);
     }
-
-    if(this.format == ElementFormat.I)
-        return;
-
-    if(this == foldedElement){
+    else if(this == foldedElement){
         this.unfoldAllSubElements();
 
         this.reverseElementInsideSpace(this.getInsideElementSize().height,this.getInsideElementSize().top);
@@ -681,15 +692,12 @@ Element.prototype.foldElement = function(foldedElement) {
         if(this.father){
             this.father.reverseElementsTop(this,this.getInsideElementSize().height);
         }
-        
+            
+        for (var k=0; k < this.elements.length ; k++){   
+            this.elements[k].foldElement(foldedElement);
+        }
     }
-
-    for (var k=0; k < this.elements.length ; k++){   
-        this.elements[k].foldElement(foldedElement);
-    }
-    
     this.foldingItem.foldingItemState = FoldingItemState.folded;
-
 };
 
 Element.prototype.unfoldElement = function(unfoldedElement) {
@@ -771,11 +779,18 @@ Element.prototype.bringToFront = function(){
 };
 
 Element.prototype.sendToBack = function(){
-
-    for(var k=0; k< this.rectangles.length; k++){
-        this.rectangles[k].sendToBack();
+ 
+    for(var k=0; k< this.elements.length; k++){
+        this.elements[k].sendToBack();
     }  
 
-    this.deleteImage.sendToBack();
-    this.foldingItem.sendToBack();
+    if(this.deleteImage)
+        this.deleteImage.sendToBack();
+    
+    if(this.foldingItem)
+        this.foldingItem.sendToBack();
+        
+    for(var k=0; k< this.rectangles.length; k++){
+        this.rectangles[k].sendToBack();
+    } 
 };

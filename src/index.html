@@ -50,7 +50,6 @@
         <script type="text/javascript" src="js/fabric.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.9.2.custom.js"></script>
         <script type="text/javascript" src="js/MenuBar.js"></script>
-        <script type="text/javascript" src="js/underscore.js"></script> 
         <script type="text/javascript" src="js/typeahead.js"></script> 
 
         <!-- CSS -->
@@ -76,6 +75,9 @@
         <script type="text/javascript" src="Elements/GreyElement.js"></script>
         <script type="text/javascript" src="Elements/AssignElement.js"></script>
         <script type="text/javascript" src="Elements/DoNothingElement.js"></script>
+        <script type="text/javascript" src="Elements/ForeverElement.js"></script>
+        <script type="text/javascript" src="Elements/RepeatElement.js"></script>
+        <script type="text/javascript" src="Elements/ForElement.js"></script>
 
         <script type="text/javascript" src="Rectangle/Rectangle.js"></script>
         
@@ -89,6 +91,11 @@
         <script type="text/javascript" src="DialogMenu/DialogMenuController.js"></script>
         <script type="text/javascript" src="DialogMenu/DoNothingDialogMenu.js"></script>
         <script type="text/javascript" src="DialogMenu/LValueDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/LogicExpressionDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/NumberDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/IdDialogMenu.js"></script>
+
+        <script type="text/javascript" src="LogicExpression/LogicExpression.js"></script>
 
         <!-- JSON -->
         <script type="text/javascript" src="json/data.json"></script>
@@ -99,7 +106,6 @@
     <body onload="InitEditor();" ng-app="VPL-tree">
 
       <div id="container"> 
-
         <div ng-controller="MenuBarCtrl as ctrl" ng-cloak="" class="menuBarStyle">
           <md-toolbar class="md-menu-toolbar">
             <div id="menuBarContainer" layout="row">
@@ -302,16 +308,8 @@
                             <li class="dropdown-header">Programs</li>
                           </ul>
 
-                          <ul class="dropdown-menu" role="menu">
-                            <li class="dropdown-header">Loops</li>
-                            <li>                           
-                              <img id="while" width="180px" height="80px" class="draggable" src="images/while.png">
-                            </li>
-                            <li class="dropdown-header">Flows</li>
-                            <li class="dropdown-header">Statements</li>
-                            <li>     
-                              <img id="assign" width="180px" height="80px" class="draggable" src="images/assign.png">
-                            </li>
+                          <ul id="sideBarImages" class="dropdown-menu" role="menu">
+                            <!-- Images -->
                           </ul>
                       
                         </li>

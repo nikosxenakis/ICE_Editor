@@ -7,6 +7,10 @@ var inputPrograms = [
 				type: "while",
 				elements: [
 					{
+						id: "for1",
+						type: "for"
+					},
+					{
 						id: "assign1",
 						type: "assign"
 					}
@@ -28,6 +32,20 @@ var inputPrograms = [
 		id: "programName2",
 		elements: [
 			{
+				id: "repeat1",
+				type: "repeat",
+				elements: [
+					{
+						id: "for1",
+						type: "for"
+					},
+					{
+						id: "assign1",
+						type: "assign"
+					}
+				]
+			},
+			{
 				id: "assign1",
 				type: "assign"
 			},
@@ -42,6 +60,12 @@ var inputPrograms = [
 	{
 		id: "emptyProgram",
 		elements: [
+			{
+				id: "while1",
+				type: "while",
+				elements: [
+				]
+			}
 		]
 	}
 ];

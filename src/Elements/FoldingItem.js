@@ -7,7 +7,7 @@ function FoldingItem (element) {
 
     this.element = element;
     this.foldingItemState = FoldingItemState.unfolded;
-
+    
     if( !this.element.getRectangle(RectangleOffset.secondHorizontial) ){
         return;
     }
@@ -30,7 +30,6 @@ function FoldingItem (element) {
             opacity: CanvasData.lowOpacity,
             element: this.element,
             foldingItem: this,
-            visible: false,
             lockMovementX: true,
             lockMovementY: true,
             class:this
@@ -82,6 +81,7 @@ function FoldingItem (element) {
     c.canvas.add(this.foldingItem);
     c.canvas.add(this.foldingItemLineInCanvas);
     c.canvas.add(this.foldingItemSecondaryLineInCanvas);
+
 }
 
 FoldingItem.prototype.bringToFront = function (){
@@ -150,7 +150,7 @@ FoldingItem.prototype.changeSize = function (dy){
 
 FoldingItem.prototype.setVisibility = function (flag){
 
-    if(this.visible == flag)
+    if(this.visible && this.visible == flag)
         return;
 
     this.visible = flag;
@@ -158,6 +158,10 @@ FoldingItem.prototype.setVisibility = function (flag){
     if( ! this.element.getRectangle(RectangleOffset.secondHorizontial) )
         return;
 
+    this.foldingItemLineInCanvas.visible = flag;
+    this.foldingItemSecondaryLineInCanvas.visible = flag;
+
+    this.foldingItem.visible = flag;
     this.foldingItemBoxInCanvas.visible = flag;
     this.foldingItemInsideBoxHorizontialLineInCanvas.visible = flag;
     this.foldingItemInsideBoxVerticalLineInCanvas.visible = flag;
@@ -166,9 +170,8 @@ FoldingItem.prototype.setVisibility = function (flag){
         this.foldingItemInsideBoxVerticalLineInCanvas.visible = false;
     }
         
-    this.foldingItemLineInCanvas.visible = flag;
-    this.foldingItemSecondaryLineInCanvas.visible = flag;
-    
+
+
 }
 
 FoldingItem.prototype.mouseOver = function (){
@@ -180,15 +183,13 @@ FoldingItem.prototype.mouseUp = function (){
 };
 
 FoldingItem.prototype.mouseDown = function (){
-        
     if( this.foldingItemState == FoldingItemState.unfolded ){
         this.element.foldElement(this.element);
     }
     else{
         this.element.unfoldElement(this.element);
     } 
-        
-    Canvas.getInstance().canvas.renderAll();
+
     this.element.getRectangle(RectangleOffset.firstHorizontial).rectangle.mouseOver();
 };
 
@@ -205,7 +206,6 @@ FoldingItem.prototype.makeLine = function (coords){
         opacity: 1,
         element: this.element,
         foldingItem: this,
-        visible: false,
         lockMovementX: true,
         lockMovementY: true,
         class: this

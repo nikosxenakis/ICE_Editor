@@ -23,8 +23,17 @@ var DialogMenuController = (function(){
 		*/
 	
 		//logicExpression
-		//var logicExpression = new LogicExpressionDialogMenu();
-		//this.dialogMenus[InputType.logicExpression] = logicExpression;
+		var logicExpression = new LogicExpressionDialogMenu();
+		this.dialogMenus[InputType.logicExpressionDefault] = logicExpression;
+		this.dialogMenus[InputType.logicExpression] = logicExpression;
+
+		//simple number input
+		var number = new NumberDialogMenu();
+		this.dialogMenus[InputType.number] = number;
+
+		var id = new IdDialogMenu();
+		this.dialogMenus[InputType.id] = id;
+
 	};
 
     var instance;
@@ -67,14 +76,15 @@ var DialogMenuController = (function(){
     };
 
     function close(updateFlag){
-    	instance.object.deactivate();
+    	if(instance.object.box)
+    		instance.object.deactivate();
 
 		instance.activeDialogMenu.close();
 
-	    if(updateFlag == true){
+	    if(updateFlag == true && instance.object.box){
 			instance.object.update();
 	    }
-	    else{
+	    else if(updateFlag == false){
 			instance.input.type = instance.prevType;
 	    }
 

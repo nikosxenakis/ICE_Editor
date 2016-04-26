@@ -5,8 +5,8 @@ var CanvasData = {
 	"highOpacity":1,
 	"lowOpacity":0.8,
 
-	"horizontalElementsWidth":330,
-	"horizontalElementsHeight":60,
+	"horizontalElementsWidth":350,
+	"horizontalElementsHeight":65,
 	"verticalElementsWidth":23,
 	"verticalElementsHeight":0,
 
@@ -16,9 +16,14 @@ var CanvasData = {
 	"InputBoxConditionHeight":35,
 	"InputBoxWidth":100,
 	"InputBoxHeight":35,
+	"InputBoxNumberWidth":30,
+	"InputBoxNumberHeight":35,
+	"InputBoxIdWidth":45,
+	"InputBoxIdHeight":35,
 
 	"ElementLabelColor":"white",
 	"ElementLabelSize":22,
+	"ElementForLabelSize":18,
 
 	"InputBoxTextSize":20,
 	"InputBoxTextColor":"grey",
@@ -59,7 +64,9 @@ var Elements = {
 			format: "C",
 			type: "while",
 			color:"#cc5200",
-			class: WhileElement
+			class: WhileElement,
+			srcImg: "images/while.png",
+			categoryImg: "loops"
 		}
 	,
 	"doNothing":
@@ -86,6 +93,41 @@ var Elements = {
 			format: "I",
 			type: "assign",
 			color:"green",
-			class: AssignElement
+			class: AssignElement,
+			srcImg: "images/assign.png",
+			categoryImg: "statements"
+		}
+	,
+	"forever":
+		{
+			id:"forever",
+			format: "C",
+			type: "forever",
+			color:"#ff9900",
+			class: ForeverElement,
+			srcImg: "images/forever.png",
+			categoryImg: "loops"
+		}
+	,
+	"repeat":
+		{
+			id:"repeat",
+			format: "C",
+			type: "repeat",
+			color:"#003366",
+			class: RepeatElement,
+			srcImg: "images/repeat.png",
+			categoryImg: "loops"
+		}
+	,
+	"for":
+		{
+			id:"for",
+			format: "C",
+			type: "repeat",
+			color:"#ff33cc",
+			class: ForElement,
+			srcImg: "images/for.png",
+			categoryImg: "loops"
 		}
 };

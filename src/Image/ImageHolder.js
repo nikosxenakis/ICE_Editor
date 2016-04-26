@@ -1,7 +1,8 @@
 var ImageHolder = (function(){
 
     function ImageHolder() {
-        this.images = new Array();        
+        //this.images = new Array();   
+        addHtmlImages();
         initDraggableElements();
     }
 
@@ -15,6 +16,68 @@ var ImageHolder = (function(){
             return instance;
         }
     };
+
+function addHtmlImages(){
+
+    var loopsHeader = createHtmlElement({
+        format: "li",
+        className: "dropdown-header",
+        text: "Loops",
+        father: $("#sideBarImages")
+    });
+
+    var loops = createHtmlElement({
+        format: "li",
+        father: $("#sideBarImages")
+    });
+    
+    var flowsHeader = createHtmlElement({
+        format: "li",
+        className: "dropdown-header",
+        text: "Flows",
+        father: $("#sideBarImages")
+    });
+
+    var flows = createHtmlElement({
+        format: "li",
+        father: $("#sideBarImages")
+    });
+
+    var statementsHeader = createHtmlElement({
+        format: "li",
+        className: "dropdown-header",
+        text: "Statements",
+        father: $("#sideBarImages")
+    });
+
+    var statements = createHtmlElement({
+        format: "li",
+        father: $("#sideBarImages")
+    });
+
+    for (key in Elements){
+        if(Elements[key].categoryImg && Elements[key].srcImg){
+
+            var father;
+            if(Elements[key].categoryImg == "loops")
+                father = loops;
+            else if(Elements[key].categoryImg == "statements")
+                father = statements;
+            else if(Elements[key].categoryImg == "flows")
+                father = flows;            
+
+            var img = createHtmlElement({
+                format: "img",
+                id: Elements[key].id,
+                className: "draggable",
+                father: father
+            });
+            $(img).attr("src", Elements[key].srcImg);  
+            $(img).width(180);
+            $(img).height(80);
+        }
+    }
+};
 
 function initDraggableElements() {
 
@@ -40,7 +103,7 @@ function initDraggableElements() {
             }
       
             Canvas.rectangleCollisionWithHorizontialElements(imageRect);
-
+            
             Canvas.addElementToCanvas(target.id);
 
         },

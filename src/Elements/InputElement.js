@@ -37,6 +37,11 @@ var InputType = {
         logicExpressionDefault: "logicExpressionDefault",   //default
         logicExpression: "logicExpression",
 
+    //number
+        number: "number",   //default
+
+    //id
+        id: "id",   //default
 };
 
 function InputElement (input , type){

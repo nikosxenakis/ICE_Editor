@@ -141,7 +141,7 @@ InputBox.prototype.deactivate = function (){
 };
 
 InputBox.prototype.update = function (){
-    this.deactivate();
+    //this.deactivate();
 
     //this.box.width
     var maxChar = this.box.width/10;

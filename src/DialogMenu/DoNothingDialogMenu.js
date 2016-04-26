@@ -23,7 +23,7 @@ function DoNothingDialogMenu(){
 			});
 	};
 
-	$(this.buttonOk).mousedown(function() {
+	$(this.buttonNext).mousedown(function() {
       	for (var key in ElementType) {
       		var id = "#" + key;
 	        if( $(DialogMenuController.getActive().dialogMenuDiv).find(id).prop("checked") == true){
@@ -51,6 +51,9 @@ DoNothingDialogMenu.prototype.initRadioButtons = function(){
     		$(DialogMenuController.getActive().dialogMenuDiv).find(id).attr("disabled", false);
         }	
     }
+    $(this.buttonBack).hide();
+    $(this.buttonNext).attr("disabled", false);
+
 };
 
 DoNothingDialogMenu.prototype.open = function(object){

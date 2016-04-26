@@ -31,8 +31,9 @@ function InitEditor() {
     parser.loadProgram(inputPrograms);
     //parser.saveProgram(Canvas.getActiveElement());
 
-    var elem = Canvas.getElement('programName2');
-    Canvas.setActiveElement(elem);
+    //var elem = Canvas.getElement('programName2');
+    //Canvas.setActiveElement(elem);
+
 }
 
 
