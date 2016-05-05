@@ -1,6 +1,6 @@
 var CanvasData = {
-	"left":200,
-	"top":200,
+	"left":120,
+	"top":120,
 
 	"highOpacity":1,
 	"lowOpacity":0.8,
@@ -32,7 +32,8 @@ var CanvasData = {
 
 var DialogMenuData = {
 	"doNothingDialogMenuWidth": 350,
-	"lValueDialogMenuWidth": 400
+	"lValueDialogMenuWidth": 400,
+	"logicExpressionContentDialogMenuWidth": 500
 };
 
 var DeleteImageData = {
@@ -49,6 +50,24 @@ var FoldingItemData = {
 };
 
 var Elements = {
+	"function":
+		{
+			id:"function",
+			format: "C",
+			type: "function",
+			color:"#008fb3",
+			class: FunctionElement
+		}
+	,
+	"variables":
+		{
+			id:"variables",
+			format: "C",
+			type: "variables",
+			color:"#008fb3",
+			class: VariablesElement
+		}
+	,
 	"program":
 		{
 			id:"program",
@@ -124,8 +143,8 @@ var Elements = {
 		{
 			id:"for",
 			format: "C",
-			type: "repeat",
-			color:"#ff33cc",
+			type: "for",
+			color:"#f1838c",
 			class: ForElement,
 			srcImg: "images/for.png",
 			categoryImg: "loops"

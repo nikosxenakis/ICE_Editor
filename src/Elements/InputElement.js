@@ -42,6 +42,31 @@ var InputType = {
 
     //id
         id: "id",   //default
+
+    //LogicOperator
+        logicOperator: "logicOperator", //default
+
+    //logicExpressionTerm
+        logicExpressionTerm: "logicExpressionTerm", //default
+
+        //logicExpressionTermVariable
+            logicExpressionTermLocalVariable: "logicExpressionTermLocalVariable",
+            logicExpressionTermGlobalVariable: "logicExpressionTermGlobalVariable",
+            logicExpressionTermArrayElement: "logicExpressionTermArrayElement",
+            logicExpressionTermObjectElement: "logicExpressionTermObjectElement",
+
+        //logicExpressionTermConstant
+            logicExpressionTermConstantNumber: "logicExpressionTermConstantNumber",
+            logicExpressionTermConstantText: "logicExpressionTermConstantText",
+            logicExpressionTermConstantBool: "logicExpressionTermConstantBool",
+            logicExpressionTermConstantDate: "logicExpressionTermConstantDate",
+            logicExpressionTermConstantTile: "logicExpressionTermConstantTile",
+
+        //logicExpressionTermFunctionCall
+            logicExpressionTermFunctionCall: "logicExpressionTermFunctionCall",
+
+
+        
 };
 
 function InputElement (input , type){

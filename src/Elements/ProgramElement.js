@@ -1,5 +1,5 @@
-function ProgramElement(id , elementOffset , father){
-    Element.call(this , id , "program" , elementOffset , father);
+function ProgramElement(id){
+    Element.call(this , id , "program" , 0 , null);
 
     var firstRect = this.getRectangle(RectangleOffset.firstHorizontial).rectangle;
     var left = firstRect.rectangleInCanvas.getLeft();

@@ -45,7 +45,7 @@ function Element (id , elementId , elementOffset , father) {
    
     this.getElementSize();
  
-    if(this.type != ElementType.doNothing && this.type != ElementType.grey && this.type != ElementType.program){
+    if( this.type != ElementType.doNothing && this.type != ElementType.grey && father!=null ){
         this.deleteImage = new DeleteImage(this);
     }
     else{
@@ -478,7 +478,7 @@ Element.prototype.moveElement = function(movedRectangle, dx, dy) {
     this.moveElementRectangles(movedRectangle,dx,dy);
     
     if(this.type != ElementType.doNothing && this.type != ElementType.grey){
-        if(this.type != ElementType.program)
+        if(this.father != null)
             this.deleteImage.moveDeleteImage();
         this.foldingItem.moveFoldingItem(dx,dy);
     }
@@ -705,7 +705,7 @@ Element.prototype.unfoldElement = function(unfoldedElement) {
 
     if( this != unfoldedElement){
         if(this.foldingItem.foldingItemState == FoldingItemState.unfolded){
-            this.foldElement(this);
+        //    this.foldElement(this);
         }
 
         this.setElementVisibillity(true);

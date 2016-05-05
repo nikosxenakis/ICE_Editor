@@ -1,6 +1,41 @@
 var inputPrograms = [
 	{
+		id: "func1",
+		type: "function",
+		args: [
+		],
+		elements: [
+			{
+				id: "for1",
+				type: "for"
+			},
+			{
+				id: "assign1",
+				type: "assign"
+			}
+		] 
+	},
+	{
+		id: "variables",
+		type: "variables",
+		elements: [
+			{
+				id: "assign1",
+				type: "assign"
+			},
+			{
+				id: "assign2",
+				type: "assign"
+			},
+			{
+				id: "assign3",
+				type: "assign"
+			}
+		] 
+	},
+	{
 		id: "programName",
+		type: "program",
 		elements: [
 			{
 				id: "while1",
@@ -30,6 +65,7 @@ var inputPrograms = [
 	},
 	{
 		id: "programName2",
+		type: "program",
 		elements: [
 			{
 				id: "repeat1",
@@ -59,11 +95,16 @@ var inputPrograms = [
 	},
 	{
 		id: "emptyProgram",
+		type: "program",
 		elements: [
 			{
 				id: "while1",
 				type: "while",
 				elements: [
+					{
+						id: "assign1",
+						type: "assign"
+					}
 				]
 			}
 		]

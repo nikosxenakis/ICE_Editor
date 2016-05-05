@@ -28,12 +28,15 @@ function InitEditor() {
     ImageHolder.getInstance();
 
     var parser = new Parser();
-    parser.loadProgram(inputPrograms);
+    parser.load(inputPrograms);
     //parser.saveProgram(Canvas.getActiveElement());
 
-    //var elem = Canvas.getElement('programName2');
-    //Canvas.setActiveElement(elem);
+    var elem = Canvas.getElement('emptyProgram');
+    Canvas.setActiveElement(elem);
 
+    //init jsep parse
+    jsep.addBinaryOp("AND",1);
+    jsep.addBinaryOp("OR",1);
 }
 
 

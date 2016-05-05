@@ -22,12 +22,9 @@ function WhileElement (id , elementOffset , father){
         width: CanvasData.InputBoxConditionWidth,
         height: CanvasData.InputBoxConditionHeight
     };
-    /*
-    var condition = new Condition("condition",relPos);
-    condition.move(0,-condition.condition.getHeight()/2);
-    firstRect.addElement(condition);
-    */
-    var condition = new InputBox("x<5 AND y==3",relPos,InputType.logicExpressionDefault);
+    //(x<5 OR y==3) AND z>=2
+    var condition = new InputBox("x>2 AND y==1",relPos,InputType.logicExpression);
+    //var condition = new InputBox("",relPos,InputType.logicExpressionDefault);
     firstRect.addElement(condition);
 
 

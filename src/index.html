@@ -50,6 +50,7 @@
         <script type="text/javascript" src="js/fabric.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.9.2.custom.js"></script>
         <script type="text/javascript" src="js/MenuBar.js"></script>
+        <script type="text/javascript" src="js/jsep.min.js"></script>
         <script type="text/javascript" src="js/typeahead.js"></script> 
 
         <!-- CSS -->
@@ -78,6 +79,8 @@
         <script type="text/javascript" src="Elements/ForeverElement.js"></script>
         <script type="text/javascript" src="Elements/RepeatElement.js"></script>
         <script type="text/javascript" src="Elements/ForElement.js"></script>
+        <script type="text/javascript" src="Elements/VariablesElement.js"></script>
+        <script type="text/javascript" src="Elements/FunctionElement.js"></script>
 
         <script type="text/javascript" src="Rectangle/Rectangle.js"></script>
         
@@ -94,8 +97,12 @@
         <script type="text/javascript" src="DialogMenu/LogicExpressionDialogMenu.js"></script>
         <script type="text/javascript" src="DialogMenu/NumberDialogMenu.js"></script>
         <script type="text/javascript" src="DialogMenu/IdDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/LogicOperatorDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/LogicExpressionTermDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/ExpressionDialogMenu.js"></script>
 
         <script type="text/javascript" src="LogicExpression/LogicExpression.js"></script>
+        <script type="text/javascript" src="LogicExpression/LogicOperator.js"></script>
 
         <!-- JSON -->
         <script type="text/javascript" src="json/data.json"></script>
@@ -303,6 +310,14 @@
                         </li>
                         <li class="dropdown">
                           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-cog"></i> Tools <span class="caret"></span></a>
+
+                          <ul id="variablesList" class="dropdown-menu" role="menu">
+                            <li class="dropdown-header">Variables</li>
+                          </ul>
+
+                          <ul id="functionList" class="dropdown-menu" role="menu">
+                            <li class="dropdown-header">Functions</li>
+                          </ul>
 
                           <ul id="programList" class="dropdown-menu" role="menu">
                             <li class="dropdown-header">Programs</li>

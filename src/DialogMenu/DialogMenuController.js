@@ -3,6 +3,9 @@ var DialogMenuController = (function(){
 
 		//init all dialog menus
 		this.dialogMenus = new Array();
+		this.activeDialogMenu = new Array();
+		this.object = new Array();
+		this.prevType = new Array();
 
 		//doNothing
 		this.dialogMenus[InputType.doNothing] = new DoNothingDialogMenu();
@@ -16,11 +19,24 @@ var DialogMenuController = (function(){
 		this.dialogMenus[InputType.lvalueObjectElement] = lValue;
 
 		//expression
-		/*
 		var expression = new ExpressionDialogMenu();
 		this.dialogMenus[InputType.expression] = expression;
-		...
-		*/
+		this.dialogMenus[InputType.expressionArithmentic] = expression;
+		this.dialogMenus[InputType.expressionLogic] = expression;
+		this.dialogMenus[InputType.expressionTermLvalueID] = expression;
+		this.dialogMenus[InputType.expressionTermLvalueGlobalID] = expression;
+		this.dialogMenus[InputType.expressionTermLvalueArrayElement] = expression;
+		this.dialogMenus[InputType.expressionTermLvalueObjectElement] = expression;
+		this.dialogMenus[InputType.expressionTermCallFunction] = expression;
+		this.dialogMenus[InputType.expressionTermCallObjectMethod] = expression;
+		this.dialogMenus[InputType.expressionTermConstNumber] = expression;
+		this.dialogMenus[InputType.expressionTermConstString] = expression;
+
+		this.dialogMenus[InputType.expressionTermConstBool] = expression;
+		this.dialogMenus[InputType.expressionTermConstDate] = expression;
+		this.dialogMenus[InputType.expressionTermConstTime] = expression;
+
+		this.dialogMenus[InputType.expressionArray] = expression;
 	
 		//logicExpression
 		var logicExpression = new LogicExpressionDialogMenu();
@@ -31,8 +47,25 @@ var DialogMenuController = (function(){
 		var number = new NumberDialogMenu();
 		this.dialogMenus[InputType.number] = number;
 
+		//simple id input
 		var id = new IdDialogMenu();
 		this.dialogMenus[InputType.id] = id;
+
+		//Logic Operator input
+		var logicOperator = new LogicOperatorDialogMenu();
+		this.dialogMenus[InputType.logicOperator] = logicOperator;
+
+		//Logic Expression Term
+		var logicExpressionTerm = new LogicExpressionTermDialogMenu();
+		this.dialogMenus[InputType.logicExpressionTerm] = logicExpressionTerm;
+		this.dialogMenus[InputType.logicExpressionTermLocalVariable] = logicExpressionTerm;
+		this.dialogMenus[InputType.logicExpressionTermGlobalVariable] = logicExpressionTerm;
+		this.dialogMenus[InputType.logicExpressionTermArrayElement] = logicExpressionTerm;
+		this.dialogMenus[InputType.logicExpressionTermObjectElement] = logicExpressionTerm;
+		this.dialogMenus[InputType.logicExpressionTermConstantNumber] = logicExpressionTerm;
+		this.dialogMenus[InputType.logicExpressionTermConstantText] = logicExpressionTerm;
+		this.dialogMenus[InputType.logicExpressionTermFunctionCall] = logicExpressionTerm;
+
 
 	};
 
@@ -52,55 +85,74 @@ var DialogMenuController = (function(){
         close: close,
         getActive: getActive,
         createBasicDialogMenu: createBasicDialogMenu,
-        createLvalueDiv: createLvalueDiv
+        createLvalueDiv: createLvalueDiv,
+        createConstantDiv: createConstantDiv,
+        createArrayDiv: createArrayDiv,
+        createFunctionCallDiv: createFunctionCallDiv
     };
 
     function open(object){
-		//object must have a object.input && object.update(input)
-		if(!object instanceof InputBox)
-			console.log("wrong object as argument");
-
-		instance.object = object;
+		//object must have a object.input && object.update(input) && object.activate() && object.deactivate()
+		instance.object.push(object);
 		instance.input = object.input;
-		instance.prevType = instance.input.type;
+		instance.prevType.push(instance.input.type);
 
-		object.activate();
+		getObject().activate();
 
-		instance.activeDialogMenu = instance.dialogMenus[instance.input.type];
-		if(!instance.activeDialogMenu){
+		console.log('TYPE = ',object.input.type);
+
+		instance.activeDialogMenu.push(instance.dialogMenus[instance.input.type]);
+		if(!instance.dialogMenus[instance.input.type]){
 			console.log("There is no dialogMenu for : ",instance.input.type);
 			return;
 		}
-
-		instance.activeDialogMenu.open(object);		
+		console.log(instance);
+		getActive().open(getObject());		
     };
 
     function close(updateFlag){
-    	if(instance.object.box)
-    		instance.object.deactivate();
+    	//if(instance.object.box)
+    		getObject().deactivate();
 
-		instance.activeDialogMenu.close();
+		getActive().close();
 
-	    if(updateFlag == true && instance.object.box){
-			instance.object.update();
+	    if(updateFlag == true/* && instance.object.box*/){
+			getObject().update();
 	    }
 	    else if(updateFlag == false){
-			instance.input.type = instance.prevType;
+			getInput().type = getPrevType();
 	    }
 
-		instance.activeDialogMenu = null;
-		instance.object = null;
+	    instance.activeDialogMenu.splice(instance.activeDialogMenu.length-1, 1);
+	    instance.object.splice(instance.object.length-1, 1);
+	    instance.prevType.splice(instance.prevType.length-1, 1);
+
+		console.log(instance);
+
 		instance.input = null;
     };
 
-    function getActive(){
-    	return instance.activeDialogMenu;
+    function getPrevType(){
+    	return instance.prevType[instance.prevType.length-1];
     };
-    
+
+    function getActive(){
+    	return instance.activeDialogMenu[instance.activeDialogMenu.length-1];
+    };
+   
+    function getObject(){
+    	return instance.object[instance.object.length-1];
+    }; 
+
+    function getInput(){
+    	return instance.object[instance.object.length-1].input;
+    }; 
+
     function createBasicDialogMenu(object , id , title , width){
 
 		object.dialogMenuTop = 200;
-		object.dialogMenuLeft = 200;
+		object.dialogMenuLeft = 50;
+		//object.dialogMenuHeight = 300;
 
 		object.dialogMenuDiv = createHtmlElement({
 			format: "div",
@@ -152,10 +204,12 @@ var DialogMenuController = (function(){
 			format: "div",
 			id: id+"dialogBody",
 			className: "row",
+			width: $(object.dialogContentDiv).width(),
 			father: object.dialogContentDiv
 		});
 		    
 		$(object.dialogBody).css('margin-bottom', 10);
+		$(object.dialogBody).css('margin-left','0px');
 
 		object.dialogEnd = createHtmlElement({
 			format: "div",
@@ -258,6 +312,120 @@ var DialogMenuController = (function(){
 			father: object.dialogBodyRight
 		});
 	    $(object.dialogSubTextInput).css('max-width', '100%');
-	    $(object.dialogSubTextInput).css('margin-top', 20);
+	
+		$(object.dialogSubTextInput).css('margin-top', 20);
+
+		$(object.dialogTextInput).show();
+    	$(object.dialogSubTextInput).hide();
+    	$(object.buttonBack).hide();
+
     };
+
+    function createConstantDiv(object,id,father){
+
+		object.constantBodyLeft = createHtmlElement({
+			format: "div",
+			id: id+"constantBodyLeft",
+			className: "col-sm-6",
+			father: father
+		});
+
+		object.constantRadioForm = createHtmlElement({
+			format: "form",
+			id: id+"radioForm",
+			father: object.constantBodyLeft
+		});
+
+		object.constantRadioNumber = createRadioHtmlElement({
+			id: id+"radioNumber",
+			text: "number",
+			name: 'type',
+			father: object.constantRadioForm
+		});
+
+		object.constantRadioText = createRadioHtmlElement({
+			id: id+"radioText",
+			text: "text",
+			name: 'type',
+			father: object.constantRadioForm
+		});
+
+		object.constantBodyRight = createHtmlElement({
+			format: "div",
+			id: id+"constantBodyRight",
+			className: "col-sm-6",
+			father: father
+		});
+
+		object.constantTextInput = createHtmlElement({
+			format: "input",
+			type: "text",
+			id: id+"constantTextInput",
+			placeholder: "value",
+			father: object.constantBodyRight
+		});
+	    $(object.constantTextInput).css('max-width', '100%');
+	    $(object.constantTextInput).css('margin-top', 10);
+
+		$(object.constantTextInput).show();
+    	$(object.buttonBack).hide();
+
+    };
+
+	function createArrayDiv(object,id,father){
+
+		object.constantBodyLeft = createHtmlElement({
+			format: "div",
+			id: id+"constantBodyLeft",
+			className: "col-sm-6",
+			father: father
+		});
+
+		object.constantRadioForm = createHtmlElement({
+			format: "form",
+			id: id+"radioForm",
+			father: object.constantBodyLeft
+		});
+
+		object.constantRadioNumber = createRadioHtmlElement({
+			id: id+"radioNumber",
+			text: "number",
+			name: 'type',
+			father: object.constantRadioForm
+		});
+
+		object.constantRadioText = createRadioHtmlElement({
+			id: id+"radioText",
+			text: "text",
+			name: 'type',
+			father: object.constantRadioForm
+		});
+
+		object.constantBodyRight = createHtmlElement({
+			format: "div",
+			id: id+"constantBodyRight",
+			className: "col-sm-6",
+			father: father
+		});
+
+		object.constantTextInput = createHtmlElement({
+			format: "input",
+			type: "text",
+			id: id+"constantTextInput",
+			placeholder: "value",
+			father: object.constantBodyRight
+		});
+	    $(object.constantTextInput).css('max-width', '100%');
+	    $(object.constantTextInput).css('margin-top', 10);
+
+		$(object.constantTextInput).show();
+    	$(object.buttonBack).hide();
+
+    };
+
+    function createFunctionCallDiv(object,id,father){
+    	console.log("under construction");
+    	//div for id
+    	//div for list of args
+    };   
 })();
