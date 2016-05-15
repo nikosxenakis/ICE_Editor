@@ -342,17 +342,17 @@ Element.prototype.elementOffsetToElementPos = function(elementOffset){
     return pos;
 };
 
-Element.prototype.elementFactory = function(elementId , elementOffset) {
+Element.prototype.elementFactory = function(elementId , elementOffset , data) {
 
     //choose constructor class
     var elemInfo = elementIdToElement(elementId);
     if(!elemInfo)
         console.log("error in elementFactory");
 
-    return new (elemInfo.class)(this.id+"_"+elemInfo.id,elementOffset,this);
+    return new (elemInfo.class)(this.id+"_"+elemInfo.id,elementOffset,this,data);
 };
 
-Element.prototype.addElement = function(elementId,elementOffset) {
+Element.prototype.addElement = function(elementId,elementOffset,data) {
 
     //from offset produce pos and elementTransformationType
     var pos = this.elementOffsetToElementPos(elementOffset);
@@ -367,7 +367,7 @@ Element.prototype.addElement = function(elementId,elementOffset) {
         elementOffset = 0;
     }
     
-    var elem = this.elementFactory(elementId,elementOffset);
+    var elem = this.elementFactory(elementId,elementOffset,data);
 
     this.transformElement(elem,elementTransformationType);
 
@@ -793,4 +793,17 @@ Element.prototype.sendToBack = function(){
     for(var k=0; k< this.rectangles.length; k++){
         this.rectangles[k].sendToBack();
     } 
+};
+
+Element.prototype.saveElement = function(array){
+
+    array.push({
+        id: this.id,
+        type: this.type,
+        elements: new Array()
+    });
+
+    for(var k=0; k<this.elements.length; k++){
+        this.elements[k].saveElement(array[array.length-1].elements);
+    };
 };

@@ -67,3 +67,7 @@ function createRadioHtmlElement(attributes){
     
 	return radioDiv;
 };
+
+function radioIsChecked(radio){
+	return $(radio).children('input[type=radio]').prop("checked");
+}

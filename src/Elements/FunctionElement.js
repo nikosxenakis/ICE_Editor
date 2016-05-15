@@ -25,7 +25,8 @@ function FunctionElement(id){
         width: CanvasData.InputBoxWidth,
         height: CanvasData.InputBoxHeight
     };
-    var condition = new InputBox("arguments",relPos,InputType.logicExpressionDefault);
+    var conditionInputElement = new InputElement("arguments",InputType.logicExpressionDefault)
+    var condition = new InputBox(relPos,conditionInputElement);
     firstRect.addElement(condition);
 
 }

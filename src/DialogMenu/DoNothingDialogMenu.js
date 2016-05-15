@@ -1,20 +1,18 @@
 function DoNothingDialogMenu(){
 
-	var id = "doNothingDialogMenu";
 	var title = "Choose Element";
 
-	DialogMenuController.createBasicDialogMenu(this,id,title,DialogMenuData.doNothingDialogMenuWidth);
+	this.basicDialogMenu = new BasicDialogMenu(title,DialogMenuData.logicExpressionContentDialogMenuWidth);
 	
 	this.radioForm = createHtmlElement({
 		format: "form",
-		id: "radioForm",
-		father: this.dialogBody
+		father: this.basicDialogMenu.getContentDiv()
 	});
 
-	$(this.dialogBody).css('padding-left', '80px');
+	$(this.radioForm).css('padding-left', '130px');
 
 	for (var key in ElementType) {
-		if(key!="grey" && key!="program" && key!="doNothing")
+		if(key!="grey" && key!="program" && key!="doNothing" && key!="function" && key!="variables")
 			createRadioHtmlElement({
 				id: key,
 				text: key + "Element",
@@ -23,10 +21,10 @@ function DoNothingDialogMenu(){
 			});
 	};
 
-	$(this.buttonNext).mousedown(function() {
+	$( this.basicDialogMenu.getNextButton() ).mousedown(function() {
       	for (var key in ElementType) {
       		var id = "#" + key;
-	        if( $(DialogMenuController.getActive().dialogMenuDiv).find(id).prop("checked") == true){
+	        if( $(DialogMenuController.getActive().basicDialogMenu.getContentDiv()).find(id).prop("checked") == true){
         		DialogMenuController.getActive().element.father.addElement(key,0);
         	}	
 		}
@@ -37,23 +35,24 @@ function DoNothingDialogMenu(){
 	return this;
 };
 
-DoNothingDialogMenu.prototype.initRadioButtons = function(){
+DoNothingDialogMenu.prototype.init = function(){
 
 	var fTime = true;
 
     for (var key in ElementType) {
-    	if(key!="grey" && key!="program" && key!="doNothing"){
+    	if(key!="grey" && key!="program" && key!="doNothing" && key!="function" && key!="variables"){
       		var id = "#" + key;
     		if(fTime == true){
-	   			$(DialogMenuController.getActive().dialogMenuDiv).find(id).prop("checked", true);
+	   			$(DialogMenuController.getActive().basicDialogMenu.getContentDiv()).find(id).prop("checked", true);
     			fTime = false;
     		}
-    		$(DialogMenuController.getActive().dialogMenuDiv).find(id).attr("disabled", false);
+    		$(DialogMenuController.getActive().basicDialogMenu.getContentDiv()).find(id).attr("disabled", false);
         }	
     }
-    $(this.buttonBack).hide();
-    $(this.buttonNext).attr("disabled", false);
+	this.basicDialogMenu.enableNextButton(true);
+	this.basicDialogMenu.enableBackButton(false);
 
+	this.basicDialogMenu.setNextButton('Submit');
 };
 
 DoNothingDialogMenu.prototype.open = function(object){
@@ -61,13 +60,15 @@ DoNothingDialogMenu.prototype.open = function(object){
 	this.object = object;
 	this.element = object.element;
 
-	this.initRadioButtons();
+	this.basicDialogMenu.show();
 
-    $(this.dialogMenuDiv).css('display', "block");	
+	this.init();
+
 };
 
 DoNothingDialogMenu.prototype.close = function(){
-    $(this.dialogMenuDiv).css('display', "none");
+	
+	this.basicDialogMenu.hide();
 
 	this.object = null;
 	this.element = null;

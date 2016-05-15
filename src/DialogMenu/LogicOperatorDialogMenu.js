@@ -1,17 +1,16 @@
 function LogicOperatorDialogMenu(){
 
-	var id = "logicOperatorDialogMenu";
 	var title = "Choose Logic Operator";
 
-	DialogMenuController.createBasicDialogMenu(this,id,title,DialogMenuData.doNothingDialogMenuWidth);
+	this.basicDialogMenu = new BasicDialogMenu(title,DialogMenuData.logicExpressionContentDialogMenuWidth);
 	
 	this.radioForm = createHtmlElement({
 		format: "form",
 		id: "radioForm",
-		father: this.dialogBody
+		father: this.basicDialogMenu.getContentDiv()
 	});
 
-	$(this.dialogBody).css('padding-left', '80px');
+	$(this.basicDialogMenu.getContentDiv()).css('padding-left', '80px');
 
 	for (var key in LogicOperatorType) {
 		createRadioHtmlElement({
@@ -22,10 +21,10 @@ function LogicOperatorDialogMenu(){
 		});
 	};
 
-	$(this.buttonNext).mousedown(function() {
+	$( this.basicDialogMenu.getNextButton() ).mousedown(function() {
       	for (var key in LogicOperatorType) {
       		var id = "#" + key;
-	        if( $(DialogMenuController.getActive().dialogMenuDiv).find(id).prop("checked") == true){
+	        if( $(DialogMenuController.getActive().radioForm).find(id).prop("checked") == true){
 	        	DialogMenuController.getActive().object.input.setText(key);
         	}	
 		}
@@ -43,15 +42,15 @@ LogicOperatorDialogMenu.prototype.initRadioButtons = function(){
     for (var key in LogicOperatorType) {
   		var id = "#" + key;
 		if(fTime == true){
-   			$(DialogMenuController.getActive().dialogMenuDiv).find(id).prop("checked", true);
+   			$(DialogMenuController.getActive().radioForm).find(id).prop("checked", true);
 			fTime = false;
 		}
 
 		if(this.object.input.input == LogicOperatorType[key]){
-    		$(DialogMenuController.getActive().dialogMenuDiv).find(id).prop("checked", true);
+    		$(DialogMenuController.getActive().radioForm).find(id).prop("checked", true);
 		}
 
-		$(DialogMenuController.getActive().dialogMenuDiv).find(id).attr("disabled", false);
+		$(DialogMenuController.getActive().radioForm).find(id).attr("disabled", false);
     }
 
     $(this.buttonBack).hide();
@@ -63,13 +62,15 @@ LogicOperatorDialogMenu.prototype.open = function(object){
 
 	this.object = object;
 
+	this.basicDialogMenu.show();
+	
 	this.initRadioButtons();
 
-    $(this.dialogMenuDiv).css('display', "block");	
 };
 
 LogicOperatorDialogMenu.prototype.close = function(){
-    $(this.dialogMenuDiv).css('display', "none");
+
+	this.basicDialogMenu.hide();
 
 	this.object = null;
 };

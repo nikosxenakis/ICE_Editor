@@ -1,21 +1,5 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 function InitEditor() {
-    /*
-    canvas.VPL_elementsInfo = sideBarSubCategories;
-    InitMenuElements(canvas);
-    CreateDialogs();
-    InitDialogs();
-    InitMenus();
-    CreateOperatorsMenu(canvas.canvas);
-    CreateVarsMenu(canvas.canvas);
-    CreateRightClickMenu(canvas.canvas);    
-    */
-           
+      
     cssModifications();
     
     //create ElementType
@@ -26,12 +10,13 @@ function InitEditor() {
     Canvas.getInstance();
     DialogMenuController.getInstance();
     ImageHolder.getInstance();
+    JsepParser.getInstance();
 
     var parser = new Parser();
     parser.load(inputPrograms);
-    //parser.saveProgram(Canvas.getActiveElement());
+    parser.saveProgram(Canvas.getActiveElement());
 
-    var elem = Canvas.getElement('emptyProgram');
+    var elem = Canvas.getElement('programName2');
     Canvas.setActiveElement(elem);
 
     //init jsep parse

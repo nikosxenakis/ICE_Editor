@@ -1,9 +1,10 @@
-function InputBox (id,pos,type){
+function InputBox (pos,inputElement){
 
     var c=Canvas.getInstance();
 
     this.pos = pos;
-    this.type = type;
+
+    this.input = inputElement;
 
     this.box = new fabric.Rect({
         left: pos.left,
@@ -16,25 +17,23 @@ function InputBox (id,pos,type){
         hasRotatingPoint: false,
         stroke: 'grey',
         strokeWidth: 2,
-        id: id,
+        id: this.input.getText(),
         class: this
     });
 
-    this.text = new fabric.Text(id,{
+    this.text = new fabric.Text(this.input.getText(),{
         left: pos.left + 4,// + this.box.width/2,
         top: pos.top + 4,// + this.box.height/2,
         fill: CanvasData.InputBoxTextColor,
         fontSize: CanvasData.InputBoxTextSize,
         selectable: false,
-        id: id,
+        id: this.input.getText(),
         textAlign:"center",
         hasControls: false,
         lockMovementX: true,
         lockMovementY: true,
         class: this
     });
-
-    this.input = new InputElement(id , type);
 
     this.fixText();
 

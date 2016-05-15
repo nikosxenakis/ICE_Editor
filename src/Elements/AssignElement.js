@@ -1,6 +1,33 @@
-function AssignElement (id , elementOffset , father){
+function AssignElement (id , elementOffset , father , data){
 
     Element.call(this , id , "assign" , elementOffset , father);
+
+    var varNameInputType = InputType.lvalue;
+    var varNameInputText = "var name";
+    var varValueInputType = InputType.expression;
+    var varValueInputText = "var value";  
+
+    if(data){
+        if(data.varNameInputType)
+            varNameInputType = data.varNameInputType;
+        if(data.varNameInputText)
+            varNameInputText = data.varNameInputText;
+        if(data.varValueInputType)
+            varValueInputType = data.varValueInputType;
+        if(data.varValueInputText)
+            varValueInputText = data.varValueInputText;
+    }
+
+    var nameInputElement = new InputElement(varNameInputText,varNameInputType)
+    var valueInputElement = new InputElement(varValueInputText,varValueInputType);
+
+
+    if(data && data.varValueInputElementList){
+        for(var k=0; k<data.varValueInputElementList.length; k++){
+            if(data.varValueInputElementList[k].text && data.varValueInputElementList[k].type)
+                valueInputElement.addInputElement(new InputElement(data.varValueInputElementList[k].text , data.varValueInputElementList[k].type));
+        }
+    }
 
     var firstRect = this.getRectangle(RectangleOffset.firstHorizontial).rectangle;
     var top = firstRect.rectangleInCanvas.getTop() + CanvasData.horizontalElementsHeight/2;
@@ -21,7 +48,8 @@ function AssignElement (id , elementOffset , father){
         width: CanvasData.InputBoxWidth,
         height: CanvasData.InputBoxHeight
     };
-    var inputBoxVarName = new InputBox("var name",relPos,InputType.lvalue);
+
+    var inputBoxVarName = new InputBox(relPos,nameInputElement);
     firstRect.addElement(inputBoxVarName);
 
     leftOffset+=11;
@@ -39,7 +67,8 @@ function AssignElement (id , elementOffset , father){
         width: CanvasData.InputBoxWidth,
         height: CanvasData.InputBoxHeight
     };
-    var inputBoxVarValue = new InputBox("var value",relPos,InputType.expression);
+
+    var inputBoxVarValue = new InputBox(relPos,valueInputElement);
     firstRect.addElement(inputBoxVarValue);
 
 }

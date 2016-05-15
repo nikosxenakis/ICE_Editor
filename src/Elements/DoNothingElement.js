@@ -12,8 +12,8 @@ function DoNothingElement (id , elementOffset , father){
         width: CanvasData.InputBoxWidth,
         height: CanvasData.InputBoxHeight
     };
-
-    var doNothingBox = new InputBox("Do Nothing",relPos,InputType.doNothing);
+    var inputElement = new InputElement("Do Nothing",InputType.doNothing)
+    var doNothingBox = new InputBox(relPos,inputElement);
     firstRect.addElement(doNothingBox);
 
 }

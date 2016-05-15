@@ -60,18 +60,18 @@ var InputType = {
             logicExpressionTermConstantText: "logicExpressionTermConstantText",
             logicExpressionTermConstantBool: "logicExpressionTermConstantBool",
             logicExpressionTermConstantDate: "logicExpressionTermConstantDate",
-            logicExpressionTermConstantTile: "logicExpressionTermConstantTile",
+            logicExpressionTermConstantTime: "logicExpressionTermConstantTime",
 
         //logicExpressionTermFunctionCall
             logicExpressionTermFunctionCall: "logicExpressionTermFunctionCall",
-
-
+  
         
 };
 
 function InputElement (input , type){
     this.input = input;
     this.type = type;
+    this.inputElements = new Array();
 };
 
 InputElement.prototype.setType = function(type) {
@@ -89,3 +89,6 @@ InputElement.prototype.setText = function(text) {
     this.input = text;
 };
 
+InputElement.prototype.addInputElement = function(elem) {
+    this.inputElements.push(elem);
+};

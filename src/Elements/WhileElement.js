@@ -1,7 +1,24 @@
-function WhileElement (id , elementOffset , father){
+function WhileElement (id , elementOffset , father , data){
 
     Element.call(this , id , "while" , elementOffset , father);
-    
+
+    var type = InputType.logicExpressionDefault;
+    var text = ""; 
+
+    if(data && data.inputType)
+        type = data.inputType;
+    if(data && data.inputText)
+        text = data.inputText;  
+
+    var conditionInputElement = new InputElement(text,type);
+
+    if(data && data.inputElementList){
+         for(var k=0; k<data.inputElementList.length; k++){
+            if(data.inputElementList[k].text && data.inputElementList[k].type)
+                conditionInputElement.addInputElement(new InputElement(data.inputElementList[k].text , data.inputElementList[k].type));
+        }
+    }
+
     var firstRect = this.getRectangle(RectangleOffset.firstHorizontial).rectangle;
     var secondRect = this.getRectangle(RectangleOffset.secondHorizontial).rectangle;
     var firstLeft = firstRect.rectangleInCanvas.getLeft();
@@ -22,9 +39,9 @@ function WhileElement (id , elementOffset , father){
         width: CanvasData.InputBoxConditionWidth,
         height: CanvasData.InputBoxConditionHeight
     };
-    //(x<5 OR y==3) AND z>=2
-    var condition = new InputBox("x>2 AND y==1",relPos,InputType.logicExpression);
-    //var condition = new InputBox("",relPos,InputType.logicExpressionDefault);
+
+
+    var condition = new InputBox(relPos,conditionInputElement);
     firstRect.addElement(condition);
 
 

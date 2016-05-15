@@ -17,7 +17,8 @@ function RepeatElement (id , elementOffset , father){
         width: CanvasData.InputBoxNumberWidth,
         height: CanvasData.InputBoxNumberHeight
     };
-    var times = new InputBox("0",relPos,InputType.number);
+    var timesInputElement = new InputElement("0",InputType.number)
+    var times = new InputBox(relPos,timesInputElement);
     firstRect.addElement(times);
 
     var relPos = {

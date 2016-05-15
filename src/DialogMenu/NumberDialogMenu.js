@@ -1,39 +1,37 @@
 function NumberDialogMenu(){
-	var id = "numberDialogMenu";
-	var title = "Times";
-	DialogMenuController.createBasicDialogMenu(this,id,title,DialogMenuData.lValueDialogMenuWidth);
-	//add elements to this.dialogBody
+
+	var title = "Number";
+
+	this.basicDialogMenu = new BasicDialogMenu(title,DialogMenuData.logicExpressionContentDialogMenuWidth);
 
 	this.dialogTextInput = createHtmlElement({
 		format: "input",
 		type: "text",
-		id: id+"textInput",
 		placeholder: "value",
-		father: this.dialogBody
+		father: this.basicDialogMenu.getContentDiv()
 	});
     $(this.dialogTextInput).css('max-width', '100%');
     $(this.dialogTextInput).width(100);
-    $(this.dialogTextInput).css('margin-left', 140);
-
+    $(this.dialogTextInput).css('margin-left', 175);
+	
 	$(this.dialogTextInput).on("input",function() {
 		var active = DialogMenuController.getActive();
 		var outputText = $(active.dialogTextInput).val();
 		
 		if(!isNaN(outputText)){
-	    	$(active.buttonNext).attr("disabled", false);
+	    	active.basicDialogMenu.enableNextButton(true);
 		}
 		else{
-	    	$(active.buttonNext).attr("disabled", true);
+	    	active.basicDialogMenu.enableNextButton(false);
 		}
 	});
-
-
-	$(this.buttonNext).mousedown(function(){
+	
+	$( this.basicDialogMenu.getNextButton() ).mousedown(function(){
 
 		var active = DialogMenuController.getActive();
 		var input = active.object.input;
 		var outputText = $(active.dialogTextInput).val();
-
+		console.log(outputText);
 		input.setText(outputText);
 
         DialogMenuController.close(true);
@@ -42,29 +40,38 @@ function NumberDialogMenu(){
 	return this;
 };
 
-NumberDialogMenu.prototype.initNumberDialogMenu = function(){
+NumberDialogMenu.prototype.init = function(){
 
 	var inputType = this.object.input.type;
     	
     $(this.dialogTextInput).show();
-    $(this.buttonBack).hide();
+
+	this.basicDialogMenu.enableBackButton(false);
+	this.basicDialogMenu.enableNextButton(true);
+	this.basicDialogMenu.setNextButton('Submit');
 
     var text = this.object.input.getText();
-    $(this.dialogTextInput).val(text);
+	
+	if(text!="")
+    	$(this.dialogTextInput).val(text);
+	else
+    	$(this.dialogTextInput).val('0');
+
 };
 
 NumberDialogMenu.prototype.open = function(object){
 
 	this.object = object;
 
-	this.initNumberDialogMenu();
+	this.basicDialogMenu.show();
 
-    $(this.dialogMenuDiv).css('display', "block");	
+	this.init();
+
 };
 
 NumberDialogMenu.prototype.close = function(){
 
-    $(this.dialogMenuDiv).css('display', "none");
+	this.basicDialogMenu.hide();
 
 	this.object = null;
 };

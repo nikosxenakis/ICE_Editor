@@ -6,7 +6,6 @@ var LogicOperatorType = {
 function LogicOperator(id,fatherLogicExpression,data){
 
 	this.id = id;
-	this.idFactoryNum = 0;
 	this.fatherLogicExpression = fatherLogicExpression;
 	
 	if(!data)
@@ -24,31 +23,20 @@ function LogicOperator(id,fatherLogicExpression,data){
 		id: id,
 		father: fatherLogicExpression.logicExpressionContentDiv,
 		width: '50px',
+		height: '95px',
 		border: "groove"
 	});
 
 	$(this.logicOperatorDiv).css('display', 'inline-block');
-	
-	$(this.logicOperatorDiv).mousedown(function(){
-		console.log("open Logic Operator Dialog Menu");
-
-		var active = DialogMenuController.getActive();
-		console.log(active);
-		console.log(id);
-		var logicOperator = active.logicExpression.getLogicOperatorById(id);
-		console.log(logicOperator);
-
-		DialogMenuController.open(logicOperator);
-	});
-	
+	$(this.logicOperatorDiv).css('overflow', 'hidden');
 
 	this.logicOperatorContentDiv = createHtmlElement({
 		format: "div",
 		id: id+"Content",
 		father: this.logicOperatorDiv
 	});
-	$(this.logicOperatorContentDiv).css('margin', 5);
-	$(this.logicOperatorContentDiv).css('margin-top', 25);
+	//$(this.logicOperatorContentDiv).css('margin', 5);
+	//$(this.logicOperatorContentDiv).css('margin-top', 25);
 
 	this.dataDiv = createHtmlElement({
 		format: "div",
@@ -56,6 +44,39 @@ function LogicOperator(id,fatherLogicExpression,data){
 		father: this.logicOperatorContentDiv
 	});
 	
+	this.optionsDiv = createHtmlElement({
+		format: "div",
+		father: this.logicOperatorDiv
+	});
+	$(this.optionsDiv).css('margin-top', 45);
+	$(this.optionsDiv).css('text-align', 'right');
+
+	this.buttonEdit = createHtmlElement({
+		format: "span",
+		id: "buttonEdit",
+		className: "glyphicon glyphicon-pencil",
+		father: this.optionsDiv
+	});
+	//$(this.buttonEdit).css('overflow', 'auto');
+	$(this.buttonEdit).css('color', 'grey');
+	//$(this.buttonEdit).css('float', 'right');
+	$(this.buttonEdit).mousedown(function(){
+		console.log("open Logic Operator Dialog Menu");
+
+		var active = DialogMenuController.getActive();
+
+		if(active.logicExpression){
+			var logicOperator = active.logicExpression.getLogicOperatorById(id);
+		}
+		else if(active.expression){
+			var logicOperator = active.expression.logicExpression.getLogicOperatorById(id);
+		}
+		
+		console.log(logicOperator);
+
+		DialogMenuController.open(logicOperator);
+	});
+
 	return this;
 };
 

@@ -17,7 +17,8 @@ function ForElement (id , elementOffset , father){
         width: CanvasData.InputBoxIdWidth,
         height: CanvasData.InputBoxIdHeight
     };
-    var id = new InputBox("id",relPos,InputType.id);
+    var idInputElement = new InputElement("id",InputType.id)
+    var id = new InputBox("id",idInputElement);
     firstRect.addElement(id);
 
     var relPos = {
@@ -33,7 +34,8 @@ function ForElement (id , elementOffset , father){
         width: CanvasData.InputBoxNumberWidth,
         height: CanvasData.InputBoxNumberHeight
     };
-    var fromNum = new InputBox("0",relPos,InputType.number);
+    var fromInputElement = new InputElement("0",InputType.number)
+    var fromNum = new InputBox(relPos,fromInputElement);
     firstRect.addElement(fromNum);
 
     var relPos = {
@@ -49,7 +51,8 @@ function ForElement (id , elementOffset , father){
         width: CanvasData.InputBoxNumberWidth,
         height: CanvasData.InputBoxNumberHeight
     };
-    var toNum = new InputBox("0",relPos,InputType.number);
+    var toInputElement = new InputElement("0",InputType.number)
+    var toNum = new InputBox(relPos,toInputElement);
     firstRect.addElement(toNum);
 
     var relPos = {
@@ -65,7 +68,8 @@ function ForElement (id , elementOffset , father){
         width: CanvasData.InputBoxNumberWidth,
         height: CanvasData.InputBoxNumberHeight
     };
-    var stepNum = new InputBox("0",relPos,InputType.number);
+    var stepInputElement = new InputElement("0",InputType.number)
+    var stepNum = new InputBox(relPos,stepInputElement);
     firstRect.addElement(stepNum);
 }
 

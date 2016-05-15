@@ -17,7 +17,7 @@ var DialogMenuController = (function(){
 		this.dialogMenus[InputType.lvalueGlobalID] = lValue;
 		this.dialogMenus[InputType.lvalueArrayElement] = lValue;
 		this.dialogMenus[InputType.lvalueObjectElement] = lValue;
-
+		
 		//expression
 		var expression = new ExpressionDialogMenu();
 		this.dialogMenus[InputType.expression] = expression;
@@ -66,6 +66,20 @@ var DialogMenuController = (function(){
 		this.dialogMenus[InputType.logicExpressionTermConstantText] = logicExpressionTerm;
 		this.dialogMenus[InputType.logicExpressionTermFunctionCall] = logicExpressionTerm;
 
+		//Expression Term
+		var expressionTerm = new ExpressionTermDialogMenu();
+		this.dialogMenus[InputType.expressionTerm] = expressionTerm;
+		this.dialogMenus[InputType.expressionTermLocalVariable] = expressionTerm;
+		this.dialogMenus[InputType.expressionTermGlobalVariable] = expressionTerm;
+		this.dialogMenus[InputType.expressionTermArrayElement] = expressionTerm;
+		this.dialogMenus[InputType.expressionTermObjectElement] = expressionTerm;
+		this.dialogMenus[InputType.expressionTermConstantNumber] = expressionTerm;
+		this.dialogMenus[InputType.expressionTermConstantText] = expressionTerm;
+		this.dialogMenus[InputType.expressionTermConstantBool] = expressionTerm;
+		this.dialogMenus[InputType.expressionTermConstantDate] = expressionTerm;
+		this.dialogMenus[InputType.expressionTermConstantTime] = expressionTerm;
+		this.dialogMenus[InputType.expressionTermFunctionCall] = expressionTerm;
+		this.dialogMenus[InputType.expressionTermMethodCall] = expressionTerm;
 
 	};
 
@@ -82,45 +96,81 @@ var DialogMenuController = (function(){
         },
 
         open: open,
+        addNewDialogMenu: addNewDialogMenu,
         close: close,
-        getActive: getActive,
-        createBasicDialogMenu: createBasicDialogMenu,
-        createLvalueDiv: createLvalueDiv,
-        createConstantDiv: createConstantDiv,
-        createArrayDiv: createArrayDiv,
-        createFunctionCallDiv: createFunctionCallDiv
+        getActive: getActive
     };
 
     function open(object){
 		//object must have a object.input && object.update(input) && object.activate() && object.deactivate()
+		
+		if(
+			object == null ||
+			object.input == null ||
+			object.update == null ||
+			object.activate == null ||
+			object.deactivate == null
+		){
+			console.log('the object does not implement the required interface');
+			return;
+		}
+
 		instance.object.push(object);
 		instance.input = object.input;
-		instance.prevType.push(instance.input.type);
+		instance.prevType.push(object.input.type);
 
-		getObject().activate();
+		addNewDialogMenu(instance.input.type);
 
-		console.log('TYPE = ',object.input.type);
+		object.activate();
+		var active = getActive();
+		//console.log('TYPE = ',object.input.type);
 
-		instance.activeDialogMenu.push(instance.dialogMenus[instance.input.type]);
+
 		if(!instance.dialogMenus[instance.input.type]){
 			console.log("There is no dialogMenu for : ",instance.input.type);
 			return;
 		}
+
 		console.log(instance);
-		getActive().open(getObject());		
+		active.open(getObject());		
+    };
+
+
+    function addNewDialogMenu(type){
+    	var constructorName = instance.dialogMenus[type].constructor.name;
+    	var constructor = instance.dialogMenus[type].constructor;
+
+    	for(var k=0; k<instance.activeDialogMenu.length; k++){
+    		if(instance.activeDialogMenu[k].constructor.name == constructorName){
+    			instance.activeDialogMenu.push(new constructor());
+    			return;
+    		}
+    	}
+
+    	instance.activeDialogMenu.push(instance.dialogMenus[type]);
     };
 
     function close(updateFlag){
-    	//if(instance.object.box)
-    		getObject().deactivate();
+  
+  		var object = getObject();
+  		var input = getInput();
+  		var active = getActive();
 
-		getActive().close();
+  		if(!object || !input || !active){
+  			console.log('error in close');
+  			return;
+  		}
+
+    	//if(instance.object.box)
+    	object.deactivate();
+
+		active.close();
 
 	    if(updateFlag == true/* && instance.object.box*/){
-			getObject().update();
+			object.update();
 	    }
 	    else if(updateFlag == false){
-			getInput().type = getPrevType();
+			input.type = getPrevType();
 	    }
 
 	    instance.activeDialogMenu.splice(instance.activeDialogMenu.length-1, 1);
@@ -148,284 +198,4 @@ var DialogMenuController = (function(){
     	return instance.object[instance.object.length-1].input;
     }; 
 
-    function createBasicDialogMenu(object , id , title , width){
-
-		object.dialogMenuTop = 200;
-		object.dialogMenuLeft = 50;
-		//object.dialogMenuHeight = 300;
-
-		object.dialogMenuDiv = createHtmlElement({
-			format: "div",
-			id: id,
-			className: "modal",
-			father: "body",
-			top: object.dialogMenuTop,
-			left: object.dialogMenuLeft,
-			width: width
-		});
-		$(object.dialogMenuDiv).draggable();
-
-		object.dialogContentDiv = createHtmlElement({
-			format: "div",
-			id: id+"dialogContent",
-			className: "modal-content container",
-			father: object.dialogMenuDiv,
-			width: $(object.dialogMenuDiv).width(),
-			border: "2px solid #a1a1a1",
-			boxShadow: "5px 5px 5px #888888",
-			borderRadius: "10px"
-		});
-
-		object.dialogTitle = createHtmlElement({
-			format: "h2",
-			id: id+"dialogTitle",
-			father: object.dialogContentDiv,
-			text: title,
-			textAllign:"center"
-		});
-		$(object.dialogTitle).css('margin-top', 10);
-		$(object.dialogTitle).css('color', '#985b5b');
-
-	    $(object.dialogTitle).css('margin-bottom', 20);
-
-		object.buttonClose = createHtmlElement({
-			format: "span",
-			id: "buttonClose",
-			className: "close",
-			text: "x",
-			father: object.dialogTitle
-		});
-
-		$(object.buttonClose).mousedown(function(){
-	        close(false);
-		});
-
-		object.dialogBody = createHtmlElement({
-			format: "div",
-			id: id+"dialogBody",
-			className: "row",
-			width: $(object.dialogContentDiv).width(),
-			father: object.dialogContentDiv
-		});
-		    
-		$(object.dialogBody).css('margin-bottom', 10);
-		$(object.dialogBody).css('margin-left','0px');
-
-		object.dialogEnd = createHtmlElement({
-			format: "div",
-			id: id+"dialogEnd",
-			father: object.dialogContentDiv
-		});
-
-		object.buttonNext = createHtmlElement({
-			format: "button",
-			id: id+"buttonNext",
-			text: "Submit",
-			father: object.dialogEnd
-			//top: '0px'
-		});
-		$(object.buttonNext).attr("disabled", true);
-	    $(object.buttonNext).css('position', "relative");
-	    $(object.buttonNext).css('width', 70);
-	    $(object.buttonNext).css('left', $(object.dialogMenuDiv).position().left + $(object.dialogMenuDiv).width() - 2*$(object.buttonNext).width() );
-		$(object.buttonNext).css('margin-bottom', 10);
-
-		object.buttonBack = createHtmlElement({
-			format: "button",
-			id: id+"buttonBack",
-			text: "Back",
-			father: object.dialogEnd
-			//top: '0px'
-		});
-		$(object.buttonBack).attr("disabled", true);
-	    $(object.buttonBack).css('position', "relative");
-	    $(object.buttonBack).css('width', 70);
-	    $(object.buttonBack).css('left', $(object.dialogMenuDiv).position().left + $(object.dialogMenuDiv).width() - 5*$(object.buttonBack).width() );
-		$(object.buttonBack).css('margin-bottom', 10);
-    };
-    
-    function createLvalueDiv(object,id,father){
-
-		object.dialogBodyLeft = createHtmlElement({
-			format: "div",
-			id: id+"bodyLeft",
-			className: "col-sm-6",
-			father: father
-		});
-
-		object.radioForm = createHtmlElement({
-			format: "form",
-			id: id+"radioForm",
-			father: object.dialogBodyLeft
-		});
-
-		object.radioVariable = createRadioHtmlElement({
-			id: id+"radioVariable",
-			text: "local variable",
-			name: 'type',
-			father: object.radioForm
-		});
-
-		object.radioGlobalVariable = createRadioHtmlElement({
-			id: id+"radioNumber",
-			text: "global variable",
-			name: 'type',
-			father: object.radioForm
-		});
-
-		object.radioArrayElement = createRadioHtmlElement({
-			id: id+"radioText",
-			text: "array element",
-			name: 'type',
-			father: object.radioForm
-		});
-
-		object.radioObjectElement = createRadioHtmlElement({
-			id: id+"radioBoolean",
-			text: "object element",
-			name: 'type',
-			father: object.radioForm
-		});
-
-		object.dialogBodyRight = createHtmlElement({
-			format: "div",
-			id: id+"bodyRight",
-			className: "col-sm-6",
-			father: father
-		});
-
-		object.dialogTextInput = createHtmlElement({
-			format: "input",
-			type: "text",
-			id: id+"textInput",
-			placeholder: "value",
-			father: object.dialogBodyRight
-		});
-	    $(object.dialogTextInput).css('max-width', '100%');
-	    $(object.dialogTextInput).css('margin-top', 30);
-
-		object.dialogSubTextInput = createHtmlElement({
-			format: "input",
-			type: "text",
-			id: id+"subTextInput",
-			placeholder: "value",
-			father: object.dialogBodyRight
-		});
-	    $(object.dialogSubTextInput).css('max-width', '100%');
-	
-		$(object.dialogSubTextInput).css('margin-top', 20);
-
-		$(object.dialogTextInput).show();
-    	$(object.dialogSubTextInput).hide();
-    	$(object.buttonBack).hide();
-
-    };
-
-    function createConstantDiv(object,id,father){
-
-		object.constantBodyLeft = createHtmlElement({
-			format: "div",
-			id: id+"constantBodyLeft",
-			className: "col-sm-6",
-			father: father
-		});
-
-		object.constantRadioForm = createHtmlElement({
-			format: "form",
-			id: id+"radioForm",
-			father: object.constantBodyLeft
-		});
-
-		object.constantRadioNumber = createRadioHtmlElement({
-			id: id+"radioNumber",
-			text: "number",
-			name: 'type',
-			father: object.constantRadioForm
-		});
-
-		object.constantRadioText = createRadioHtmlElement({
-			id: id+"radioText",
-			text: "text",
-			name: 'type',
-			father: object.constantRadioForm
-		});
-
-		object.constantBodyRight = createHtmlElement({
-			format: "div",
-			id: id+"constantBodyRight",
-			className: "col-sm-6",
-			father: father
-		});
-
-		object.constantTextInput = createHtmlElement({
-			format: "input",
-			type: "text",
-			id: id+"constantTextInput",
-			placeholder: "value",
-			father: object.constantBodyRight
-		});
-	    $(object.constantTextInput).css('max-width', '100%');
-	    $(object.constantTextInput).css('margin-top', 10);
-
-		$(object.constantTextInput).show();
-    	$(object.buttonBack).hide();
-
-    };
-
-	function createArrayDiv(object,id,father){
-
-		object.constantBodyLeft = createHtmlElement({
-			format: "div",
-			id: id+"constantBodyLeft",
-			className: "col-sm-6",
-			father: father
-		});
-
-		object.constantRadioForm = createHtmlElement({
-			format: "form",
-			id: id+"radioForm",
-			father: object.constantBodyLeft
-		});
-
-		object.constantRadioNumber = createRadioHtmlElement({
-			id: id+"radioNumber",
-			text: "number",
-			name: 'type',
-			father: object.constantRadioForm
-		});
-
-		object.constantRadioText = createRadioHtmlElement({
-			id: id+"radioText",
-			text: "text",
-			name: 'type',
-			father: object.constantRadioForm
-		});
-
-		object.constantBodyRight = createHtmlElement({
-			format: "div",
-			id: id+"constantBodyRight",
-			className: "col-sm-6",
-			father: father
-		});
-
-		object.constantTextInput = createHtmlElement({
-			format: "input",
-			type: "text",
-			id: id+"constantTextInput",
-			placeholder: "value",
-			father: object.constantBodyRight
-		});
-	    $(object.constantTextInput).css('max-width', '100%');
-	    $(object.constantTextInput).css('margin-top', 10);
-
-		$(object.constantTextInput).show();
-    	$(object.buttonBack).hide();
-
-    };
-
-    function createFunctionCallDiv(object,id,father){
-    	console.log("under construction");
-    	//div for id
-    	//div for list of args
-    };   
 })();

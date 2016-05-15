@@ -8,7 +8,6 @@
 	#container{
 		height:100%;
 		background-image: url("backgroundImage.png");
-		//overflow:auto;
 	}
 
 	#menuBarContainer { 
@@ -19,7 +18,7 @@
 	}
 		
 		.dropdown-menu{
-			z-index: 0;		//for drag&drop
+			z-index: 0;
 		}
 
 		#image{
@@ -27,20 +26,13 @@
 		}
 
 	#wrapper{
-		//z-index: 0;		
 		height:80%;
-		//border: thin dashed #006600; 
 	}
 
 		#canvasContainer{
     		overflow: auto;
-    		//position: relative;
-
 		}
 			#canvas{
-				//overflow: auto;
-
-    			//border: outset grey 1px; 
 			}
 
 			.deleteIcon{

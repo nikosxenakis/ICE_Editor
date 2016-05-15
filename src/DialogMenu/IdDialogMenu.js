@@ -1,15 +1,14 @@
 function IdDialogMenu(){
-	var id = "idDialogMenu";
+
 	var title = "Id";
-	DialogMenuController.createBasicDialogMenu(this,id,title,DialogMenuData.lValueDialogMenuWidth);
-	//add elements to this.dialogBody
+	
+	this.basicDialogMenu = new BasicDialogMenu(title,DialogMenuData.logicExpressionContentDialogMenuWidth);
 
 	this.dialogTextInput = createHtmlElement({
 		format: "input",
 		type: "text",
-		id: id+"textInput",
 		placeholder: "value",
-		father: this.dialogBody
+		father: this.basicDialogMenu.getContentDiv()
 	});
     $(this.dialogTextInput).css('max-width', '100%');
     $(this.dialogTextInput).width(100);
@@ -20,19 +19,19 @@ function IdDialogMenu(){
 		var outputText = $(active.dialogTextInput).val();
 		
 		if(isNaN(outputText)){
-	    	$(active.buttonNext).attr("disabled", false);
+	    	active.basicDialogMenu.enableNextButton(true);
 		}
 		else{
-	    	$(active.buttonNext).attr("disabled", true);
+	    	active.basicDialogMenu.enableNextButton(false);
 		}
 	});
 
 
-	$(this.buttonNext).mousedown(function(){
+	$( this.basicDialogMenu.getNextButton() ).mousedown(function(){
 
 		var active = DialogMenuController.getActive();
 		var input = active.object.input;
-		var outputText = $(active.dialogTextInput).val();
+		var outputText = $(this.dialogTextInput).val();
 
 		input.setText(outputText);
 
@@ -42,12 +41,15 @@ function IdDialogMenu(){
 	return this;
 };
 
-IdDialogMenu.prototype.initIdDialogMenu = function(){
+IdDialogMenu.prototype.init = function(){
 
 	var inputType = this.object.input.type;
     	
     $(this.dialogTextInput).show();
-    $(this.buttonBack).hide();
+
+	this.basicDialogMenu.enableBackButton(false);
+	this.basicDialogMenu.enableNextButton(false);
+	this.basicDialogMenu.setNextButton('Submit');
 
     var text = this.object.input.getText();
     $(this.dialogTextInput).val(text);
@@ -57,14 +59,15 @@ IdDialogMenu.prototype.open = function(object){
 
 	this.object = object;
 
-	this.initIdDialogMenu();
+	this.basicDialogMenu.show();
 
-    $(this.dialogMenuDiv).css('display', "block");	
+	this.init();
+
 };
 
 IdDialogMenu.prototype.close = function(){
 
-    $(this.dialogMenuDiv).css('display', "none");
+	this.basicDialogMenu.hide();
 
 	this.object = null;
 };

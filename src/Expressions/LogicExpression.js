@@ -1,17 +1,19 @@
-function LogicExpression(id,fatherLogicExpression){
+function LogicExpression(id,fatherLogicExpression,inputElement){
 
 	this.id = id;
 	this.idFactoryNum = 0;
 	this.logicExpressionList = new Array();
 	this.logicOperatorList = new Array();
-	this.input = new InputElement("" , InputType.logicExpressionTerm);
+
+	if(inputElement)
+		this.input = inputElement;
+	else
+		this.input = new InputElement("" , InputType.logicExpressionTerm);
 
 	this.fatherLogicExpression = fatherLogicExpression;
 
 	if(this.fatherLogicExpression instanceof LogicExpression){
 		this.fatherLogicExpression.logicExpressionList.push(this);
-		if(this.fatherLogicExpression.buttonContent)
-			$(this.fatherLogicExpression.buttonContent).hide();		
 	}
 
 
@@ -27,20 +29,31 @@ function LogicExpression(id,fatherLogicExpression){
 	}
 	
 	$(this.logicExpressionDiv).css('display', 'inline-block');
+	$(this.logicExpressionDiv).css('overflow', 'hidden');
 
+	this.buttonCloseDiv = createHtmlElement({
+		format: "div",
+		father: this.logicExpressionDiv
+	});
 
 	this.buttonClose = createHtmlElement({
 		format: "span",
 		id: id+"buttonClose",
 		className: "close",
 		text: "x",
-		father: this.logicExpressionDiv,
+		father: this.buttonCloseDiv,
 		object: this.id
 	});
-	$(this.buttonClose).css('overflow', 'auto');
+	//$(this.buttonClose).css('overflow', 'auto');
 	$(this.buttonClose).mousedown(function(){
 		var active = DialogMenuController.getActive();
-		var logicExpression = active.getLogicExpressionById(id);
+		var topLogicExpression =  active.logicExpression;
+		if(!topLogicExpression){
+			var topLogicExpression =  active.expression.logicExpression;
+		}
+		
+		var logicExpression = topLogicExpression.getLogicExpressionById(id);
+		console.log(logicExpression);
 
 	    logicExpression.remove();
 	});
@@ -53,11 +66,22 @@ function LogicExpression(id,fatherLogicExpression){
 		id: id+"Content",
 		father: this.logicExpressionDiv
 	});
-	$(this.logicExpressionContentDiv).css('margin', 5);
+
+	//$(this.logicExpressionContentDiv).css('overflow', 'hidden');
+
+	$(this.logicExpressionContentDiv).css('margin-left', 15);
+	$(this.logicExpressionContentDiv).css('margin-right', 15);
+
+	$(this.logicExpressionContentDiv).css('margin-top',25);
+
+/*
 	$(this.logicExpressionContentDiv).css('margin-top', 25);
+	$(this.logicExpressionContentDiv).css('margin-bottom', 5);
+
+*/
 	$(this.logicExpressionContentDiv).css('text-align', 'center');
 
-
+	/*
 	this.buttonContent = createHtmlElement({
 		format: "button",
 		text: "add content",
@@ -73,35 +97,73 @@ function LogicExpression(id,fatherLogicExpression){
 		DialogMenuController.open(logicExpression);
 
 	});
+	$(this.buttonContent).hide();
+	*/
 
 	this.dataDiv = createHtmlElement({
 		format: "div",
 		text: this.input.input,
 		father: this.logicExpressionContentDiv
 	});
-	$(this.dataDiv).mousedown(function(){
-		var active = DialogMenuController.getActive();
-		var logicExpression = active.getLogicExpressionById(id);
 
-		console.log("open Edit Content Logic Expression Dialog Menu");
+	$(this.dataDiv).hide();
+
+	this.optionsDiv = createHtmlElement({
+		format: "div",
+		father: this.logicExpressionDiv
+	});
+	$(this.optionsDiv).css('margin-top', 20);
+	$(this.optionsDiv).css('text-align', 'right');
+
+	this.buttonEdit = createHtmlElement({
+		format: "span",
+		id: "buttonEdit",
+		className: "glyphicon glyphicon-pencil",
+		father: this.optionsDiv
+	});
+	//$(this.buttonEdit).css('overflow', 'auto');
+	$(this.buttonEdit).css('color', 'grey');
+	//$(this.buttonEdit).css('float', 'right');
+	$(this.buttonEdit).mousedown(function(){
+		var active = DialogMenuController.getActive();
+		var topLogicExpression =  active.logicExpression;
+		if(!topLogicExpression){
+			if(active.expression){
+				var topLogicExpression =  active.expression.logicExpression;
+			}
+			else if(active.logicExpression){
+				var topLogicExpression =  active.logicExpression;
+			}
+		}
+		
+		var logicExpression = topLogicExpression.getLogicExpressionById(id);
+		console.log(logicExpression);
+
+		if(logicExpression.logicExpressionList.length >0)
+			return;
+
+		console.log("open Add Content Logic Expression Dialog Menu");
 
 		DialogMenuController.open(logicExpression);
-
 	});
-	$(this.dataDiv).hide();
 
 	this.buttonAdd = createHtmlElement({
 		format: "span",
 		id: id+"buttonAddSpan",
 		className: "glyphicon btn-glyphicon glyphicon-plus img-circle text-success",
-		father: this.logicExpressionDiv,
+		father: this.optionsDiv,
 		textAllign: 'right'
 	});
-	$(this.buttonAdd).css('float', 'right');
+	//$(this.buttonAdd).css('float', 'right');
 	$(this.buttonAdd).mousedown(function(){
 
 		var active = DialogMenuController.getActive();
-		var logicExpression = active.getLogicExpressionById(id);
+		var topLogicExpression =  active.logicExpression;
+		if(!topLogicExpression){
+			var topLogicExpression =  active.expression.logicExpression;
+		}
+		
+		var logicExpression = topLogicExpression.getLogicExpressionById(id);
 		console.log(logicExpression);
 
 		if( $(logicExpression.dataDiv).is(":visible") == false ){
@@ -112,27 +174,34 @@ function LogicExpression(id,fatherLogicExpression){
 		else{
 			//logicExpression has content
 			var father = logicExpression.fatherLogicExpression;
+
 	    	if(!(father instanceof LogicExpression))
 	    		return;
 		
 			var text = $(logicExpression.dataDiv).text(); 	
+			var inputElement = logicExpression.input;
+
 			$(logicExpression.dataDiv).hide();
 
-			var newLogicExpression2 = logicExpression.addLogicExpression();
+			var newLogicExpression2 = logicExpression.addLogicExpression(inputElement);
 			logicExpression.addLogicOperator();
 			var newLogicExpression3 = logicExpression.addLogicExpression();
 
 			$(newLogicExpression2.dataDiv).show();
 			$(newLogicExpression2.dataDiv).text(text);
-			$(newLogicExpression2.buttonContent).hide();
+
+			//$(newLogicExpression2.buttonContent).hide();
+			$(newLogicExpression2.logicExpressionContentDiv).css('margin-top',25);
+			
 		}
 	});
-	
+
 	return this;
 };
 
 LogicExpression.prototype.activate = function(){
 	console.log("LogicExpression active");
+
 };
 
 LogicExpression.prototype.deactivate = function(){
@@ -143,13 +212,41 @@ LogicExpression.prototype.update = function(){
 	console.log("LogicOperator update");
 	console.log(this.input);
 
-	$(this.buttonContent).hide();
+	//$(this.buttonContent).hide();
+	$(this.logicExpressionContentDiv).css('margin-top',67);
+
 	$(this.dataDiv).show();
 	$(this.dataDiv).text(this.input.getText());
 };
 
 LogicExpression.prototype.getDiv = function(){
 	return this.logicExpressionDiv;
+};
+
+LogicExpression.prototype.toString = function(){
+
+	if( this.logicExpressionList.length == 0 ){
+		return $(this.dataDiv).text();
+	}
+
+	if( this.logicExpressionList.length == 1 ){
+		return this.logicExpressionList[0].toString();
+	}
+
+	var str = "";
+
+	for(var k=0; k<this.logicExpressionList.length; k++){
+		str = str + "(" + this.logicExpressionList[k].toString() + ")";
+
+		if(this.logicOperatorList[k]){
+			str = str + $(this.logicOperatorList[k].dataDiv).text();
+		}
+		else{
+			break;
+		}
+	};
+
+	return str;
 };
 
 LogicExpression.prototype.remove = function(){
@@ -180,18 +277,25 @@ LogicExpression.prototype.remove = function(){
 
 	$(this.logicExpressionDiv).remove();
 
-	if(this.fatherLogicExpression.logicExpressionList.length == 0)
-		$(this.fatherLogicExpression.buttonContent).show();
+	if(this.fatherLogicExpression.logicExpressionList.length == 0){
+		//$(this.fatherLogicExpression.buttonContent).show();
+		$(this.logicExpressionContentDiv).css('margin-top',67);
+
+	}
 
 };
 
-LogicExpression.prototype.addLogicExpression = function(){
-	console.log('add in ',this.id);
+LogicExpression.prototype.addLogicExpression = function(inputElement){
+	//console.log('add in ',this.id);
 
-	var id = this.id+"_"+this.idFactoryNum;
+	var id = this.idFactoryNum;
 	this.idFactoryNum++;
 
-	var newLogicExpression = new LogicExpression(id,this);
+	var newLogicExpression = new LogicExpression(id,this,inputElement);
+
+	//var active = DialogMenuController.getActive();
+	//active.logicExpression.calculateHeight();
+
 	return newLogicExpression;
 };
 
@@ -245,8 +349,7 @@ LogicExpression.prototype.parseLogicExpression = function(expr){
 
 	if(data==null){
 
-		var text = this.parseExpression(expr);
-
+		var text = JsepParser.toString(expr);
 
 		var newLogicExpression = this;
 
@@ -254,7 +357,8 @@ LogicExpression.prototype.parseLogicExpression = function(expr){
 			newLogicExpression = this.addLogicExpression();
 		}
 			
-		$(newLogicExpression.buttonContent).hide();
+		//$(newLogicExpression.buttonContent).hide();
+		$(this.logicExpressionContentDiv).css('margin-top',25);
 
 		$(newLogicExpression.dataDiv).show();
 		$(newLogicExpression.dataDiv).text(text);
@@ -277,33 +381,73 @@ LogicExpression.prototype.parseLogicExpression = function(expr){
 
 };
 
-LogicExpression.prototype.parseExpression = function(expr){
+LogicExpression.prototype.calculateHeight = function(){
 
-	var text = "";
+	var maxHeight = 0;
+	for(var k=0; k<this.logicExpressionList.length; k++){
+		if( $(this.logicExpressionList[k].logicExpressionDiv).height() > maxHeight)
+			maxHeight = $(this.logicExpressionList[k].logicExpressionDiv).height();
+	}
 
-	var name = expr.name;
-	var raw = expr.raw;
+	for(var k=0; k<this.logicOperatorList.length; k++){
+		if( $(this.logicOperatorList[k].logicOperatorDiv).height() > maxHeight)
+			maxHeight = $(this.logicOperatorList[k].logicOperatorDiv).height();
+	}
 
-	if(name)
-		return name;
-	if(raw)
-		return raw;
+	console.log(maxHeight);
+	maxHeight = $(this.logicExpressionContentDiv).height();
 
-	var left = expr.left;
-	if(left)
-		text += this.parseExpression(left);
+	$(this.logicExpressionContentDiv).css('min-height',maxHeight);
+	$(this.buttonAdd).css('margin-top',maxHeight);
 
-	var operator = expr.operator;
-	if(operator)
-		text += operator;
 
-	var right = expr.right;
-	if(right)
-		text += this.parseExpression(right);
+	for(var k=0; k<this.logicExpressionList.length; k++){
+		this.logicExpressionList[k].calculateHeight();
 
-	return text;
+		$(this.logicExpressionList[k].logicExpressionDiv).css('min-height',maxHeight);
+	}
+
+	
+
+	for(var k=0; k<this.logicOperatorList.length; k++){
+		$(this.logicOperatorList[k].logicOperatorDiv).css('min-height',maxHeight);
+	}
+
+	for(var k=0; k<this.logicExpressionList.length; k++){
+	}
+
 };
 
+LogicExpression.prototype.addInputElements = function(inputElementsList){
+	//scan the LogicExpression and for each logicExpression.input = inputElementsList[0]
+	if(this.logicExpressionList.length == 0){
+		this.input = inputElementsList[index];
+		index++;
+	}
+
+	for(var k=0; k<this.logicExpressionList.length; k++){
+		this.logicExpressionList[k].addInputElements(inputElementsList);
+	}
+};
+
+LogicExpression.prototype.getInputElements = function(array){
+
+	if(this.logicExpressionList.length == 0){
+		array.push(this.input);
+	}
+
+	for(var k=0; k<this.logicExpressionList.length; k++){
+		this.logicExpressionList[k].getInputElements(array);
+	}
+};
+
+LogicExpression.prototype.show = function(){
+	$(this.logicExpressionDiv).show();
+};
+
+LogicExpression.prototype.hide = function(){
+	$(this.logicExpressionDiv).hide();
+};
 /*
 LogicExpression.prototype.calculateWidth = function(){
 	var numExpr = this.logicExpressionList.length;
@@ -345,3 +489,6 @@ LogicExpression.prototype.calculateWidth = function(){
 
 };
 */
+
+LogicExpression.prototype.init = function(){
+};

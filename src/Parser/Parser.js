@@ -70,14 +70,60 @@ Parser.prototype.loadElements = function (father , elements){
     }
 
     for(var i=0; i<elements.length; i++){
-        var child = father.addElement(elements[i].type,i);
+        var child = father.addElement(elements[i].type,i,elements[i].data);
         this.loadElements(child , elements[i].elements);
     }
 
 }
 
 Parser.prototype.saveProgram = function (programElement){
+    console.log('Save program: ',programElement.id);
+    
+    var output = new Array();
 
-    outputPrograms.push({id: programElement.id});
-    //then save to file
+    programElement.saveElement(output);
+
+    /*
+    output.push({
+        id: programElement.id,
+        type: programElement.type,
+        format: programElement.format
+    });
+    */
+//localStorage.setItem('gameStorage', JSON.stringify(output));
+
+console.log(output);
+
+return;
+
+    var stringOutput = JSON.stringify(output);
+
+    var blob = new Blob([stringOutput], {type: "application/json"});
+    var url  = URL.createObjectURL(blob);
+ var a = document.createElement('a');
+    a.download    = "json/outputProgram.json";
+    a.href        = url;
+    a.textContent = "Download backup.json";
+    /*save json
+
+
+   
+    */
+   var saveData = (function () {
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+    return function (data, fileName) {
+        var json = JSON.stringify(data),
+            blob = new Blob([json], {type: "octet/stream"}),
+            url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = fileName;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    };
+}());
+
+   saveData(output , 'json/outputProgram.json');
 };
+
