@@ -209,7 +209,7 @@ Rectangle.prototype.mouseUp = function (){
 };
 
 Rectangle.prototype.mouseDown = function (){
-
+	
     if(this.element.father && this.element.type != ElementType.doNothing){
         //removes element from father
         var father = this.element.father;

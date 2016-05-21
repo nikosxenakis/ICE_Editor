@@ -2,14 +2,14 @@ function DoNothingDialogMenu(){
 
 	var title = "Choose Element";
 
-	this.basicDialogMenu = new BasicDialogMenu(title,DialogMenuData.logicExpressionContentDialogMenuWidth);
+	this.basicDialogMenu = new BasicDialogMenu(title,DialogMenuData.doNothingDialogMenuWidth);
 	
 	this.radioForm = createHtmlElement({
 		format: "form",
 		father: this.basicDialogMenu.getContentDiv()
 	});
 
-	$(this.radioForm).css('padding-left', '130px');
+	//$(this.radioForm).css('padding-left', '130px');
 
 	for (var key in ElementType) {
 		if(key!="grey" && key!="program" && key!="doNothing" && key!="function" && key!="variables")

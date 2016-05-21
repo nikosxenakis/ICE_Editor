@@ -10,7 +10,7 @@ function BasicDialogMenu( title , width){
 		father: "body",
 		top: this.dialogMenuTop,
 		left: this.dialogMenuLeft,
-		width: width
+		//width: width
 	});
 	$(this.dialogMenuDiv).draggable();
 
@@ -18,11 +18,17 @@ function BasicDialogMenu( title , width){
 		format: "div",
 		className: "modal-content container",
 		father: this.dialogMenuDiv,
-		width: $(this.dialogMenuDiv).width(),
+		//width: $(this.dialogMenuDiv).width(),
+		width: width,
 		border: "2px solid #a1a1a1",
 		boxShadow: "5px 5px 5px #888888",
 		borderRadius: "10px"
 	});
+	//$(this.dialogContentDiv).css('opacity','0.6');
+	$(this.dialogContentDiv).css('background-color','gainsboro');
+
+
+	//$(this.dialogContentDiv).css('background-image','url(\'images/images.jpg\')');
 
 	this.dialogTitle = createHtmlElement({
 		format: "h2",
@@ -31,7 +37,8 @@ function BasicDialogMenu( title , width){
 		textAllign:"center"
 	});
 	$(this.dialogTitle).css('margin-top', 10);
-	$(this.dialogTitle).css('color', '#985b5b');
+	$(this.dialogTitle).css('color', '#275F61');
+	$(this.dialogTitle).css('text-shadow', '1px 1px #888888');
 
 	$(this.dialogTitle).css('margin-bottom', 20);
 
@@ -63,15 +70,21 @@ function BasicDialogMenu( title , width){
 
 	this.buttonNext = createHtmlElement({
 		format: "button",
-		text: "Next",
+		text: "Submit",
 		father: this.dialogEnd
 		//top: '0px'
 	});
 	$(this.buttonNext).attr("disabled", false);
 	$(this.buttonNext).css('position', "relative");
 	$(this.buttonNext).css('width', 70);
-	$(this.buttonNext).css('left', $(this.dialogMenuDiv).position().left + $(this.dialogMenuDiv).width() - 2*$(this.buttonNext).width() );
+	$(this.buttonNext).css('left', $(this.dialogContentDiv).position().left + $(this.dialogContentDiv).width() - 1.2*$(this.buttonNext).width() );
 	$(this.buttonNext).css('margin-bottom', 10);
+	$(this.buttonNext).css('border-width', '2px');
+	$(this.buttonNext).css('border-radius', '5px');
+	$(this.buttonNext).css('box-shadow', '2px 2px 1px #888888');
+	$(this.buttonNext).css('background-color', '#A5A9B5');
+	$(this.buttonNext).css('color', '#275F61');
+
 
 	this.buttonBack = createHtmlElement({
 		format: "button",
@@ -85,6 +98,8 @@ function BasicDialogMenu( title , width){
 	$(this.buttonBack).css('left', $(this.dialogMenuDiv).position().left + $(this.dialogMenuDiv).width() - 5*$(this.buttonBack).width() );
 	$(this.buttonBack).css('margin-bottom', 10);
    
+   	//must remove this
+	$(this.buttonBack).remove();
 	
 	return this;
 };
@@ -111,6 +126,11 @@ BasicDialogMenu.prototype.getBackButton = function(flag){
 
 BasicDialogMenu.prototype.enableNextButton = function(flag){
 	$(this.buttonNext).attr("disabled", !flag);
+
+	if(flag == true)
+		$(this.buttonNext).css('color', '#275F61');
+	else
+		$(this.buttonNext).css('color', '#C1CCC0');
 };
 
 BasicDialogMenu.prototype.enableBackButton = function(flag){

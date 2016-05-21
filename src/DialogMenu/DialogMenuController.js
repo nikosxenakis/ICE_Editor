@@ -2,85 +2,11 @@ var DialogMenuController = (function(){
 	function DialogMenuController() {
 
 		//init all dialog menus
-		this.dialogMenus = new Array();
 		this.activeDialogMenu = new Array();
 		this.object = new Array();
-		this.prevType = new Array();
-
-		//doNothing
-		this.dialogMenus[InputType.doNothing] = new DoNothingDialogMenu();
-
-		//lvalue
-		var lValue = new LValueDialogMenu();
-		this.dialogMenus[InputType.lvalue] = lValue;
-		this.dialogMenus[InputType.lvalueID] = lValue;
-		this.dialogMenus[InputType.lvalueGlobalID] = lValue;
-		this.dialogMenus[InputType.lvalueArrayElement] = lValue;
-		this.dialogMenus[InputType.lvalueObjectElement] = lValue;
-		
-		//expression
-		var expression = new ExpressionDialogMenu();
-		this.dialogMenus[InputType.expression] = expression;
-		this.dialogMenus[InputType.expressionArithmentic] = expression;
-		this.dialogMenus[InputType.expressionLogic] = expression;
-		this.dialogMenus[InputType.expressionTermLvalueID] = expression;
-		this.dialogMenus[InputType.expressionTermLvalueGlobalID] = expression;
-		this.dialogMenus[InputType.expressionTermLvalueArrayElement] = expression;
-		this.dialogMenus[InputType.expressionTermLvalueObjectElement] = expression;
-		this.dialogMenus[InputType.expressionTermCallFunction] = expression;
-		this.dialogMenus[InputType.expressionTermCallObjectMethod] = expression;
-		this.dialogMenus[InputType.expressionTermConstNumber] = expression;
-		this.dialogMenus[InputType.expressionTermConstString] = expression;
-
-		this.dialogMenus[InputType.expressionTermConstBool] = expression;
-		this.dialogMenus[InputType.expressionTermConstDate] = expression;
-		this.dialogMenus[InputType.expressionTermConstTime] = expression;
-
-		this.dialogMenus[InputType.expressionArray] = expression;
-	
-		//logicExpression
-		var logicExpression = new LogicExpressionDialogMenu();
-		this.dialogMenus[InputType.logicExpressionDefault] = logicExpression;
-		this.dialogMenus[InputType.logicExpression] = logicExpression;
-
-		//simple number input
-		var number = new NumberDialogMenu();
-		this.dialogMenus[InputType.number] = number;
-
-		//simple id input
-		var id = new IdDialogMenu();
-		this.dialogMenus[InputType.id] = id;
-
-		//Logic Operator input
-		var logicOperator = new LogicOperatorDialogMenu();
-		this.dialogMenus[InputType.logicOperator] = logicOperator;
-
-		//Logic Expression Term
-		var logicExpressionTerm = new LogicExpressionTermDialogMenu();
-		this.dialogMenus[InputType.logicExpressionTerm] = logicExpressionTerm;
-		this.dialogMenus[InputType.logicExpressionTermLocalVariable] = logicExpressionTerm;
-		this.dialogMenus[InputType.logicExpressionTermGlobalVariable] = logicExpressionTerm;
-		this.dialogMenus[InputType.logicExpressionTermArrayElement] = logicExpressionTerm;
-		this.dialogMenus[InputType.logicExpressionTermObjectElement] = logicExpressionTerm;
-		this.dialogMenus[InputType.logicExpressionTermConstantNumber] = logicExpressionTerm;
-		this.dialogMenus[InputType.logicExpressionTermConstantText] = logicExpressionTerm;
-		this.dialogMenus[InputType.logicExpressionTermFunctionCall] = logicExpressionTerm;
-
-		//Expression Term
-		var expressionTerm = new ExpressionTermDialogMenu();
-		this.dialogMenus[InputType.expressionTerm] = expressionTerm;
-		this.dialogMenus[InputType.expressionTermLocalVariable] = expressionTerm;
-		this.dialogMenus[InputType.expressionTermGlobalVariable] = expressionTerm;
-		this.dialogMenus[InputType.expressionTermArrayElement] = expressionTerm;
-		this.dialogMenus[InputType.expressionTermObjectElement] = expressionTerm;
-		this.dialogMenus[InputType.expressionTermConstantNumber] = expressionTerm;
-		this.dialogMenus[InputType.expressionTermConstantText] = expressionTerm;
-		this.dialogMenus[InputType.expressionTermConstantBool] = expressionTerm;
-		this.dialogMenus[InputType.expressionTermConstantDate] = expressionTerm;
-		this.dialogMenus[InputType.expressionTermConstantTime] = expressionTerm;
-		this.dialogMenus[InputType.expressionTermFunctionCall] = expressionTerm;
-		this.dialogMenus[InputType.expressionTermMethodCall] = expressionTerm;
-
+		this.input = new Array();
+		this.prevInput = new Array();
+		this.element = new Array();
 	};
 
     var instance;
@@ -94,62 +20,127 @@ var DialogMenuController = (function(){
             }
             return instance;
         },
-
         open: open,
-        addNewDialogMenu: addNewDialogMenu,
         close: close,
+        addNewDialogMenu: addNewDialogMenu,
         getActive: getActive
     };
 
     function open(object){
-		//object must have a object.input && object.update(input) && object.activate() && object.deactivate()
-		
-		if(
-			object == null ||
-			object.input == null ||
-			object.update == null ||
-			object.activate == null ||
-			object.deactivate == null
-		){
-			console.log('the object does not implement the required interface');
-			return;
-		}
+  		//object must have a object.input && object.update(input) && object.activate() && object.deactivate() && object.element
+  		
+  		if(
+  			object == null ||
+  			object.input == null ||
+  			object.update == null ||
+  			object.activate == null ||
+  			object.deactivate == null
+  		){
+  			console.error('the object does not implement the required interface');
+  			return;
+  		}
+      
+  		if(object.element)
+  			instance.element.push(object.element);
+  		else
+  			instance.element.push(object);
 
-		instance.object.push(object);
-		instance.input = object.input;
-		instance.prevType.push(object.input.type);
+  		instance.object.push(object);
+  		instance.input.push(object.input);
+      instance.prevInput.push( jQuery.extend(true, {}, object.input) );
 
-		addNewDialogMenu(instance.input.type);
+  		addNewDialogMenu(object.input.type , getElement());
 
-		object.activate();
-		var active = getActive();
-		//console.log('TYPE = ',object.input.type);
+  		object.activate();
+  		var active = getActive();
 
-
-		if(!instance.dialogMenus[instance.input.type]){
-			console.log("There is no dialogMenu for : ",instance.input.type);
-			return;
-		}
-
-		console.log(instance);
-		active.open(getObject());		
+  		active.open(object);		
     };
 
 
-    function addNewDialogMenu(type){
-    	var constructorName = instance.dialogMenus[type].constructor.name;
-    	var constructor = instance.dialogMenus[type].constructor;
+    function addNewDialogMenu(type,element){
 
-    	for(var k=0; k<instance.activeDialogMenu.length; k++){
-    		if(instance.activeDialogMenu[k].constructor.name == constructorName){
-    			instance.activeDialogMenu.push(new constructor());
-    			return;
+    	console.log(element);
+
+    	var elem = null;
+
+       	if(type == InputType.doNothing){
+    		elem = new DoNothingDialogMenu();
+    	}
+      	else if(type == InputType.logicExpression){
+    		elem = new LogicExpressionDialogMenu();
+    	}  	
+      	else if(type == InputType.logicOperator){
+    		elem = new LogicOperatorDialogMenu();
+    	}  	
+    	/*
+      	else if(type == InputType.arithmeticExpression){
+    		elem = new ArithmeticExpressionDialogMenu();
+    	} 
+    	*/
+    	else if(type == InputType.arrayExpression){
+    		elem = new ArrayExpressionDialogMenu();
+    	} 
+      else if(
+      		type == InputType.localId ||
+      		type == InputType.globalId ||
+      		type == InputType.arrayElement ||
+      		type == InputType.objectElement
+      	){
+      		if(
+      			element instanceof AssignElement ||
+      			element instanceof ArrayElement ||
+      			element instanceof LogicExpression	||
+            element instanceof ArrayTerm  
+      		){
+    			elem = new LValueDialogMenu();
+      		}
+      		else{
+    			console.error('type :',type,' is not implemented');
+ 	   			return;
+       		}
+    	}  	
+    	else if(type == InputType.number){
+    		if(
+    			element instanceof RepeatElement ||
+    			element instanceof ForElement
+    		){
+    			elem = new NumberDialogMenu();
     		}
+      		else{
+    			console.error('type :',type,' is not implemented');
+ 	   			return;
+       		}
+    	}
+    	else if(type == InputType.number){
+    		console.error('type :',type,' is not implemented');
+    		return;
+		}
+    	else if(type == InputType.string){
+    		console.error('type :',type,' is not implemented');
+    		return;
+		}
+    	else if(type == InputType.bool){
+    		console.error('type :',type,' is not implemented');
+    		return;
+		}
+    	else if(type == InputType.date){
+    		console.error('type :',type,' is not implemented');
+    		return;
+		}
+    	else if(type == InputType.time){
+    		console.error('type :',type,' is not implemented');
+    		return;
+		}
+    	else{
+    		console.error('type :',type,' is not implemented');
+    		return;
     	}
 
-    	instance.activeDialogMenu.push(instance.dialogMenus[type]);
-    };
 
+    	instance.activeDialogMenu.push(elem);
+    };
+    
     function close(updateFlag){
   
   		var object = getObject();
@@ -157,33 +148,33 @@ var DialogMenuController = (function(){
   		var active = getActive();
 
   		if(!object || !input || !active){
-  			console.log('error in close');
+  			console.error('error in close');
   			return;
   		}
 
-    	//if(instance.object.box)
     	object.deactivate();
 
-		active.close();
+		  active.close();
 
-	    if(updateFlag == true/* && instance.object.box*/){
-			object.update();
+	    if(updateFlag == true){
+			 object.update();
 	    }
 	    else if(updateFlag == false){
-			input.type = getPrevType();
+			 object.input = getPrevInput();
 	    }
 
 	    instance.activeDialogMenu.splice(instance.activeDialogMenu.length-1, 1);
 	    instance.object.splice(instance.object.length-1, 1);
-	    instance.prevType.splice(instance.prevType.length-1, 1);
+	    instance.input.splice(instance.input.length-1, 1);
+	    instance.prevInput.splice(instance.prevInput.length-1, 1);
+	    instance.element.splice(instance.element.length-1, 1);
 
-		console.log(instance);
+		  console.log(instance);
 
-		instance.input = null;
     };
 
-    function getPrevType(){
-    	return instance.prevType[instance.prevType.length-1];
+    function getPrevInput(){
+    	return instance.prevInput[instance.prevInput.length-1];
     };
 
     function getActive(){
@@ -195,7 +186,10 @@ var DialogMenuController = (function(){
     }; 
 
     function getInput(){
-    	return instance.object[instance.object.length-1].input;
+    	return instance.input[instance.input.length-1];
     }; 
 
+    function getElement(){
+    	return instance.element[instance.element.length-1];
+    }; 
 })();

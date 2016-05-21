@@ -127,3 +127,104 @@ return;
    saveData(output , 'json/outputProgram.json');
 };
 
+Parser.prototype.parseLogicExpressionData = function (data,inputElement){
+    
+    if(!data){
+        return;
+    }
+
+    if(!inputElement)
+        var newInputElement = new InputElement('',InputType.logicExpression);
+    else{
+        var newInputElement = new InputElement('',InputType.logicExpression);
+        inputElement.addInputElement(newInputElement);
+    }
+
+    if(data.left && data.right && data.operator){
+
+        parser.parseLogicExpressionData(data.left,newInputElement);
+        parser.parseLogicExpressionData(data.operator,newInputElement);
+        parser.parseLogicExpressionData(data.right,newInputElement);
+    }
+    else if(data.type && data.text){
+        newInputElement.setType(data.type);
+        newInputElement.setText(data.text);
+    }
+    else{
+        console.error('Error during parseLogicExpressionData');
+    }
+
+    return newInputElement;
+};
+
+Parser.prototype.parseArrayExpressionData = function (data,arrayNameInputElement,arrayExpressionInputElement){
+    
+    if(!data){
+        return;
+    }
+
+    if(!data.arrayName || !data.arrayType || ! data.arrayList){
+        console.error('error in parseArrayExpressionData');
+    }
+
+    arrayNameInputElement.setText(data.arrayName);
+    arrayNameInputElement.setType(data.arrayType);
+
+    arrayExpressionInputElement.setType(InputType.arrayExpression);
+    
+    for (var k=0; k<data.arrayList.length; k++) {
+        arrayExpressionInputElement.addInputElement(new InputElement(data.arrayList[k].text,data.arrayList[k].type));
+    };
+
+};
+
+Parser.prototype.parseAssignExpressionData = function (data,nameInputElement,valueInputElement){
+
+    if(!data){
+        return;
+    }
+
+    if(!data.varName || !data.varType || ! data.arithmeticExpression){
+        console.error('error in parseArrayExpressionData');
+    }
+
+    nameInputElement.setText(data.varName);
+    nameInputElement.setType(data.varType);
+
+    valueInputElement.setType(InputType.arithmeticExpression);
+    
+    this.parseArithmeticExpressionData(data.arithmeticExpression , valueInputElement)
+};
+
+Parser.prototype.parseArithmeticExpressionData = function (data,inputElement){
+    
+    if(!data){
+        return;
+    }
+
+
+    if(!inputElement)
+        var newInputElement = new InputElement('',InputType.arithmeticExpression);
+    else{
+        var newInputElement = new InputElement('',InputType.arithmeticExpression);
+        inputElement.addInputElement(newInputElement);
+    }
+
+    if(data.left && data.right && data.operator){
+
+        parser.parseArithmeticExpressionData(data.left,newInputElement);
+        parser.parseArithmeticExpressionData(data.operator,newInputElement);
+        parser.parseArithmeticExpressionData(data.right,newInputElement);
+    }
+    else if(data.type && data.text){
+        newInputElement.setType(data.type);
+        newInputElement.setText(data.text);
+    }
+    else{
+        console.error('Error during parseArithmeticExpressionData');
+    }
+
+    return newInputElement;
+};
+
+

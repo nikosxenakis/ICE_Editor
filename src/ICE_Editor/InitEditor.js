@@ -6,13 +6,16 @@ function InitEditor() {
     for (key in Elements)
         ElementType[key] = key;
 
-
+    //initialize singleton classes
     Canvas.getInstance();
     DialogMenuController.getInstance();
     ImageHolder.getInstance();
     JsepParser.getInstance();
 
-    var parser = new Parser();
+    initializeUndoManager();
+    
+    //parse
+    parser = new Parser();
     parser.load(inputPrograms);
     parser.saveProgram(Canvas.getActiveElement());
 
@@ -24,6 +27,28 @@ function InitEditor() {
     jsep.addBinaryOp("OR",1);
 }
 
+function initializeUndoManager(){
+
+    undoManager = new UndoManager();
+
+    btnUndo = document.getElementById("btnUndo");
+    btnRedo = document.getElementById("btnRedo");
+    
+    function updateUI() {
+        btnUndo.disabled = !undoManager.hasUndo();
+        btnRedo.disabled = !undoManager.hasRedo();
+    }
+    undoManager.setCallback(updateUI);
+    
+    btnUndo.onclick = function () {
+        undoManager.undo();
+        updateUI();
+    };
+    btnRedo.onclick = function () {
+        undoManager.redo();
+        updateUI();
+    };
+};
 
 function cssModifications(){
      $('.draggable').css('z-index', 1001);   //to be in the front

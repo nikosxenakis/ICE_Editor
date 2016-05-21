@@ -8,6 +8,8 @@
 	#container{
 		height:100%;
 		background-image: url("backgroundImage.png");
+		font-family: 'sans-serif';
+
 	}
 
 	#menuBarContainer { 
@@ -18,7 +20,7 @@
 	}
 		
 		.dropdown-menu{
-			z-index: 0;
+			//z-index: 0;
 		}
 
 		#image{

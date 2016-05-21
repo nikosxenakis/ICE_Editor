@@ -142,6 +142,8 @@ var Canvas = (function(){
             elem = rect.class.element;
         }
 
+        //rectangle.mouseDown();
+
         if( rectangle && elem && elem.type != ElementType.doNothing){
             elem.moveElement(rectangle,dx,dy); 
             //checkCollisionWithRecycleBin(elem);

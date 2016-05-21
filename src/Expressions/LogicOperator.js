@@ -1,17 +1,13 @@
-var LogicOperatorType = {
-	AND: "AND",
-	OR: "OR"
-};
-
-function LogicOperator(id,fatherLogicExpression,data){
+function LogicOperator(id,fatherLogicExpression,inputElement){
 
 	this.id = id;
 	this.fatherLogicExpression = fatherLogicExpression;
 	
-	if(!data)
-		var data = LogicOperatorType.AND;
+	if(!inputElement){
+		console.error('LogicOperator error no given type');
+	}
 
-	this.input = new InputElement(data , InputType.logicOperator);
+	this.input = inputElement;
 
 	if(this.fatherLogicExpression instanceof LogicExpression){
 		this.fatherLogicExpression.logicOperatorList.push(this);	
@@ -21,36 +17,119 @@ function LogicOperator(id,fatherLogicExpression,data){
 	this.logicOperatorDiv = createHtmlElement({
 		format: "div",
 		id: id,
-		father: fatherLogicExpression.logicExpressionContentDiv,
-		width: '50px',
-		height: '95px',
-		border: "groove"
+		border: "groove #7D4C3C",
+		father: fatherLogicExpression.logicExpressionContentDiv
 	});
 
+	$(this.logicOperatorDiv).css('border-width', '2px');
 	$(this.logicOperatorDiv).css('display', 'inline-block');
-	$(this.logicOperatorDiv).css('overflow', 'hidden');
+	//$(this.logicOperatorDiv).css('overflow', 'hidden');
+	$(this.logicOperatorDiv).css('vertical-align', 'middle');
+	$(this.logicOperatorDiv).css('border-radius', '10px');
+	$(this.logicOperatorDiv).css('box-shadow', '2px 2px 1px #888888');
+
+	$(this.logicOperatorDiv).mouseover(function(){
+		var active = DialogMenuController.getActive();
+
+		if(!active.logicExpression)
+			return;
+
+		var logicOperator = active.logicExpression.getLogicOperatorById(id);
+
+		$(logicOperator.optionsDiv).show();
+
+	});
+
+	$(this.logicOperatorDiv).mouseout(function(){
+		var active = DialogMenuController.getActive();
+
+		if(!active.logicExpression)
+			return;
+
+		var logicOperator = active.logicExpression.getLogicOperatorById(id);
+
+		$(logicOperator.optionsDiv).hide();
+
+	});
+
+	this.optionsDiv = createHtmlElement({
+		format: "div",
+		father: this.logicOperatorDiv
+	});
 
 	this.logicOperatorContentDiv = createHtmlElement({
 		format: "div",
 		id: id+"Content",
 		father: this.logicOperatorDiv
 	});
-	//$(this.logicOperatorContentDiv).css('margin', 5);
-	//$(this.logicOperatorContentDiv).css('margin-top', 25);
+	$(this.logicOperatorContentDiv).css('margin', 12);
 
 	this.dataDiv = createHtmlElement({
 		format: "div",
-		text: data,
+		text: this.input.getText(),
 		father: this.logicOperatorContentDiv
 	});
 	
-	this.optionsDiv = createHtmlElement({
+	this.dropdown = createHtmlElement({
 		format: "div",
-		father: this.logicOperatorDiv
+		className: "dropdown dropdownMultiDepth",
+		father: this.optionsDiv
 	});
-	$(this.optionsDiv).css('margin-top', 45);
-	$(this.optionsDiv).css('text-align', 'right');
+	$(this.dropdown).css('float','right');
 
+	this.dropdownA = createHtmlElement({
+		format: "span",
+		className: "glyphicon glyphicon-menu-down",
+		id: "dLabel",
+		father: this.dropdown
+	});
+	$(this.dropdownA).attr('data-toggle','dropdown');
+	$(this.dropdownA).css('font-size','14px');
+	$(this.dropdownA).css('left','-3px');
+	$(this.dropdownA).css('color','sienna');
+
+	this.dropdownUl = createHtmlElement({
+		format: "ul",
+		className: "dropdown-menu",
+		id: "dLabel",
+		father: this.dropdown
+	});
+	$(this.dropdownUl).css('min-width','60px');
+	$(this.dropdownUl).attr('aria-labelledby','dropdownMenu');
+	$(this.dropdownUl).css('text-align','center');
+
+	this.dropdownList = createHtmlElement({
+		format: "li",
+		father: this.dropdownUl
+	});
+	$(this.dropdownList).css('margin-left','5px');
+	$(this.dropdownList).css('margin-right','5px');
+
+	this.buttonAnd = createHtmlElement({
+		format: "a",
+		text: "and",
+		father: this.dropdownList
+	});
+	this.buttonOr = createHtmlElement({
+		format: "a",
+		text: "or",
+		father: this.dropdownList
+	});
+
+	$(this.buttonAnd).mousedown(function(){
+		var active = DialogMenuController.getActive();
+		var logicOperator = active.logicExpression.getLogicOperatorById(id);
+		logicOperator.input.setText('and');
+		$(logicOperator.dataDiv).text(logicOperator.input.getText());
+	});
+
+	$(this.buttonOr).mousedown(function(){
+		var active = DialogMenuController.getActive();
+		var logicOperator = active.logicExpression.getLogicOperatorById(id);
+		logicOperator.input.setText('or');
+		$(logicOperator.dataDiv).text(logicOperator.input.getText());
+	});
+	/*
 	this.buttonEdit = createHtmlElement({
 		format: "span",
 		id: "buttonEdit",
@@ -76,6 +155,8 @@ function LogicOperator(id,fatherLogicExpression,data){
 
 		DialogMenuController.open(logicOperator);
 	});
+	*/
+	$(this.optionsDiv).hide();
 
 	return this;
 };

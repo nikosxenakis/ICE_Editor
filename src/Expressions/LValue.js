@@ -10,420 +10,277 @@ function LValue(basicDialogMenu){
 		father: basicDialogMenu.getContentDiv()
 	});	
 	
-	this.dialogBodyLeft = createHtmlElement({
-		format: "div",
-		className: "col-sm-6",
-		father: this.lValueDiv
-	});
+	this.chooseType();
 
-	this.radioForm = createHtmlElement({
-		format: "form",
-		father: this.dialogBodyLeft
-	});
-
-	this.radioVariable = createRadioHtmlElement({
-		text: "local variable",
-		name: 'type',
-		father: this.radioForm
-	});
-
-	this.radioGlobalVariable = createRadioHtmlElement({
-		text: "global variable",
-		name: 'type',
-		father: this.radioForm
-	});
-
-	this.radioArrayElement = createRadioHtmlElement({
-		text: "array element",
-		name: 'type',
-		father: this.radioForm
-	});
-
-	this.radioObjectElement = createRadioHtmlElement({
-		text: "object element",
-		name: 'type',
-		father: this.radioForm
-	});
-
-	this.dialogBodyRight = createHtmlElement({
-		format: "div",
-		className: "col-sm-6",
-		father: this.lValueDiv
-	});
-
-	this.dialogTextInput = createHtmlElement({
-		format: "input",
-		type: "text",
-		placeholder: "value",
-		father: this.dialogBodyRight
-	});
-	$(this.dialogTextInput).css('max-width', '100%');
-	$(this.dialogTextInput).css('margin-top', 30);
-
-	this.dialogSubTextInput = createHtmlElement({
-		format: "input",
-		type: "text",
-		placeholder: "value",
-		father: this.dialogBodyRight
-	});
-	$(this.dialogSubTextInput).css('max-width', '100%');
-	$(this.dialogSubTextInput).css('margin-top', 20);
-
-	$(this.dialogTextInput).show();
-	$(this.dialogSubTextInput).hide();
-	
-	$( this.basicDialogMenu.getNextButton() ).mousedown(function(e) {
-		var active = DialogMenuController.getActive();
-
-		if(active.lValue){
-			var lValue = active.lValue;
-		}
-		else if(active.expression){
-			var expression = active.expression;
-			var term = expression.term;
-			var lValue = term.lValue;
-		}
-		else if(active.term){
-			var term = active.term;
-			var lValue = term.lValue;
-		}	
-		var lValueDiv = lValue.lValueDiv;
-		
-		var input = active.object.input;
-		var inputType = input.type;
-		var outputText = $(lValue.dialogTextInput).val();
-		var outputSubText = $(lValue.dialogSubTextInput).val();
-		
-		if( $(lValueDiv).is(":visible") == true ){
-			console.log('submit');
-			
-			if( radioIsChecked(lValue.radioVariable) ){
-				input.setText(outputText);
-				if(expression)
-					input.setType(InputType.expressionTermLvalueID);
-				else
-					input.setType(InputType.lvalueID);
-			}
-			else if( radioIsChecked(lValue.radioGlobalVariable) ){
-				input.setText("global "+outputText);
-				if(expression)
-					input.setType(InputType.expressionTermLvalueGlobalID);
-				else
-					input.setType(InputType.lvalueGlobalID);
-			}	
-			else if( radioIsChecked(lValue.radioArrayElement) ){
-				input.setText(outputText+"["+outputSubText+"]");
-				if(expression)
-					input.setType(InputType.expressionTermLvalueArrayElement);
-				else
-					input.setType(InputType.lvalueArrayElement);
-			}	
-			else if( radioIsChecked(lValue.radioObjectElement) ){
-				input.setText(outputText+"."+outputSubText);
-				if(expression)
-					input.setType(InputType.expressionTermLvalueObjectElement);
-				else
-					input.setType(InputType.lvalueObjectElement);
-			}
-			else{
-				console.error('Wrong input type');
-			}
-
-       	 	DialogMenuController.close(true);
-			
-			e.stopImmediatePropagation();
-		}
-	});	
-	
-	$( this.basicDialogMenu.getBackButton() ).mousedown(function(e) {
-		var active = DialogMenuController.getActive();
-
-		if(active.lValue){
-			var lValue = active.lValue;
-		}
-		else if(active.expression){
-			var expression = active.expression;
-			var term = expression.term;
-			var lValue = term.lValue;
-		}
-		else if(active.term){
-			var term = active.term;
-			var lValue = term.lValue;
-		}
-		var lValueDiv = lValue.lValueDiv;
-
-		if(active.lValue){
-			console.error('there is no back button in lValue');
-			return;
-		}
-		
-		if( $(lValueDiv).is(":visible") == true ){
-			active.basicDialogMenu.setNextButton('Next');
-			active.basicDialogMenu.enableNextButton(true);
-			lValue.hide();				
-			term.show();
-			
-			e.stopImmediatePropagation();
-		}
-
-	});	
-	
-	$(this.radioVariable).mousedown(function(){
-		var active = DialogMenuController.getActive();
-		
-		if(active.expression){
-			var expression = active.expression;
-			var term = expression.term;
-			var lValue = term.lValue;
-		}
-		else if(active.lValue){
-			var lValue = active.lValue;
-
-		}
-		else if(active.term){
-			var term = active.term;
-			var lValue = term.lValue;
-		}
-		
-		active.basicDialogMenu.enableNextButton(false);
-    	$(lValue.dialogSubTextInput).hide();
-    	$(lValue.dialogTextInput).css('margin-top', 30);
-    	$(lValue.dialogTextInput).val("");
-    	$(lValue.dialogTextInput).attr("placeholder" , "variable name");
-    });
-
-    $(this.radioGlobalVariable).mousedown(function(){
-		var active = DialogMenuController.getActive();
-		
-		if(active.expression){
-			var expression = active.expression;
-			var term = expression.term;
-			var lValue = term.lValue;
-		}
-		else if(active.lValue){
-			var lValue = active.lValue;
-
-		}
-		else if(active.term){
-			var term = active.term;
-			var lValue = term.lValue;
-		}
-		
-		active.basicDialogMenu.enableNextButton(false);
-    	$(lValue.dialogSubTextInput).hide();
-    	$(lValue.dialogTextInput).css('margin-top', 30);
-    	$(lValue.dialogTextInput).val("");
-    	$(lValue.dialogTextInput).attr("placeholder" , "global variable name");
-    });
-
-	$(this.radioArrayElement).mousedown(function(){
-		var active = DialogMenuController.getActive();
-		
-		if(active.expression){
-			var expression = active.expression;
-			var term = expression.term;
-			var lValue = term.lValue;
-		}
-		else if(active.lValue){
-			var lValue = active.lValue;
-
-		}
-		else if(active.term){
-			var term = active.term;
-			var lValue = term.lValue;
-		}
-		
-		active.basicDialogMenu.enableNextButton(false);
-    	$(lValue.dialogSubTextInput).show();
-    	$(lValue.dialogTextInput).css('margin-top', 10);
-    	$(lValue.dialogTextInput).val("");
-    	$(lValue.dialogSubTextInput).val("");
-    	$(lValue.dialogTextInput).attr("placeholder" , "array name");
-    	$(lValue.dialogSubTextInput).attr("placeholder" , "element's position");
-    });
-
-    $(this.radioObjectElement).mousedown(function(){
-		var active = DialogMenuController.getActive();
-		
-		if(active.expression){
-			var expression = active.expression;
-			var term = expression.term;
-			var lValue = term.lValue;
-		}
-		else if(active.lValue){
-			var lValue = active.lValue;
-
-		}
-		else if(active.term){
-			var term = active.term;
-			var lValue = term.lValue;
-		}
-		
-		active.basicDialogMenu.enableNextButton(false);
-    	$(lValue.dialogSubTextInput).show();
-    	$(lValue.dialogTextInput).css('margin-top', 10);
-    	$(lValue.dialogTextInput).val("");
-    	$(lValue.dialogSubTextInput).val("");
-    	$(lValue.dialogTextInput).attr("placeholder" , "object name");
-    	$(lValue.dialogSubTextInput).attr("placeholder" , "element's name");
-    });
-	
-	$(this.dialogTextInput).on("input",function() {
-		var active = DialogMenuController.getActive();
-		
-		if(active.expression){
-			var expression = active.expression;
-			var term = expression.term;
-			var lValue = term.lValue;
-		}
-		else if(active.lValue){
-			var lValue = active.lValue;
-
-		}
-		else if(active.term){
-			var term = active.term;
-			var lValue = term.lValue;
-		}
-
-		var outputText = $(lValue.dialogTextInput).val();
-		var outputSubText = $(lValue.dialogSubTextInput).val();
-
-		if( $(lValue.dialogSubTextInput).is(":visible") ){
-			if(outputSubText!="" && outputText!=""){
-				if( radioIsChecked(lValue.radioArrayElement) ){
-					if(!isNaN(outputSubText)){
-						active.basicDialogMenu.enableNextButton(true);
-					}
-					else{
-						active.basicDialogMenu.enableNextButton(false);
-					}
-				}else{
-					active.basicDialogMenu.enableNextButton(true);
-				}
-			}
-			else{
-				active.basicDialogMenu.enableNextButton(false);
-			}
-		}
-		else{
-			if(outputText!=""){
-				active.basicDialogMenu.enableNextButton(true);
-			}
-			else{
-				active.basicDialogMenu.enableNextButton(false);
-			}
-		}
-	});
-
-	$(this.dialogSubTextInput).on("input",function() {
-		var active = DialogMenuController.getActive();
-		
-		if(active.expression){
-			var expression = active.expression;
-			var term = expression.term;
-			var lValue = term.lValue;
-		}
-		else if(active.lValue){
-			var lValue = active.lValue;
-
-		}
-		else if(active.term){
-			var term = active.term;
-			var lValue = term.lValue;
-		}
-		
-		var outputText = $(lValue.dialogTextInput).val();
-		var outputSubText = $(lValue.dialogSubTextInput).val();
-
-		if( $(lValue.dialogSubTextInput).is(":visible") ){
-			if(outputSubText!="" && outputText!=""){
-				if( radioIsChecked(lValue.radioArrayElement) ){
-					if(!isNaN(outputSubText)){
-	    				active.basicDialogMenu.enableNextButton(true);
-					}
-					else{
-	    				active.basicDialogMenu.enableNextButton(false);
-					}
-				}else{
-	    			active.basicDialogMenu.enableNextButton(true);
-				}
-			}
-			else{
-	    		active.basicDialogMenu.enableNextButton(false);
-			}
-		}
-		else{
-			if(outputText!=""){
-	    		active.basicDialogMenu.enableNextButton(true);
-			}
-			else{
-	    		active.basicDialogMenu.enableNextButton(false);
-			}
-		}
-	});
+	this.localVariable();
+	this.globalVariable();
+	this.arrayElement();
+	this.objectElement();
 	return this;
+};
+
+LValue.prototype.chooseType = function(){
+this.chooseTypeDiv = createHtmlElement({
+		format: "div",
+		className: "col-xs-12",
+		father: this.lValueDiv
+	});
+	$(this.chooseTypeDiv).css('border','solid 1px darkgray');
+	$(this.chooseTypeDiv).css('border-radius','10px');
+	$(this.chooseTypeDiv).css('box-shadow', '2px 2px 1px #888888');
+	$(this.chooseTypeDiv).css('padding','10px');
+	$(this.chooseTypeDiv).css('margin-bottom','10px');
+
+
+	this.chooseTypeLabel = createHtmlElement({
+		format: "div",
+		text: "Choose Type:",
+		father: this.chooseTypeDiv
+	});
+	$(this.chooseTypeLabel).css('font-size','larger');
+	$(this.chooseTypeLabel).css('float','left');
+	$(this.chooseTypeLabel).css('margin-left','20px');
+	$(this.chooseTypeLabel).css('margin-top','0px');
+	$(this.chooseTypeLabel).css('color', '#275F61');
+	$(this.chooseTypeLabel).css('font-family','-webkit-pictograph');
+
+	this.chooseTypeDropdown = createHtmlElement({
+		format: "div",
+		className: "dropdown dropdownMultiDepth",
+		father: this.chooseTypeDiv
+	});
+	$(this.chooseTypeDropdown).css('float','right');
+	$(this.chooseTypeDropdown).css('margin-right','45px');
+
+
+	this.chooseTypeDropdownA = createHtmlElement({
+		format: "a",
+		className: "btn btn-primary",
+		text: "local variable",
+		id: "dLabel",
+		father: this.chooseTypeDropdown
+	});
+	$(this.chooseTypeDropdownA).attr('data-toggle','dropdown');
+	$(this.chooseTypeDropdownA).css('background-color','gray');
+	$(this.chooseTypeDropdownA).css('border-radius','5px');
+	$(this.chooseTypeDropdownA).css('color','#275F61');
+	$(this.chooseTypeDropdownA).css('background-color','azure');
+
+	this.chooseTypeDropdownSpan = createHtmlElement({
+		format: "span",
+		className: "caret",
+		father: this.chooseTypeDropdownA
+	});
+
+	this.chooseTypeDropdownUl = createHtmlElement({
+		format: "ul",
+		className: "dropdown-menu",
+		father: this.chooseTypeDropdown
+	});
+	//$(this.chooseTypeDropdownUl).css('min-width','60px');
+	$(this.chooseTypeDropdownUl).attr('aria-labelledby','dropdownMenu');
+	$(this.chooseTypeDropdownUl).css('text-align','center');
+	$(this.chooseTypeDropdownUl).css('position','absolute');
+
+	this.chooseTypeDropdownList = createHtmlElement({
+		format: "li",
+		father: this.chooseTypeDropdownUl
+	});
+	$(this.chooseTypeDropdownList).css('margin-left','5px');
+	$(this.chooseTypeDropdownList).css('margin-right','5px');
+
+	this.buttonLocalVariable = createHtmlElement({
+		format: "a",
+		text: "local variable",
+		father: this.chooseTypeDropdownList
+	});
+
+	this.buttonGlobalVariable = createHtmlElement({
+		format: "a",
+		text: "global variable",
+		father: this.chooseTypeDropdownList
+	});
+
+	this.buttonArrayElement = createHtmlElement({
+		format: "a",
+		text: "array element",
+		father: this.chooseTypeDropdownList
+	});
+
+	this.buttonObjectElement = createHtmlElement({
+		format: "a",
+		text: "object element",
+		father: this.chooseTypeDropdownList
+	});
+};
+
+LValue.prototype.localVariable = function(){
+	this.localVariableDiv = createHtmlElement({
+		format: "div",
+		className: "col-xs-12",
+		father: this.lValueDiv
+	});
+	$(this.localVariableDiv).css('border','solid 1px darkgray');
+	$(this.localVariableDiv).css('border-radius','10px');
+	$(this.localVariableDiv).css('box-shadow', '2px 2px 1px #888888');
+	$(this.localVariableDiv).css('padding','10px');
+
+	this.localVariableLabel = createHtmlElement({
+		format: "div",
+		text: "Variable Name:",
+		father: this.localVariableDiv
+	});
+	$(this.localVariableLabel).css('font-size','larger');
+	$(this.localVariableLabel).css('float','left');
+	$(this.localVariableLabel).css('margin-left','20px');
+	$(this.localVariableLabel).css('margin-top','0px');
+	$(this.localVariableLabel).css('color', '#275F61');
+	$(this.localVariableLabel).css('font-family','-webkit-pictograph');
+
+	this.localVariableInput = createHtmlElement({
+		format: "input",
+		father: this.localVariableDiv
+	});
+	$(this.localVariableInput).css('float','right');
+	$(this.localVariableInput).css('margin-right','20px');
+	$(this.localVariableInput).css('width','140px');
+	$(this.localVariableInput).attr('placeholder','local variable');
+};
+
+LValue.prototype.globalVariable = function(){
+	this.globalVariableDiv = createHtmlElement({
+		format: "div",
+		className: "col-xs-12",
+		father: this.lValueDiv
+	});
+	$(this.globalVariableDiv).css('border','solid 1px darkgray');
+	$(this.globalVariableDiv).css('border-radius','10px');
+	$(this.globalVariableDiv).css('box-shadow', '2px 2px 1px #888888');
+	$(this.globalVariableDiv).css('padding','10px');
+
+	this.globalVariableLabel = createHtmlElement({
+		format: "div",
+		text: "Global Name:",
+		father: this.globalVariableDiv
+	});
+	$(this.globalVariableLabel).css('font-size','larger');
+	$(this.globalVariableLabel).css('float','left');
+	$(this.globalVariableLabel).css('margin-left','20px');
+	$(this.globalVariableLabel).css('margin-top','0px');
+	$(this.globalVariableLabel).css('color', '#275F61');
+	$(this.globalVariableLabel).css('font-family','-webkit-pictograph');
+
+	this.globalVariableInput = createHtmlElement({
+		format: "input",
+		father: this.globalVariableDiv
+	});
+	$(this.globalVariableInput).css('float','right');
+	$(this.globalVariableInput).css('margin-right','20px');
+	$(this.globalVariableInput).css('width','140px');
+	$(this.globalVariableInput).attr('placeholder','global variable');
+};
+
+LValue.prototype.arrayElement = function(){
+
+	this.arrayElementDiv = createHtmlElement({
+		format: "div",
+		className: "col-xs-12",
+		father: this.lValueDiv
+	});
+	$(this.arrayElementDiv).css('border','solid 1px darkgray');
+	$(this.arrayElementDiv).css('border-radius','10px');
+	$(this.arrayElementDiv).css('box-shadow', '2px 2px 1px #888888');
+	$(this.arrayElementDiv).css('padding','10px');
+
+	return;
+
+	this.globalVariableLabel = createHtmlElement({
+		format: "div",
+		text: "Variable Name:",
+		father: this.globalVariableDiv
+	});
+	$(this.globalVariableLabel).css('font-size','larger');
+	$(this.globalVariableLabel).css('float','left');
+	$(this.globalVariableLabel).css('margin-left','20px');
+	$(this.globalVariableLabel).css('margin-top','0px');
+	$(this.globalVariableLabel).css('color', '#275F61');
+	$(this.globalVariableLabel).css('font-family','-webkit-pictograph');
+
+	this.globalVariableInput = createHtmlElement({
+		format: "input",
+		father: this.globalVariableDiv
+	});
+	$(this.globalVariableInput).css('float','right');
+	$(this.globalVariableInput).css('margin-right','20px');
+	$(this.globalVariableInput).css('width','140px');
+	$(this.globalVariableInput).attr('placeholder','local variable');
+};
+
+LValue.prototype.objectElement = function(){
+	
+	this.objectElementDiv = createHtmlElement({
+		format: "div",
+		className: "col-xs-12",
+		father: this.lValueDiv
+	});
+	$(this.objectElementDiv).css('border','solid 1px darkgray');
+	$(this.objectElementDiv).css('border-radius','10px');
+	$(this.objectElementDiv).css('box-shadow', '2px 2px 1px #888888');
+	$(this.objectElementDiv).css('padding','10px');
+
+	return;
+
+	this.globalVariableLabel = createHtmlElement({
+		format: "div",
+		text: "Variable Name:",
+		father: this.globalVariableDiv
+	});
+	$(this.globalVariableLabel).css('font-size','larger');
+	$(this.globalVariableLabel).css('float','left');
+	$(this.globalVariableLabel).css('margin-left','20px');
+	$(this.globalVariableLabel).css('margin-top','0px');
+	$(this.globalVariableLabel).css('color', '#275F61');
+	$(this.globalVariableLabel).css('font-family','-webkit-pictograph');
+
+	this.globalVariableInput = createHtmlElement({
+		format: "input",
+		father: this.globalVariableDiv
+	});
+	$(this.globalVariableInput).css('float','right');
+	$(this.globalVariableInput).css('margin-right','20px');
+	$(this.globalVariableInput).css('width','140px');
+	$(this.globalVariableInput).attr('placeholder','local variable');
 };
 
 LValue.prototype.init = function(input){
 
     var text = input.getText();
-    $(this.dialogTextInput).val(text);
-    $(this.dialogSubTextInput).hide();
 
-	var active = DialogMenuController.getActive();
-	var expression = active.expression;
+ 	if(text.outputText1)
+ 		var outputText1 = text.outputText1;
 
-	var lValue = active.lValue;
-	if(!expression && lValue){
-		this.basicDialogMenu.enableBackButton(false);
+  	if(text.outputText2)
+ 		var outputText2 = text.outputText2;
+
+	console.log(text);
+
+	if(input.type == InputType.localId){
+    	$(this.localVariableInput).val(text);		
 	}
-	
-	this.basicDialogMenu.setNextButton('Submit');
-
-	if( input.type == InputType.expressionTermLvalueID || input.type == InputType.lvalueID){
-		$(this.radioVariable).children('input[type=radio]').prop("checked", true);
-    	$(this.dialogTextInput).attr("placeholder" , "variable name");
+	else if(input.type == InputType.globalId){
+    	$(this.globalVariableInput).val(text);		
 	}
-	else if( input.type == InputType.expressionTermLvalueGlobalID || input.type == InputType.lvalueGlobalID ){	
-		$(this.radioGlobalVariable).children('input[type=radio]').prop("checked", true);
+	else if(input.type == InputType.arrayElement){
 		
-    	var global = text.substring(0, 5);
-    	var varName = text.substring(6, text.length);
-    	$(this.dialogTextInput).val(varName);
 	}
-	else if( input.type == InputType.expressionTermLvalueArrayElement || input.type == InputType.lvalueArrayElement ){	
-		$(this.radioArrayElement).children('input[type=radio]').prop("checked", true);
-    	$(this.dialogSubTextInput).show();
-
-    	var arrayNumStart = text.indexOf("[");
-    	var arrayNumStop = text.indexOf("]");
-
-    	var arrayName = text.substring(0, arrayNumStart);
-    	var arrayNum = text.substring(arrayNumStart+1, arrayNumStop);
-
-    	$(this.dialogTextInput).val(arrayName);
-    	$(this.dialogSubTextInput).val(arrayNum);
-	}
-	else if( input.type == InputType.expressionTermLvalueObjectElement || input.type == InputType.lvalueObjectElement ){	
-		$(this.radioObjectElement).children('input[type=radio]').prop("checked", true);
-    	$(this.dialogSubTextInput).show();
-
-    	var elementStart = text.indexOf(".");
-
-    	var objectName = text.substring(0, elementStart);
-    	var element = text.substring(elementStart+1, text.length);
-
-    	$(this.dialogTextInput).val(objectName);
-    	$(this.dialogSubTextInput).val(element);
-	}
-	else if( input.type == InputType.lvalue ){
-		$(this.radioVariable).children('input[type=radio]').prop("checked", true);
-   	 	$(this.dialogTextInput).val("");
-    	$(this.dialogTextInput).attr("placeholder" , "variable name");
-	}
+	else if(input.type == InputType.objectElement){
 		
+	}
+	else{
+		console.error('error in LValue init');
+	}		
 };
-
+/*
 LValue.prototype.show = function(){
 	$(this.lValueDiv).show();
 };
@@ -431,3 +288,4 @@ LValue.prototype.show = function(){
 LValue.prototype.hide = function(){
 	$(this.lValueDiv).hide();
 };
+*/

@@ -2,22 +2,12 @@ function WhileElement (id , elementOffset , father , data){
 
     Element.call(this , id , "while" , elementOffset , father);
 
-    var type = InputType.logicExpressionDefault;
-    var text = ""; 
+    console.log('data : ',data);
 
-    if(data && data.inputType)
-        type = data.inputType;
-    if(data && data.inputText)
-        text = data.inputText;  
+    var conditionInputElement = parser.parseLogicExpressionData(data);
 
-    var conditionInputElement = new InputElement(text,type);
+    console.log('inputElement : ',conditionInputElement);
 
-    if(data && data.inputElementList){
-         for(var k=0; k<data.inputElementList.length; k++){
-            if(data.inputElementList[k].text && data.inputElementList[k].type)
-                conditionInputElement.addInputElement(new InputElement(data.inputElementList[k].text , data.inputElementList[k].type));
-        }
-    }
 
     var firstRect = this.getRectangle(RectangleOffset.firstHorizontial).rectangle;
     var secondRect = this.getRectangle(RectangleOffset.secondHorizontial).rectangle;
@@ -55,3 +45,4 @@ function WhileElement (id , elementOffset , father , data){
 }
 
 WhileElement.prototype = Element.prototype;
+

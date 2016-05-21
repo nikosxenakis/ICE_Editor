@@ -2,25 +2,15 @@ function AssignElement (id , elementOffset , father , data){
 
     Element.call(this , id , "assign" , elementOffset , father);
 
-    var varNameInputType = InputType.lvalue;
-    var varNameInputText = "var name";
-    var varValueInputType = InputType.expression;
-    var varValueInputText = "var value";  
+    console.log('data : ',data);
 
-    if(data){
-        if(data.varNameInputType)
-            varNameInputType = data.varNameInputType;
-        if(data.varNameInputText)
-            varNameInputText = data.varNameInputText;
-        if(data.varValueInputType)
-            varValueInputType = data.varValueInputType;
-        if(data.varValueInputText)
-            varValueInputText = data.varValueInputText;
-    }
+    var nameInputElement = new InputElement('variable name',InputType.localId);
+    var valueInputElement = new InputElement('variable value',InputType.arithmeticExpression);
 
-    var nameInputElement = new InputElement(varNameInputText,varNameInputType)
-    var valueInputElement = new InputElement(varValueInputText,varValueInputType);
+    parser.parseAssignExpressionData(data,nameInputElement,valueInputElement);
 
+    console.log('nameInputElement : ',nameInputElement);
+    console.log('valueInputElement : ',valueInputElement);
 
     if(data && data.varValueInputElementList){
         for(var k=0; k<data.varValueInputElementList.length; k++){

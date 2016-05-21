@@ -1,76 +1,43 @@
 var InputType = {
+
     //doNothing
         doNothing: "doNothing",
-    
-    //lvalue
-        lvalue: "lvalue",   //default
-        lvalueID: "lvalueID",
-        lvalueGlobalID: "lvalueGlobalID",
-        lvalueArrayElement: "lvalueArrayElement",
-        lvalueObjectElement: "lvalueObjectElement",
-
-    //expression
-        expression: "expression", //default
-            //arithmetic
-                expressionArithmentic: "expressionArithmentic",
-            //logic
-                expressionLogic: "expressionLogic",
-            //term
-                //lvalue
-                expressionTermLvalueID: "expressionTermLvalueID",
-                expressionTermLvalueGlobalID: "expressionTermLvalueGlobalID",
-                expressionTermLvalueArrayElement: "expressionTermLvalueArrayElement",
-                expressionTermLvalueObjectElement: "expressionTermLvalueObjectElement",
-                //call
-                expressionTermCallFunction: "expressionTermCallFunction",
-                expressionTermCallObjectMethod: "expressionTermCallObjectMethod",
-                //const
-                expressionTermConstNumber: "expressionTermConstNumber",
-                expressionTermConstString: "expressionTermConstString",
-                expressionTermConstBool: "expressionTermConstBool",
-                expressionTermConstDate: "expressionTermConstDate",
-                expressionTermConstTime: "expressionTermConstTime",
-            //array
-                expressionArray: "expressionArray",
-
-    //logicExpression
-        logicExpressionDefault: "logicExpressionDefault",   //default
-        logicExpression: "logicExpression",
-
-    //number
-        number: "number",   //default
 
     //id
-        id: "id",   //default
+        localId: "localId",
+        globalId: "globalId",
+        arrayElement: "arrayElement",
+        objectElement: "objectElement",
 
-    //LogicOperator
-        logicOperator: "logicOperator", //default
+    //const
+        number: "number",
+        string: "string",
+        bool: "bool",
+        date: "date",
+        time: "time",
 
-    //logicExpressionTerm
-        logicExpressionTerm: "logicExpressionTerm", //default
+    //arithmeticExpression
+        arithmeticExpression: "arithmeticExpression",
 
-        //logicExpressionTermVariable
-            logicExpressionTermLocalVariable: "logicExpressionTermLocalVariable",
-            logicExpressionTermGlobalVariable: "logicExpressionTermGlobalVariable",
-            logicExpressionTermArrayElement: "logicExpressionTermArrayElement",
-            logicExpressionTermObjectElement: "logicExpressionTermObjectElement",
+        //arithmeticOperator
+            arithmeticOperator: "arithmeticOperator",
 
-        //logicExpressionTermConstant
-            logicExpressionTermConstantNumber: "logicExpressionTermConstantNumber",
-            logicExpressionTermConstantText: "logicExpressionTermConstantText",
-            logicExpressionTermConstantBool: "logicExpressionTermConstantBool",
-            logicExpressionTermConstantDate: "logicExpressionTermConstantDate",
-            logicExpressionTermConstantTime: "logicExpressionTermConstantTime",
+    //logicExpression
+        logicExpression: "logicExpression",
 
-        //logicExpressionTermFunctionCall
-            logicExpressionTermFunctionCall: "logicExpressionTermFunctionCall",
-  
+        //logicOperator
+            logicOperator: "logicOperator",
+
+    //arrayExpression
+        arrayExpression: "arrayExpression"
         
 };
 
-function InputElement (input , type){
+function InputElement (input , type , father){
+
     this.input = input;
     this.type = type;
+    this.father = father;
     this.inputElements = new Array();
 };
 
@@ -79,10 +46,76 @@ InputElement.prototype.setType = function(type) {
 };
 
 InputElement.prototype.getText = function() {
-    if(this.type == InputType.valueText){
-        return "\"" + this.input + "\"";
+    if(this.type == InputType.logicExpression || this.type == InputType.arithmeticExpression){
+        if(this.inputElements[0] && this.inputElements[1] && this.inputElements[2]){
+            return '('+this.inputElements[0].getText()+' '+this.inputElements[1].getText()+' '+this.inputElements[2].getText()+')';
+        }
+        else if(this.inputElements[0]){
+            return this.inputElements[0].getText();
+        }
+        else if(this.inputElements.length == 0){
+            return this.input;
+        }
+        else{
+            console.error('wrong format in input element');
+        }
     } 
-    return this.input;
+    else if(this.type == InputType.arrayExpression){
+        if(this.inputElements){
+            var str = "[";
+            for(var k=0; k<this.inputElements.length; k++){
+                    str += this.inputElements[k].getText();
+                    if(k<this.inputElements.length-1)
+                        str+= ",";
+            }
+            str += "]";
+            return str;
+        }
+        else{
+            console.error('wrong format in input element');
+        }
+    } 
+    else if(this.type == InputType.logicOperator){
+        return this.input;
+    }   
+    else if(
+        this.type == InputType.localId ||
+        this.type == InputType.globalId ||
+        this.type == InputType.arrayElement ||
+        this.type == InputType.objectElement
+    ){
+        return this.input;
+    }   
+    else if(this.type == InputType.localId){
+        return this.input;
+    }
+    else if(this.type == InputType.globalId){
+        return this.input;
+    }
+    else if(this.type == InputType.arrayElement){
+        var arrayNumStart = this.input.indexOf("[");
+        var arrayNumStop = this.input.indexOf("]");
+
+        var outputText1 = this.input.substring(0, arrayNumStart);
+        var outputText2 = this.input.substring(arrayNumStart+1, arrayNumStop);
+        return  {
+            outputText1: outputText1,
+            outputText2: outputText2
+        };
+    }
+    else if(this.type == InputType.objectElement){
+        var elementStart = this.input.indexOf(".");
+
+        var outputText1 = this.input.substring(0, elementStart);
+        var outputText2 = this.input.substring(elementStart+1, this.input.length);
+        return {
+            outputText1: outputText1,
+            outputText2: outputText2
+        };
+    }
+    else{
+        return this.input;
+    }
 };
 
 InputElement.prototype.setText = function(text) {
@@ -91,4 +124,17 @@ InputElement.prototype.setText = function(text) {
 
 InputElement.prototype.addInputElement = function(elem) {
     this.inputElements.push(elem);
+    elem.father = this;
+};
+
+InputElement.prototype.removeInputElement = function(){
+    if(!this.father){
+        console.error('InputElement has no father');
+        return;
+    }
+
+    var i = this.father.inputElements.indexOf(this);
+    if(i != -1) {
+        this.father.inputElements.splice(i, 1);
+    }
 };

@@ -51,11 +51,14 @@
         <script type="text/javascript" src="js/jquery-ui-1.9.2.custom.js"></script>
         <script type="text/javascript" src="js/MenuBar.js"></script>
         <script type="text/javascript" src="js/jsep.min.js"></script>
+        <script type="text/javascript" src="js/undomanager.js"></script> 
         <script type="text/javascript" src="js/typeahead.js"></script> 
+        <script type="text/javascript" src="js/dropdownMultiDepth.js"></script> 
 
         <!-- CSS -->
         <link rel="stylesheet" type="text/css" href="css/IndexStyle.css">
         <link rel="stylesheet" type="text/css" href="css/MenuBarStyle.css" /> 
+        <link rel="stylesheet" type="text/css" href="css/multipleDropdown.css" /> 
 
         <!-- JS -->
         <script type="text/javascript" src="ICE_Editor/InitEditor.js"></script>
@@ -67,6 +70,7 @@
 
         <script type="text/javascript" src="Image/ImageHolder.js"></script>
 
+        <!--Elements-->
         <script type="text/javascript" src="Elements/Element.js"></script>
 
         <script type="text/javascript" src="Elements/FoldingItem.js"></script>
@@ -76,6 +80,7 @@
         <script type="text/javascript" src="Elements/ProgramElement.js"></script>
         <script type="text/javascript" src="Elements/GreyElement.js"></script>
         <script type="text/javascript" src="Elements/AssignElement.js"></script>
+        <script type="text/javascript" src="Elements/ArrayElement.js"></script>
         <script type="text/javascript" src="Elements/DoNothingElement.js"></script>
         <script type="text/javascript" src="Elements/ForeverElement.js"></script>
         <script type="text/javascript" src="Elements/RepeatElement.js"></script>
@@ -92,18 +97,6 @@
         <script type="text/javascript" src="Elements/HtmlElement.js"></script>
         <script type="text/javascript" src="Elements/InputElement.js"></script>
 
-        <script type="text/javascript" src="DialogMenu/BasicDialogMenu.js"></script>
-        <script type="text/javascript" src="DialogMenu/DialogMenuController.js"></script>
-        <script type="text/javascript" src="DialogMenu/DoNothingDialogMenu.js"></script>
-        <script type="text/javascript" src="DialogMenu/LValueDialogMenu.js"></script>
-        <script type="text/javascript" src="DialogMenu/LogicExpressionDialogMenu.js"></script>
-        <script type="text/javascript" src="DialogMenu/NumberDialogMenu.js"></script>
-        <script type="text/javascript" src="DialogMenu/IdDialogMenu.js"></script>
-        <script type="text/javascript" src="DialogMenu/LogicOperatorDialogMenu.js"></script>
-        <script type="text/javascript" src="DialogMenu/LogicExpressionTermDialogMenu.js"></script>
-        <script type="text/javascript" src="DialogMenu/ExpressionDialogMenu.js"></script>
-        <script type="text/javascript" src="DialogMenu/ExpressionTermDialogMenu.js"></script>
-
         <!--Expressions-->
         <script type="text/javascript" src="Expressions/Expression.js"></script>
         <script type="text/javascript" src="Expressions/ArithmeticExpression.js"></script>
@@ -113,11 +106,25 @@
         <script type="text/javascript" src="Expressions/LValue.js"></script>
         <script type="text/javascript" src="Expressions/Constant.js"></script>
         <script type="text/javascript" src="Expressions/ArrayExpression.js"></script>
-        <script type="text/javascript" src="Expressions/ArrayElement.js"></script>
+        <script type="text/javascript" src="Expressions/ArrayTerm.js"></script>
         <script type="text/javascript" src="Expressions/ComparisonExpression.js"></script>
         <script type="text/javascript" src="Expressions/ComparisonOperator.js"></script>
         <script type="text/javascript" src="Expressions/ComparisonTerm.js"></script>
 
+        <!--Dialog Menus-->
+        <script type="text/javascript" src="DialogMenu/BasicDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/DialogMenuController.js"></script>
+        <script type="text/javascript" src="DialogMenu/DoNothingDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/LValueDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/LogicExpressionDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/ArrayExpressionDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/NumberDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/IdDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/LogicOperatorDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/LogicExpressionTermDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/ExpressionDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/ExpressionTermDialogMenu.js"></script>
+        
         <!-- JSON -->
         <script type="text/javascript" src="json/data.json"></script>
         <script type="text/javascript" src="json/inputProgram.json"></script>
@@ -301,6 +308,36 @@
             </div>
           </md-toolbar>
         </div>
+        
+        <button type="button" class="btn btn-primary" id="btnUndo" disabled="disabled">Undo</button>            
+        <button type="button" class="btn btn-primary" id="btnRedo" disabled="disabled">Redo</button>
+        
+        <div class="dropdown dropdownMultiDepth">
+            <a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary" data-target="#" href="/page.html">
+                Dropdown <span class="caret"></span>
+            </a>
+          <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+              <li><a href="#">Some action</a></li>
+              <li><a href="#">Some other action</a></li>
+              <li class="divider"></li>
+              <li class="dropdown-submenu">
+                <a tabindex="-1" href="#">Hover me for more options</a>
+                <ul class="dropdown-menu">
+                  <li><a tabindex="-1" href="#">Second level</a></li>
+                  <li class="dropdown-submenu">
+                    <a href="#">Even More..</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">3rd level</a></li>
+                      <li><a href="#">3rd level</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="#">Second level</a></li>
+                  <li><a href="#">Second level</a></li>
+                </ul>
+              </li>
+            </ul>
+        </div>
+        
 
         <div id="wrapper">
 
@@ -378,13 +415,9 @@
                 </canvas>
               </div>   
           </div>
-                                      
-
-
-
-
+                                    
         </div>
-                  
+  
         <div id="footerContainer"> 
           <div id="footer"> 
             <p>This is the footer</p>

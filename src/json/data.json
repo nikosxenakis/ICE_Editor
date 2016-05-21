@@ -6,7 +6,7 @@ var CanvasData = {
 	"lowOpacity":0.8,
 
 	"horizontalElementsWidth":350,
-	"horizontalElementsHeight":65,
+	"horizontalElementsHeight":55,
 	"verticalElementsWidth":23,
 	"verticalElementsHeight":0,
 
@@ -31,7 +31,7 @@ var CanvasData = {
 };
 
 var DialogMenuData = {
-	"doNothingDialogMenuWidth": 350,
+	"doNothingDialogMenuWidth": 300,
 	"lValueDialogMenuWidth": 400,
 	"logicExpressionContentDialogMenuWidth": 500
 };
@@ -114,6 +114,17 @@ var Elements = {
 			color:"green",
 			class: AssignElement,
 			srcImg: "images/assign.png",
+			categoryImg: "statements"
+		}
+	,
+	"array":
+		{
+			id:"array",
+			format: "I",
+			type: "array",
+			color:"purple",
+			class: ArrayElement,
+			srcImg: "images/array.png",
 			categoryImg: "statements"
 		}
 	,
