@@ -2,41 +2,15 @@ function TermDialogMenu(){
 
 	var title = "Term";
 	
-	this.basicDialogMenu = new BasicDialogMenu(title,DialogMenuData.logicExpressionContentDialogMenuWidth);
+	this.basicDialogMenu = new BasicDialogMenu(title,DialogMenuData.lValueDialogMenuWidth);
 
-	return;
+	this.term = new Term(this.basicDialogMenu);
 
-	this.dialogTextInput = createHtmlElement({
-		format: "input",
-		type: "text",
-		placeholder: "value",
-		father: this.basicDialogMenu.getContentDiv()
-	});
-    $(this.dialogTextInput).css('max-width', '100%');
-    $(this.dialogTextInput).width(100);
-    $(this.dialogTextInput).css('margin-left', 140);
-
-	$(this.dialogTextInput).on("input",function() {
+	$( this.basicDialogMenu.getNextButton() ).mousedown(function() {
 		var active = DialogMenuController.getActive();
-		var outputText = $(active.dialogTextInput).val();
-		
-		if(isNaN(outputText)){
-	    	active.basicDialogMenu.enableNextButton(true);
-		}
-		else{
-	    	active.basicDialogMenu.enableNextButton(false);
-		}
-	});
 
-
-	$( this.basicDialogMenu.getNextButton() ).mousedown(function(){
-
-		var active = DialogMenuController.getActive();
-		var input = active.object.input;
-		var outputText = $(this.dialogTextInput).val();
-
-		input.setText(outputText);
-
+		active.submit();
+	
         DialogMenuController.close(true);
 	});
 
@@ -44,16 +18,8 @@ function TermDialogMenu(){
 };
 
 TermDialogMenu.prototype.init = function(){
-
-	var inputType = this.object.input.type;
-    	
-    $(this.dialogTextInput).show();
-
-	this.basicDialogMenu.enableBackButton(false);
-	this.basicDialogMenu.enableNextButton(false);
-
-    var text = this.object.input.getText();
-    $(this.dialogTextInput).val(text);
+	this.input = this.object.input;
+	this.term.init(this.object.input);
 };
 
 TermDialogMenu.prototype.open = function(object){
@@ -61,7 +27,7 @@ TermDialogMenu.prototype.open = function(object){
 	this.object = object;
 
 	this.basicDialogMenu.show();
-
+	
 	this.init();
 
 };
@@ -73,4 +39,29 @@ TermDialogMenu.prototype.close = function(){
 	this.object = null;
 };
 
+TermDialogMenu.prototype.submit = function(){
+
+	/*
+	if( $(this.lValue.localVariableDiv).is(":visible") == true ){
+		this.input.setText($(this.lValue.localVariableInput).val());
+		this.input.setType(InputType.localId);
+	}
+	else if( $(this.lValue.globalVariableDiv).is(":visible") == true ){
+		this.input.setText($(this.lValue.globalVariableInput).val());
+		this.input.setType(InputType.globalId);
+	}
+	else if( $(this.lValue.arrayElementDiv).is(":visible") == true ){
+		this.input.setText($(this.lValue.arrayElementNameInput).val()+'['+$(this.lValue.arrayElementPositionInput).val()+']');
+		this.input.setType(InputType.arrayElement);
+	}
+	else if( $(this.lValue.objectElementDiv).is(":visible") == true ){
+		this.input.setText($(this.lValue.objectNameInput).val()+'.'+$(this.lValue.objectElementNameInput).val());
+		this.input.setType(InputType.objectElement);
+	}
+	else{
+		console.error('error in LValueDialogMenu submit');
+	}
+	console.log(this.input);
+	*/
+};
 

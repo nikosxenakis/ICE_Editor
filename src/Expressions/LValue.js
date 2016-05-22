@@ -21,30 +21,26 @@ function LValue(basicDialogMenu){
 };
 
 LValue.prototype.chooseType = function(){
-this.chooseTypeDiv = createHtmlElement({
+	this.chooseTypeDiv = createHtmlElement({
 		format: "div",
 		className: "col-xs-12",
 		father: this.lValueDiv
 	});
-	$(this.chooseTypeDiv).css('border','solid 1px darkgray');
-	$(this.chooseTypeDiv).css('border-radius','10px');
-	$(this.chooseTypeDiv).css('box-shadow', '2px 2px 1px #888888');
-	$(this.chooseTypeDiv).css('padding','10px');
-	$(this.chooseTypeDiv).css('margin-bottom','10px');
-
+	$(this.chooseTypeDiv).addClass('chooseDiv');
 
 	this.chooseTypeLabel = createHtmlElement({
 		format: "div",
-		className: "LValueLabel",
+		className: "dialogLabel",
 		text: "Choose Type:",
 		father: this.chooseTypeDiv
 	});
 
 	this.chooseTypeDropdown = createHtmlElement({
 		format: "div",
-		className: "dropdown dropdownMultiDepth LValueInput",
+		className: "dropdown dropdownMultiDepth dialogInput",
 		father: this.chooseTypeDiv
 	});
+	$(this.chooseTypeDropdown).css('position','relative');
 
 	this.chooseTypeDropdownA = createHtmlElement({
 		format: "a",
@@ -54,10 +50,9 @@ this.chooseTypeDiv = createHtmlElement({
 		father: this.chooseTypeDropdown
 	});
 	$(this.chooseTypeDropdownA).attr('data-toggle','dropdown');
-	$(this.chooseTypeDropdownA).css('border-radius','5px');
+	$(this.chooseTypeDropdownA).addClass('chooseTypeDropdownA');
 	$(this.chooseTypeDropdownA).css('color','#275F61');
 	$(this.chooseTypeDropdownA).css('background-color','snow');
-	$(this.chooseTypeDropdownA).css('width','160px');
 
 	this.chooseTypeDropdownSpan = createHtmlElement({
 		format: "span",
@@ -70,18 +65,14 @@ this.chooseTypeDiv = createHtmlElement({
 		className: "dropdown-menu",
 		father: this.chooseTypeDropdown
 	});
-	$(this.chooseTypeDropdownUl).css('min-width','0px');
 	$(this.chooseTypeDropdownUl).attr('aria-labelledby','dropdownMenu');
-	$(this.chooseTypeDropdownUl).css('text-align','center');
-	$(this.chooseTypeDropdownUl).css('position','absolute');
+	$(this.chooseTypeDropdownUl).addClass('chooseTypeDropdownUl');
 
 	this.chooseTypeDropdownList = createHtmlElement({
 		format: "li",
 		father: this.chooseTypeDropdownUl
 	});
-	$(this.chooseTypeDropdownList).css('margin-left','5px');
-	$(this.chooseTypeDropdownList).css('margin-right','5px');
-	$(this.chooseTypeDropdownList).css('width','150px');
+	$(this.chooseTypeDropdownList).addClass('chooseTypeDropdownList');
 
 	this.buttonLocalVariable = createHtmlElement({
 		format: "a",
@@ -156,13 +147,14 @@ this.chooseTypeDiv = createHtmlElement({
 LValue.prototype.localVariable = function(){
 	this.localVariableDiv = createHtmlElement({
 		format: "div",
-		className: "col-xs-12 LValueDiv",
+		className: "col-xs-12",
 		father: this.lValueDiv
 	});
+	$(this.localVariableDiv).addClass('chooseDiv');
 
 	this.localVariableLabel = createHtmlElement({
 		format: "div",
-		className: "LValueLabel",
+		className: "dialogLabel",
 		text: "Variable Name:",
 		father: this.localVariableDiv
 	});
@@ -173,13 +165,14 @@ LValue.prototype.localVariable = function(){
 LValue.prototype.globalVariable = function(){
 	this.globalVariableDiv = createHtmlElement({
 		format: "div",
-		className: "col-xs-12 LValueDiv",
+		className: "col-xs-12",
 		father: this.lValueDiv
 	});
+	$(this.globalVariableDiv).addClass('chooseDiv');
 
 	this.globalVariableLabel = createHtmlElement({
 		format: "div",
-		className: "LValueLabel",
+		className: "dialogLabel",
 		text: "Global Name:",
 		father: this.globalVariableDiv
 	});
@@ -191,9 +184,10 @@ LValue.prototype.arrayElement = function(){
 
 	this.arrayElementDiv = createHtmlElement({
 		format: "div",
-		className: "col-xs-12 LValueDiv",
+		className: "col-xs-12",
 		father: this.lValueDiv
 	});
+	$(this.arrayElementDiv).addClass('chooseDiv');
 
 	this.arrayElementDiv2 = createHtmlElement({
 		format: "div",
@@ -210,7 +204,7 @@ LValue.prototype.arrayElement = function(){
 
 	this.arrayElementNameLabel = createHtmlElement({
 		format: "div",
-		className: "LValueLabel",
+		className: "dialogLabel",
 		text: "Array Name:",
 		father: this.arrayElementNameDiv
 	});
@@ -227,7 +221,7 @@ LValue.prototype.arrayElement = function(){
 
 	this.arrayElementPositionLabel = createHtmlElement({
 		format: "div",
-		className: "LValueLabel",
+		className: "dialogLabel",
 		text: "Element Position:",
 		father: this.arrayElementPositionDiv
 	});
@@ -250,11 +244,8 @@ LValue.prototype.objectElement = function(){
 		className: "col-xs-12",
 		father: this.lValueDiv
 	});
-	$(this.objectElementDiv).css('border','solid 1px darkgray');
-	$(this.objectElementDiv).css('border-radius','10px');
-	$(this.objectElementDiv).css('box-shadow', '2px 2px 1px #888888');
-	$(this.objectElementDiv).css('padding','10px');
-
+	$(this.objectElementDiv).addClass('chooseDiv');
+	
 	this.objectElementDiv2 = createHtmlElement({
 		format: "div",
 		className: "row",
@@ -271,7 +262,7 @@ LValue.prototype.objectElement = function(){
 	this.objectNameLabel = createHtmlElement({
 		format: "div",
 		text: "Object Name:",
-		className: "LValueLabel",
+		className: "dialogLabel",
 		father: this.objectNameDiv
 	});
 
@@ -288,7 +279,7 @@ LValue.prototype.objectElement = function(){
 	this.objectElementNameLabel = createHtmlElement({
 		format: "div",
 		text: "Element Name:",
-		className: "LValueLabel",
+		className: "dialogLabel",
 		father: this.objectElementNameDiv
 	});
 

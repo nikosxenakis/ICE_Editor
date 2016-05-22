@@ -13,17 +13,13 @@ function LogicExpressionDialogMenu(){
 
 	$(this.logicExpression.logicExpressionDiv).css('width', '100%');
 
-	//$(this.logicExpression.logicExpressionContentDiv).css('width', '95%');
-	//$(this.logicExpression.logicExpressionContentDiv).css('height', '100%');
+
 	$(this.logicExpression.logicExpressionContentDiv).css('overflow', 'auto');
 	$(this.logicExpression.logicExpressionContentDiv).css('white-space', 'nowrap');
-	$(this.logicExpression.logicExpressionContentDiv).css('padding', 0);
-	$(this.logicExpression.logicExpressionContentDiv).css('margin', 0);
+
+
 	$(this.logicExpression.logicExpressionContentDiv).css('padding-bottom', 12);
-	$(this.logicExpression.logicExpressionContentDiv).css('margin-bottom', 0);
-	$(this.logicExpression.logicExpressionContentDiv).css('padding-left', 0);
 	$(this.logicExpression.logicExpressionContentDiv).css('margin-left', 15);
-	$(this.logicExpression.logicExpressionContentDiv).css('padding-right', 0);
 	$(this.logicExpression.logicExpressionContentDiv).css('margin-right', 15);
 
 	$(this.logicExpression.buttonClose).remove();
@@ -69,13 +65,12 @@ LogicExpressionDialogMenu.prototype.close = function(){
 
 LogicExpressionDialogMenu.prototype.submit = function(){
 	console.log('submit LogicExpressionDialogMenu');
-	//produce this.input.input
+
 	var str = this.logicExpression.input.getText();
 	console.log('submit string: ',str);
 
 	console.log(this.logicExpression);
 	this.input.setText(str);
-
 };
 
 LogicExpressionDialogMenu.prototype.getLogicExpressionById = function(id){

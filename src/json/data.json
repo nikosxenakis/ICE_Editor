@@ -5,7 +5,7 @@ var CanvasData = {
 	"highOpacity":1,
 	"lowOpacity":0.8,
 
-	"horizontalElementsWidth":350,
+	"horizontalElementsWidth":370,
 	"horizontalElementsHeight":55,
 	"verticalElementsWidth":23,
 	"verticalElementsHeight":0,

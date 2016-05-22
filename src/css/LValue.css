@@ -1,20 +1,13 @@
- .LValueDiv{
-    border: solid 1px darkgray;
-    border-radius: 10px;
-    box-shadow: 2px 2px 1px #888888; 
-    padding: 10px;
-}
-
-.LValueLabel{
+.dialogLabel{
     font-size: larger;
     float: left;
     margin-left: 20px;
     margin-top: 0px;
     color: #275F61;
-    font-family: -webkit-pictograph;
+    font-family: '-webkit-pictograph';
 }
 
-.LValueInput{
+.dialogInput{
     float: right;
     margin-right: 20px;
     width: 160px;
@@ -22,4 +15,30 @@
 
 .easy-autocomplete-container li{
     margin-left: 0px;
+}
+
+
+.chooseDiv{
+    border: solid 1px darkgray;
+    border-radius: 10px;
+    box-shadow: 2px 2px 1px #888888;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.chooseTypeDropdownA{
+    border-radius: 5px;
+    width: 160px;
+}
+
+.chooseTypeDropdownUl{
+    min-width: 0px;
+    text-align: center;
+    position: absolute;
+}
+
+.chooseTypeDropdownList{
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 150px;
 }

@@ -5,136 +5,165 @@ function Term(basicDialogMenu){
 		
 	this.basicDialogMenu = basicDialogMenu;
 	
-	this.radioForm = createHtmlElement({
-		format: "form",
+	this.termDiv = createHtmlElement({
+		format: "div",
 		father: basicDialogMenu.getContentDiv()
-	});
-
-	$(this.radioForm).css('padding-left', '110px');
-	$(this.radioForm).css('margin-bottom', '20px');
-
-	this.radioButtonVariable = createRadioHtmlElement({
-		text: "variable",
-		name: 'type',
-		father: this.radioForm
-	});
-	
-	this.radioButtonConstant = createRadioHtmlElement({
-		text: "constant",
-		name: 'type',
-		father: this.radioForm
-	});
-
-	this.radioButtonFunctionCall = createRadioHtmlElement({
-		text: "function call",
-		name: 'type',
-		father: this.radioForm
-	});
-			
-	this.radioButtonObjectMethod = createRadioHtmlElement({
-		text: "object method",
-		name: 'type',
-		father: this.radioForm
-	});
-
-	this.lValue = new LValue(this.basicDialogMenu);
-
-	this.constant = new Constant(this.basicDialogMenu);
-
-	
-	$( this.basicDialogMenu.getNextButton() ).mousedown(function(e) {
-		var active = DialogMenuController.getActive();
-		
-		if(active.expression){
-			var expression = active.expression;
-			var term = expression.term;
-			var radioForm = term.radioForm;
-		}
-		else if(active.term){
-			var term = active.term;
-			var radioForm = term.radioForm;
-		}
-		
-		if( $(radioForm).is(":visible") == true ){
-			if( radioIsChecked(term.radioButtonVariable) ){
-				term.lValue.show();
-			}
-			else if( radioIsChecked(term.radioButtonConstant) ){
-				term.constant.show();
-			}
-
-			active.basicDialogMenu.setNextButton('Submit');
-			active.basicDialogMenu.enableNextButton(false);
-
-			term.hide();
-			
-			e.stopImmediatePropagation();
-		}
 	});	
 	
-	$( this.basicDialogMenu.getBackButton() ).mousedown(function(e) {
-		var active = DialogMenuController.getActive();
-		
-		if(active.expression){
-			var expression = active.expression;
-			var term = expression.term;
-			var radioForm = term.radioForm;
-		}
-		else if(active.term){
-			var term = active.term;
-			var radioForm = term.radioForm;
-		}
+	this.chooseType();
 
-		if( $(radioForm).is(":visible") == true ){
-			term.hide();
-			expression.show();
-			
-			e.stopImmediatePropagation();
-		}
-
-	});	
-		
 	return this;
 };
 
+Term.prototype.chooseType = function(){
+	this.chooseTypeDiv = createHtmlElement({
+		format: "div",
+		className: "col-xs-12",
+		father: this.termDiv
+	});
+	$(this.chooseTypeDiv).addClass('chooseDiv');
+
+	this.chooseTypeLabel = createHtmlElement({
+		format: "div",
+		className: "dialogLabel",
+		text: "Choose Type:",
+		father: this.chooseTypeDiv
+	});
+
+	this.chooseTypeDropdown = createHtmlElement({
+		format: "div",
+		className: "dropdown dropdownMultiDepth dialogInput",
+		father: this.chooseTypeDiv
+	});
+	$(this.chooseTypeDropdown).css('position','relative');
+
+	this.chooseTypeDropdownA = createHtmlElement({
+		format: "a",
+		className: "btn btn-primary",
+		text: "local variable",
+		id: "dLabel",
+		father: this.chooseTypeDropdown
+	});
+	$(this.chooseTypeDropdownA).attr('data-toggle','dropdown');
+	$(this.chooseTypeDropdownA).addClass('chooseTypeDropdownA');
+	$(this.chooseTypeDropdownA).css('color','#275F61');
+	$(this.chooseTypeDropdownA).css('background-color','snow');
+
+	this.chooseTypeDropdownSpan = createHtmlElement({
+		format: "span",
+		className: "caret",
+		father: this.chooseTypeDropdownA
+	});
+
+	this.chooseTypeDropdownUl = createHtmlElement({
+		format: "ul",
+		className: "dropdown-menu",
+		father: this.chooseTypeDropdown
+	});
+	$(this.chooseTypeDropdownUl).attr('aria-labelledby','dropdownMenu');
+	$(this.chooseTypeDropdownUl).addClass('chooseTypeDropdownUl');
+
+	this.chooseTypeDropdownList = createHtmlElement({
+		format: "li",
+		father: this.chooseTypeDropdownUl
+	});
+	$(this.chooseTypeDropdownList).addClass('chooseTypeDropdownList');
+
+	this.buttonLocalVariable = createHtmlElement({
+		format: "a",
+		text: "local variable",
+		father: this.chooseTypeDropdownList
+	});
+
+
+	this.liSub = createHtmlElement({
+		format: "li",
+		className: "dropdown-submenu",
+		father: this.chooseTypeDropdownUl
+	});
+
+	this.liSUbA = createHtmlElement({
+		format: "a",
+		text: "hover me",
+		father: this.liSub
+	});
+	$(this.liSUbA).attr('tabindex','-1');
+
+	this.liSUbUl = createHtmlElement({
+		format: "ul",
+
+		className: "dropdown-menu",
+		father: this.liSub
+	});
+	$(this.liSUbUl).html('<li><a href="#">Second level</a></li>');
+
+                 
+	/*
+
+	$( this.buttonLocalVariable ).mousedown(function() {
+		var active = DialogMenuController.getActive();
+	    
+	    $(active.lValue.chooseTypeDropdownA).html('local variable<span class="caret"></span>');	
+
+	    $(active.lValue.localVariableDiv).show();	
+    	$(active.lValue.globalVariableDiv).hide();		
+    	$(active.lValue.arrayElementDiv).hide();		
+    	$(active.lValue.objectElementDiv).hide();
+	});
+	*/
+
+};
+
+
 Term.prototype.init = function(input){
+	/*
+    var text = input.getText();
+    	
+    $(this.localVariableDiv).hide();	
+    $(this.globalVariableDiv).hide();		
+    $(this.arrayElementDiv).hide();		
+    $(this.objectElementDiv).hide();		
 
+	if(input.type == InputType.localId){
+    	$(this.localVariableDiv).show();
+    	$(this.localVariableInput).val(text);	
+	    $(this.chooseTypeDropdownA).html('local variable<span class="caret"></span>');	
 
-	if( 
-		input.type == InputType.expressionTermLvalueID ||
-		input.type == InputType.expressionTermLvalueGlobalID ||
-		input.type == InputType.expressionTermLvalueArrayElement ||
-		input.type == InputType.expressionTermLvalueObjectElement
-	){
-		this.lValue.show();
-		$(this.radioButtonVariable).children('input[type=radio]').prop("checked", true);
-		this.lValue.init(input);
 	}
-	else if( input.type == InputType.expressionTermCallFunction ){	
-		$(this.radioButtonFunctionCall).children('input[type=radio]').prop("checked", true);
+	else if(input.type == InputType.globalId){
+       	$(this.globalVariableDiv).show();	
+    	$(this.globalVariableInput).val(text);	
+	    $(this.chooseTypeDropdownA).html('global variable<span class="caret"></span>');	
 	}
-	else if( input.type == InputType.expressionTermCallObjectMethod ){	
-		$(this.radioButtonObjectMethod).children('input[type=radio]').prop("checked", true);
+	else if(input.type == InputType.arrayElement){
+       	$(this.arrayElementDiv).show();		
+
+       	var arrayNumStart = text.indexOf("[");
+        var arrayNumStop = text.indexOf("]");
+
+        var outputText1 = text.substring(0, arrayNumStart);
+        var outputText2 = text.substring(arrayNumStart+1, arrayNumStop);
+
+    	$(this.arrayElementNameInput).val(outputText1);	
+    	$(this.arrayElementPositionInput).val(outputText2);	
+
+	    $(this.chooseTypeDropdownA).html('array element<span class="caret"></span>');	
 	}
-	else if(
-		input.type == InputType.expressionTermConstNumber ||
-		input.type == InputType.expressionTermConstString ||
-		input.type == InputType.expressionTermConstBool ||
-		input.type == InputType.expressionTermConstDate ||
-		input.type == InputType.expressionTermConstTime
-	){	
-		this.constant.show();
-		$(this.radioButtonConstant).children('input[type=radio]').prop("checked", true);
-		this.constant.init(input);
+	else if(input.type == InputType.objectElement){
+       	$(this.objectElementDiv).show();
+
+        var elementStart = text.indexOf(".");
+
+        var outputText1 = text.substring(0, elementStart);
+        var outputText2 = text.substring(elementStart+1, text.length);
+
+    	$(this.objectNameInput).val(outputText1);	
+    	$(this.objectElementNameInput).val(outputText2);	
+
+	    $(this.chooseTypeDropdownA).html('object element<span class="caret"></span>');	
 	}
-
-		
-};
-
-Term.prototype.show = function(){
-	$(this.radioForm).show();
-};
-
-Term.prototype.hide = function(){
-	$(this.radioForm).hide();
+	else{
+		console.error('error in LValue init');
+	}		
+	*/
 };

@@ -75,7 +75,7 @@ function createAutocompleteInputHtmlElement(father,placeholder,inputType){
 	});
 	$(input).easyAutocomplete(IdController.options(inputType));
 	$(input).attr('placeholder',placeholder);
-	$(input).parent().addClass('LValueInput');
+	$(input).parent().addClass('dialogInput');
 	$(input).parent().css('width','160px');
 	$(input).css('width','160px');
 

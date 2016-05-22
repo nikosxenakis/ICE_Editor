@@ -6,6 +6,8 @@ function ArrayExpressionDialogMenu(){
 	
 	this.arrayExpression = new ArrayExpression(this.basicDialogMenu);
 	
+	this.basicDialogMenu.enableBackButton(false);
+
 	$( this.basicDialogMenu.getNextButton() ).mousedown(function() {
 		var active = DialogMenuController.getActive();
 
@@ -17,21 +19,20 @@ function ArrayExpressionDialogMenu(){
 	return this;
 };
 
-ArrayExpressionDialogMenu.prototype.init = function(){
-	this.arrayExpression.init(this.input);
-};
-
 ArrayExpressionDialogMenu.prototype.open = function(object){
 
 	this.object = object;
+	this.element = object.element;
 	this.input = object.input;
 
-	this.basicDialogMenu.show();
+	this.arrayExpression.input = this.input;
+	this.parse();
 
-	this.init();	
+	this.basicDialogMenu.show();
 };
 
 ArrayExpressionDialogMenu.prototype.close = function(){
+
 	this.basicDialogMenu.hide();
 
 	this.object = null;
@@ -40,13 +41,21 @@ ArrayExpressionDialogMenu.prototype.close = function(){
 
 ArrayExpressionDialogMenu.prototype.submit = function(){
 	console.log('submit ArrayExpressionDialogMenu');
-	//produce this.input.input
-	var str = this.arrayExpression.input.getText();
-	console.log(this.arrayExpression);
 
+	var str = this.arrayExpression.input.getText();
 	console.log('submit string: ',str);
 
-	//produce this.input.inputElements
-	//this.input.inputElements = new Array();
-	//this.logicExpression.getInputElements(this.input.inputElements);
+	console.log(this.arrayExpression);
+	this.input.setText(str);
+};
+
+ArrayExpressionDialogMenu.prototype.parse = function(){
+
+	if(!this.input.type == "arrayExpression"){
+		console.error('The input is not arrayExpression');
+		return;
+	}
+	
+	this.arrayExpression.parseArrayExpression(this.input);
+
 };

@@ -21,18 +21,11 @@ function LogicExpression(id,fatherLogicExpression,inputElement){
 	this.logicExpressionDiv = createHtmlElement({
 		format: "div",
 		id: id,
-		border: "groove darkgray",
 		father: fatherLogicExpression.logicExpressionContentDiv
 	});
-	
-	$(this.logicExpressionDiv).css('border-width', '2px');
-	$(this.logicExpressionDiv).css('box-shadow', '2px 2px 1px #888888');
-	$(this.logicExpressionDiv).css('border-radius', '10px');
-	$(this.logicExpressionDiv).css('margin', '4px');
-	$(this.logicExpressionDiv).css('display', 'inline-block');
-	$(this.logicExpressionDiv).css('vertical-align', 'middle');
-	//$(this.logicExpressionDiv).css('border-top', 'none');
-	//$(this.logicExpressionDiv).css('border-bottom', 'none');
+
+	$(this.logicExpressionDiv).addClass('deactivatedExpression');	
+	$(this.logicExpressionDiv).addClass('mainDiv');	
 
 	$(this.logicExpressionDiv).mouseover(function(){
 		var active = DialogMenuController.getActive();
@@ -80,10 +73,7 @@ function LogicExpression(id,fatherLogicExpression,inputElement){
 		id: id+"Content",
 		father: this.logicExpressionDiv
 	});
-
-    $(this.logicExpressionContentDiv).css('text-align', 'center');
-	$(this.logicExpressionContentDiv).css('margin', 12);
-
+ 	$(this.logicExpressionContentDiv).addClass('contentDiv');
 
 	this.dataDiv = createHtmlElement({
 		format: "div",
@@ -96,8 +86,6 @@ function LogicExpression(id,fatherLogicExpression,inputElement){
 		className: "dropdown dropdownMultiDepth",
 		father: this.optionsDiv
 	});
-	$(this.dropdown).css('float','right');
-	$(this.dropdown).css('position','static');
 
 	this.dropdownA = createHtmlElement({
 		format: "span",
@@ -106,9 +94,6 @@ function LogicExpression(id,fatherLogicExpression,inputElement){
 		father: this.dropdown
 	});
 	$(this.dropdownA).attr('data-toggle','dropdown');
-	$(this.dropdownA).css('font-size','14px');
-	$(this.dropdownA).css('left','-3px');
-	$(this.dropdownA).css('color','sienna');
 
 	this.dropdownUl = createHtmlElement({
 		format: "ul",
@@ -116,17 +101,12 @@ function LogicExpression(id,fatherLogicExpression,inputElement){
 		id: "dLabel",
 		father: this.dropdown
 	});
-	$(this.dropdownUl).css('min-width','60px');
 	$(this.dropdownUl).attr('aria-labelledby','dropdownMenu');
-	$(this.dropdownUl).css('text-align','center');
-	$(this.dropdownUl).css('position','absolute');
 
 	this.dropdownList = createHtmlElement({
 		format: "li",
 		father: this.dropdownUl
 	});
-	$(this.dropdownList).css('margin-left','5px');
-	$(this.dropdownList).css('margin-right','5px');
 
 	this.buttonAdd = createHtmlElement({
 		format: "a",
@@ -227,18 +207,15 @@ function LogicExpression(id,fatherLogicExpression,inputElement){
 LogicExpression.prototype.activate = function(){
 	console.log("LogicExpression active");
 	$(this.optionsDiv).hide();
-	$(this.logicExpressionDiv).css('border', 'groove coral');
-	$(this.logicExpressionDiv).css('border-width', '4px');
-	$(this.logicExpressionDiv).css('box-shadow', '4px 4px 2px #888888');
+	$(this.logicExpressionDiv).removeClass('deactivatedExpression');	
+	$(this.logicExpressionDiv).addClass('activatedExpression');
 };
 
 LogicExpression.prototype.deactivate = function(){
 	console.log("LogicExpression deactivate");
-
 	$(this.optionsDiv).show();
-	$(this.logicExpressionDiv).css('border', 'groove darkgray');
-	$(this.logicExpressionDiv).css('border-width', '2px');
-	$(this.logicExpressionDiv).css('box-shadow', '2px 2px 1px #888888');
+	$(this.logicExpressionDiv).removeClass('activatedExpression');	
+	$(this.logicExpressionDiv).addClass('deactivatedExpression');
 };
 
 LogicExpression.prototype.update = function(){

@@ -21,12 +21,8 @@ function LogicOperator(id,fatherLogicExpression,inputElement){
 		father: fatherLogicExpression.logicExpressionContentDiv
 	});
 
-	$(this.logicOperatorDiv).css('border-width', '2px');
-	$(this.logicOperatorDiv).css('display', 'inline-block');
-	//$(this.logicOperatorDiv).css('overflow', 'hidden');
-	$(this.logicOperatorDiv).css('vertical-align', 'middle');
-	$(this.logicOperatorDiv).css('border-radius', '10px');
-	$(this.logicOperatorDiv).css('box-shadow', '2px 2px 1px #888888');
+	$(this.logicOperatorDiv).addClass('mainDiv');
+	$(this.logicOperatorDiv).addClass('deactivatedExpression');
 
 	$(this.logicOperatorDiv).mouseover(function(){
 		var active = DialogMenuController.getActive();
@@ -35,9 +31,17 @@ function LogicOperator(id,fatherLogicExpression,inputElement){
 			return;
 
 		var logicOperator = active.logicExpression.getLogicOperatorById(id);
+		console.log(logicOperator);
+
+		$(logicOperator.dropdown).css('left',$(logicOperator.logicOperatorDiv).position().left + $(logicOperator.logicOperatorDiv).width());
+
+		var top = $(logicOperator.logicOperatorDiv).position().top + 20;
+		var left = $(logicOperator.logicOperatorDiv).position().left + $(logicOperator.logicOperatorDiv).width() - 10;
+
+		$(logicOperator.dropdownUl).css('left',left);
+		$(logicOperator.dropdownUl).css('top',top);
 
 		$(logicOperator.optionsDiv).show();
-
 	});
 
 	$(this.logicOperatorDiv).mouseout(function(){
@@ -49,7 +53,6 @@ function LogicOperator(id,fatherLogicExpression,inputElement){
 		var logicOperator = active.logicExpression.getLogicOperatorById(id);
 
 		$(logicOperator.optionsDiv).hide();
-
 	});
 
 	this.optionsDiv = createHtmlElement({
@@ -62,7 +65,7 @@ function LogicOperator(id,fatherLogicExpression,inputElement){
 		id: id+"Content",
 		father: this.logicOperatorDiv
 	});
-	$(this.logicOperatorContentDiv).css('margin', 12);
+ 	$(this.logicOperatorContentDiv).addClass('contentDiv');
 
 	this.dataDiv = createHtmlElement({
 		format: "div",
@@ -75,7 +78,6 @@ function LogicOperator(id,fatherLogicExpression,inputElement){
 		className: "dropdown dropdownMultiDepth",
 		father: this.optionsDiv
 	});
-	$(this.dropdown).css('float','right');
 
 	this.dropdownA = createHtmlElement({
 		format: "span",
@@ -84,9 +86,6 @@ function LogicOperator(id,fatherLogicExpression,inputElement){
 		father: this.dropdown
 	});
 	$(this.dropdownA).attr('data-toggle','dropdown');
-	$(this.dropdownA).css('font-size','14px');
-	$(this.dropdownA).css('left','-3px');
-	$(this.dropdownA).css('color','sienna');
 
 	this.dropdownUl = createHtmlElement({
 		format: "ul",
@@ -94,16 +93,12 @@ function LogicOperator(id,fatherLogicExpression,inputElement){
 		id: "dLabel",
 		father: this.dropdown
 	});
-	$(this.dropdownUl).css('min-width','60px');
 	$(this.dropdownUl).attr('aria-labelledby','dropdownMenu');
-	$(this.dropdownUl).css('text-align','center');
 
 	this.dropdownList = createHtmlElement({
 		format: "li",
 		father: this.dropdownUl
 	});
-	$(this.dropdownList).css('margin-left','5px');
-	$(this.dropdownList).css('margin-right','5px');
 
 	this.buttonAnd = createHtmlElement({
 		format: "a",
@@ -129,33 +124,7 @@ function LogicOperator(id,fatherLogicExpression,inputElement){
 		logicOperator.input.setText('or');
 		$(logicOperator.dataDiv).text(logicOperator.input.getText());
 	});
-	/*
-	this.buttonEdit = createHtmlElement({
-		format: "span",
-		id: "buttonEdit",
-		className: "glyphicon glyphicon-pencil",
-		father: this.optionsDiv
-	});
-	//$(this.buttonEdit).css('overflow', 'auto');
-	$(this.buttonEdit).css('color', 'grey');
-	//$(this.buttonEdit).css('float', 'right');
-	$(this.buttonEdit).mousedown(function(){
-		console.log("open Logic Operator Dialog Menu");
 
-		var active = DialogMenuController.getActive();
-
-		if(active.logicExpression){
-			var logicOperator = active.logicExpression.getLogicOperatorById(id);
-		}
-		else if(active.expression){
-			var logicOperator = active.expression.logicExpression.getLogicOperatorById(id);
-		}
-		
-		console.log(logicOperator);
-
-		DialogMenuController.open(logicOperator);
-	});
-	*/
 	$(this.optionsDiv).hide();
 
 	return this;
@@ -163,10 +132,14 @@ function LogicOperator(id,fatherLogicExpression,inputElement){
 
 LogicOperator.prototype.activate = function(){
 	console.log("LogicOperator active");
+	$(this.logicOperatorDiv).removeClass('deactivatedExpression');	
+	$(this.logicOperatorDiv).addClass('activatedExpression');
 };
 
 LogicOperator.prototype.deactivate = function(){
 	console.log("LogicOperator deactivate");
+	$(this.logicOperatorDiv).removeClass('activatedExpression');	
+	$(this.logicOperatorDiv).addClass('deactivatedExpression');
 };
 
 LogicOperator.prototype.update = function(){

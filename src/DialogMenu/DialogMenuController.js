@@ -79,12 +79,12 @@ var DialogMenuController = (function(){
       else if(
       		type == InputType.localId ||
       		type == InputType.globalId ||
-      		type == InputType.arrayElement ||
+      		type == InputType.ArrayTerm ||
       		type == InputType.objectElement
       	){
       		if(
       			element instanceof AssignElement ||
-      			element instanceof ArrayElement
+      			element instanceof ArrayTerm
       		){
     			elem = new LValueDialogMenu();
       		}
