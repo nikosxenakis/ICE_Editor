@@ -70,14 +70,9 @@ var DialogMenuController = (function(){
       	else if(type == InputType.logicExpression){
     		elem = new LogicExpressionDialogMenu();
     	}  	
-      	else if(type == InputType.logicOperator){
-    		elem = new LogicOperatorDialogMenu();
-    	}  	
-    	/*
-      	else if(type == InputType.arithmeticExpression){
+      else if(type == InputType.arithmeticExpression){
     		elem = new ArithmeticExpressionDialogMenu();
     	} 
-    	*/
     	else if(type == InputType.arrayExpression){
     		elem = new ArrayExpressionDialogMenu();
     	} 
@@ -89,15 +84,21 @@ var DialogMenuController = (function(){
       	){
       		if(
       			element instanceof AssignElement ||
-      			element instanceof ArrayElement ||
-      			element instanceof LogicExpression	||
-            element instanceof ArrayTerm  
+      			element instanceof ArrayElement
       		){
     			elem = new LValueDialogMenu();
       		}
+          else if(
+            element instanceof LogicExpression ||
+            element instanceof ArithmeticExpression ||
+            element instanceof ArrayTerm
+          ){
+            elem = new TermDialogMenu();
+          }
       		else{
-    			console.error('type :',type,' is not implemented');
- 	   			return;
+
+    			 console.error(element,'type :',type,' is not implemented');
+ 	   			  return;
        		}
     	}  	
     	else if(type == InputType.number){
@@ -107,33 +108,81 @@ var DialogMenuController = (function(){
     		){
     			elem = new NumberDialogMenu();
     		}
-      		else{
-    			console.error('type :',type,' is not implemented');
- 	   			return;
-       		}
+        else if(
+            element instanceof LogicExpression ||
+            element instanceof ArithmeticExpression ||
+            element instanceof ArrayTerm
+          ){
+            elem = new TermDialogMenu();
+          }
+    		else{
+  			 console.error('type :',type,' is not implemented');
+	   		 return;
+     		}
     	}
-    	else if(type == InputType.number){
-    		console.error('type :',type,' is not implemented');
-    		return;
-		}
     	else if(type == InputType.string){
-    		console.error('type :',type,' is not implemented');
+        if(
+          element instanceof LogicExpression ||
+          element instanceof ArithmeticExpression ||
+          element instanceof ArrayTerm
+        ){
+          elem = new TermDialogMenu();
+        }
+        else{
+          console.error('type :',type,' is not implemented');
+        }
     		return;
 		}
     	else if(type == InputType.bool){
-    		console.error('type :',type,' is not implemented');
+        if(
+          element instanceof LogicExpression ||
+          element instanceof ArithmeticExpression ||
+          element instanceof ArrayTerm
+        ){
+          elem = new TermDialogMenu();
+        }
+        else{
+          console.error('type :',type,' is not implemented');
+        }
     		return;
 		}
     	else if(type == InputType.date){
-    		console.error('type :',type,' is not implemented');
+        if(
+          element instanceof LogicExpression ||
+          element instanceof ArithmeticExpression ||
+          element instanceof ArrayTerm
+        ){
+          elem = new TermDialogMenu();
+        }
+        else{
+          console.error('type :',type,' is not implemented');
+        }
     		return;
 		}
     	else if(type == InputType.time){
-    		console.error('type :',type,' is not implemented');
+        if(
+          element instanceof LogicExpression ||
+          element instanceof ArithmeticExpression ||
+          element instanceof ArrayTerm
+        ){
+          elem = new TermDialogMenu();
+        }
+        else{
+          console.error('type :',type,' is not implemented');
+        }
     		return;
 		}
     	else{
-    		console.error('type :',type,' is not implemented');
+        if(
+          element instanceof LogicExpression ||
+          element instanceof ArithmeticExpression ||
+          element instanceof ArrayTerm
+        ){
+          elem = new TermDialogMenu();
+        }
+        else{
+          console.error('type :',type,' is not implemented');
+        }
     		return;
     	}
 

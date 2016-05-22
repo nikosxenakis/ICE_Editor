@@ -20,17 +20,29 @@ var inputPrograms = [
 		type: "variables",
 		elements: [
 			{
-				id: "assign1",
-				type: "assign"
+				id: "var1",
+				type: "assign",
+				data:{
+					varName: "gVar1",
+					varType: "globalId",
+					arithmeticExpression:{
+						type: InputType.number,
+						text: "3"										
+					}
+				}
 			},
 			{
-				id: "assign2",
-				type: "assign"
+				id: "var2",
+				type: "assign",
+				data:{
+					varName: "gVar2",
+					varType: "globalId",
+					arithmeticExpression:{
+						type: InputType.string,
+						text: "testString"										
+					}
+				}
 			},
-			{
-				id: "assign3",
-				type: "assign"
-			}
 		] 
 	},
 	{

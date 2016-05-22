@@ -68,6 +68,20 @@ function createRadioHtmlElement(attributes){
 	return radioDiv;
 };
 
+function createAutocompleteInputHtmlElement(father,placeholder,inputType){
+	var input = createHtmlElement({
+		format: "input",
+		father: father
+	});
+	$(input).easyAutocomplete(IdController.options(inputType));
+	$(input).attr('placeholder',placeholder);
+	$(input).parent().addClass('LValueInput');
+	$(input).parent().css('width','160px');
+	$(input).css('width','160px');
+
+	return input;
+};
+
 function radioIsChecked(radio){
 	return $(radio).children('input[type=radio]').prop("checked");
 }

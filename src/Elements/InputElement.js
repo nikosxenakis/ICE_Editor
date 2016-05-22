@@ -92,26 +92,8 @@ InputElement.prototype.getText = function() {
     else if(this.type == InputType.globalId){
         return this.input;
     }
-    else if(this.type == InputType.arrayElement){
-        var arrayNumStart = this.input.indexOf("[");
-        var arrayNumStop = this.input.indexOf("]");
-
-        var outputText1 = this.input.substring(0, arrayNumStart);
-        var outputText2 = this.input.substring(arrayNumStart+1, arrayNumStop);
-        return  {
-            outputText1: outputText1,
-            outputText2: outputText2
-        };
-    }
-    else if(this.type == InputType.objectElement){
-        var elementStart = this.input.indexOf(".");
-
-        var outputText1 = this.input.substring(0, elementStart);
-        var outputText2 = this.input.substring(elementStart+1, this.input.length);
-        return {
-            outputText1: outputText1,
-            outputText2: outputText2
-        };
+    else if(this.type == InputType.arrayElement || this.type == InputType.objectElement){
+        return this.input;
     }
     else{
         return this.input;

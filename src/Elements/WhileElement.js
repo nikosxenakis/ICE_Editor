@@ -4,7 +4,9 @@ function WhileElement (id , elementOffset , father , data){
 
     console.log('data : ',data);
 
-    var conditionInputElement = parser.parseLogicExpressionData(data);
+    var conditionInputElement = new InputElement('',InputType.logicExpression);
+
+    conditionInputElement = parser.parseLogicExpressionData(data);
 
     console.log('inputElement : ',conditionInputElement);
 

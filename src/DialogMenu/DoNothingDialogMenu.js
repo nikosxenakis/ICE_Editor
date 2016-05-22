@@ -4,6 +4,8 @@ function DoNothingDialogMenu(){
 
 	this.basicDialogMenu = new BasicDialogMenu(title,DialogMenuData.doNothingDialogMenuWidth);
 	
+	$(this.basicDialogMenu.getContentDiv()).css('margin-left','40px');
+
 	this.radioForm = createHtmlElement({
 		format: "form",
 		father: this.basicDialogMenu.getContentDiv()

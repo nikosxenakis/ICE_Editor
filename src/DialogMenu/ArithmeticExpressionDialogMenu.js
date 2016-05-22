@@ -1,8 +1,10 @@
-function IdDialogMenu(){
+function ArithmeticExpressionDialogMenu(){
 
-	var title = "Id";
+	var title = "Calculation";
 	
 	this.basicDialogMenu = new BasicDialogMenu(title,DialogMenuData.logicExpressionContentDialogMenuWidth);
+
+	return;
 
 	this.dialogTextInput = createHtmlElement({
 		format: "input",
@@ -41,7 +43,7 @@ function IdDialogMenu(){
 	return this;
 };
 
-IdDialogMenu.prototype.init = function(){
+ArithmeticExpressionDialogMenu.prototype.init = function(){
 
 	var inputType = this.object.input.type;
     	
@@ -54,7 +56,7 @@ IdDialogMenu.prototype.init = function(){
     $(this.dialogTextInput).val(text);
 };
 
-IdDialogMenu.prototype.open = function(object){
+ArithmeticExpressionDialogMenu.prototype.open = function(object){
 
 	this.object = object;
 
@@ -64,7 +66,7 @@ IdDialogMenu.prototype.open = function(object){
 
 };
 
-IdDialogMenu.prototype.close = function(){
+ArithmeticExpressionDialogMenu.prototype.close = function(){
 
 	this.basicDialogMenu.hide();
 

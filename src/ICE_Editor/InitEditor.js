@@ -10,8 +10,8 @@ function InitEditor() {
     Canvas.getInstance();
     DialogMenuController.getInstance();
     ImageHolder.getInstance();
-    JsepParser.getInstance();
-
+    IdController.getInstance();
+    
     initializeUndoManager();
     
     //parse
@@ -22,9 +22,6 @@ function InitEditor() {
     var elem = Canvas.getElement('programName2');
     Canvas.setActiveElement(elem);
 
-    //init jsep parse
-    jsep.addBinaryOp("AND",1);
-    jsep.addBinaryOp("OR",1);
 }
 
 function initializeUndoManager(){

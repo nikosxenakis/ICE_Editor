@@ -12,11 +12,8 @@ function AssignElement (id , elementOffset , father , data){
     console.log('nameInputElement : ',nameInputElement);
     console.log('valueInputElement : ',valueInputElement);
 
-    if(data && data.varValueInputElementList){
-        for(var k=0; k<data.varValueInputElementList.length; k++){
-            if(data.varValueInputElementList[k].text && data.varValueInputElementList[k].type)
-                valueInputElement.addInputElement(new InputElement(data.varValueInputElementList[k].text , data.varValueInputElementList[k].type));
-        }
+    if(data){
+        IdController.add(nameInputElement.getText(),nameInputElement.type);
     }
 
     var firstRect = this.getRectangle(RectangleOffset.firstHorizontial).rectangle;

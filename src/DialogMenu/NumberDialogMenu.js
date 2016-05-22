@@ -48,7 +48,6 @@ NumberDialogMenu.prototype.init = function(){
 
 	this.basicDialogMenu.enableBackButton(false);
 	this.basicDialogMenu.enableNextButton(true);
-	this.basicDialogMenu.setNextButton('Submit');
 
     var text = this.object.input.getText();
 	

@@ -4,7 +4,10 @@ function InputBox (pos,inputElement){
 
     this.pos = pos;
 
-    this.input = inputElement;
+    if(inputElement)
+        this.input = inputElement;
+    else
+        this.input = new InputElement("",InputType.localId);
 
     this.box = new fabric.Rect({
         left: pos.left,
