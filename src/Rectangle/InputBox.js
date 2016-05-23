@@ -1,9 +1,13 @@
-function InputBox (id,pos,type){
+function InputBox (pos,inputElement){
 
     var c=Canvas.getInstance();
 
     this.pos = pos;
-    this.type = type;
+
+    if(inputElement)
+        this.input = inputElement;
+    else
+        this.input = new InputElement("",InputType.localId);
 
     this.box = new fabric.Rect({
         left: pos.left,
@@ -16,25 +20,23 @@ function InputBox (id,pos,type){
         hasRotatingPoint: false,
         stroke: 'grey',
         strokeWidth: 2,
-        id: id,
+        id: this.input.getText(),
         class: this
     });
 
-    this.text = new fabric.Text(id,{
+    this.text = new fabric.Text(this.input.getText(),{
         left: pos.left + 4,// + this.box.width/2,
         top: pos.top + 4,// + this.box.height/2,
         fill: CanvasData.InputBoxTextColor,
         fontSize: CanvasData.InputBoxTextSize,
         selectable: false,
-        id: id,
+        id: this.input.getText(),
         textAlign:"center",
         hasControls: false,
         lockMovementX: true,
         lockMovementY: true,
         class: this
     });
-
-    this.input = new InputElement(id , type);
 
     this.fixText();
 
@@ -129,20 +131,29 @@ InputBox.prototype.mouseUp = function (){
 };
 
 InputBox.prototype.activate = function (){
-    this.box.set('stroke','#494A4A');
-    this.box.setShadow("5px 5px 7px #494A4A");
+    if(this.box){
+        this.box.set('stroke','#494A4A');
+        this.box.setShadow("5px 5px 7px #494A4A");    
+    }
+
     Canvas.getInstance().canvas.renderAll();
 };
 
 InputBox.prototype.deactivate = function (){
-    this.box.set('stroke','grey');
-    this.box.setShadow("0px");
+    if(this.box){
+        this.box.set('stroke','grey');
+        this.box.setShadow("0px");
+    }
+
     Canvas.getInstance().canvas.renderAll();
 };
 
 InputBox.prototype.update = function (){
 
     //this.box.width
+    if(!this.box)
+        return;
+    
     var maxChar = this.box.width/10;
     if(this.input.getText().length > maxChar){
         this.text.setText(this.input.getText().substr(0,maxChar-1)+"...");

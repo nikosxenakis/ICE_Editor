@@ -2,29 +2,11 @@ var DialogMenuController = (function(){
 	function DialogMenuController() {
 
 		//init all dialog menus
-		this.dialogMenus = new Array();
-
-		//doNothing
-		this.dialogMenus[InputType.doNothing] = new DoNothingDialogMenu();
-
-		//lvalue
-		var lValue = new LValueDialogMenu();
-		this.dialogMenus[InputType.lvalue] = lValue;
-		this.dialogMenus[InputType.lvalueID] = lValue;
-		this.dialogMenus[InputType.lvalueGlobalID] = lValue;
-		this.dialogMenus[InputType.lvalueArrayElement] = lValue;
-		this.dialogMenus[InputType.lvalueObjectElement] = lValue;
-
-		//expression
-		/*
-		var expression = new ExpressionDialogMenu();
-		this.dialogMenus[InputType.expression] = expression;
-		...
-		*/
-	
-		//logicExpression
-		//var logicExpression = new LogicExpressionDialogMenu();
-		//this.dialogMenus[InputType.logicExpression] = logicExpression;
+		this.activeDialogMenu = new Array();
+		this.object = new Array();
+		this.input = new Array();
+		this.prevInput = new Array();
+		this.element = new Array();
 	};
 
     var instance;
@@ -38,216 +20,225 @@ var DialogMenuController = (function(){
             }
             return instance;
         },
-
         open: open,
         close: close,
-        getActive: getActive,
-        createBasicDialogMenu: createBasicDialogMenu,
-        createLvalueDiv: createLvalueDiv
+        addNewDialogMenu: addNewDialogMenu,
+        getActive: getActive
     };
 
     function open(object){
-		//object must have a object.input && object.update(input)
-		if(!object instanceof InputBox)
-			console.log("wrong object as argument");
+  		//object must have a object.input && object.update(input) && object.activate() && object.deactivate() && object.element
+  		
+  		if(
+  			object == null ||
+  			object.input == null ||
+  			object.update == null ||
+  			object.activate == null ||
+  			object.deactivate == null
+  		){
+  			console.error('the object does not implement the required interface');
+  			return;
+  		}
+      
+  		if(object.element)
+  			instance.element.push(object.element);
+  		else
+  			instance.element.push(object);
 
-		instance.object = object;
-		instance.input = object.input;
-		instance.prevType = instance.input.type;
+  		instance.object.push(object);
+  		instance.input.push(object.input);
+      instance.prevInput.push( jQuery.extend(true, {}, object.input) );
 
-		object.activate();
+  		addNewDialogMenu(object.input.type , getElement());
 
-		instance.activeDialogMenu = instance.dialogMenus[instance.input.type];
-		if(!instance.activeDialogMenu){
-			console.log("There is no dialogMenu for : ",instance.input.type);
-			return;
-		}
+  		object.activate();
+  		var active = getActive();
 
-		instance.activeDialogMenu.open(object);		
+  		active.open(object);		
     };
 
-    function close(updateFlag){
-    	instance.object.deactivate();
 
-		instance.activeDialogMenu.close();
+    function addNewDialogMenu(type,element){
+
+    	console.log(element);
+
+    	var elem = null;
+
+       	if(type == InputType.doNothing){
+    		elem = new DoNothingDialogMenu();
+    	}
+      	else if(type == InputType.logicExpression){
+    		elem = new LogicExpressionDialogMenu();
+    	}  	
+      else if(type == InputType.arithmeticExpression){
+    		elem = new ArithmeticExpressionDialogMenu();
+    	} 
+    	else if(type == InputType.arrayExpression){
+    		elem = new ArrayExpressionDialogMenu();
+    	} 
+      else if(
+      		type == InputType.localId ||
+      		type == InputType.globalId ||
+      		type == InputType.ArrayTerm ||
+      		type == InputType.objectElement
+      	){
+      		if(
+      			element instanceof AssignElement ||
+      			element instanceof ArrayTerm
+      		){
+    			elem = new LValueDialogMenu();
+      		}
+          else if(
+            element instanceof LogicExpression ||
+            element instanceof ArithmeticExpression ||
+            element instanceof ArrayTerm
+          ){
+            elem = new TermDialogMenu();
+          }
+      		else{
+
+    			 console.error(element,'type :',type,' is not implemented');
+ 	   			  return;
+       		}
+    	}  	
+    	else if(type == InputType.number){
+    		if(
+    			element instanceof RepeatElement ||
+    			element instanceof ForElement
+    		){
+    			elem = new NumberDialogMenu();
+    		}
+        else if(
+            element instanceof LogicExpression ||
+            element instanceof ArithmeticExpression ||
+            element instanceof ArrayTerm
+          ){
+            elem = new TermDialogMenu();
+          }
+    		else{
+  			 console.error('type :',type,' is not implemented');
+	   		 return;
+     		}
+    	}
+    	else if(type == InputType.string){
+        if(
+          element instanceof LogicExpression ||
+          element instanceof ArithmeticExpression ||
+          element instanceof ArrayTerm
+        ){
+          elem = new TermDialogMenu();
+        }
+        else{
+          console.error('type :',type,' is not implemented');
+        }
+    		return;
+		}
+    	else if(type == InputType.bool){
+        if(
+          element instanceof LogicExpression ||
+          element instanceof ArithmeticExpression ||
+          element instanceof ArrayTerm
+        ){
+          elem = new TermDialogMenu();
+        }
+        else{
+          console.error('type :',type,' is not implemented');
+        }
+    		return;
+		}
+    	else if(type == InputType.date){
+        if(
+          element instanceof LogicExpression ||
+          element instanceof ArithmeticExpression ||
+          element instanceof ArrayTerm
+        ){
+          elem = new TermDialogMenu();
+        }
+        else{
+          console.error('type :',type,' is not implemented');
+        }
+    		return;
+		}
+    	else if(type == InputType.time){
+        if(
+          element instanceof LogicExpression ||
+          element instanceof ArithmeticExpression ||
+          element instanceof ArrayTerm
+        ){
+          elem = new TermDialogMenu();
+        }
+        else{
+          console.error('type :',type,' is not implemented');
+        }
+    		return;
+		}
+    	else{
+        if(
+          element instanceof LogicExpression ||
+          element instanceof ArithmeticExpression ||
+          element instanceof ArrayTerm
+        ){
+          elem = new TermDialogMenu();
+        }
+        else{
+          console.error('type :',type,' is not implemented');
+        }
+    		return;
+    	}
+
+
+    	instance.activeDialogMenu.push(elem);
+    };
+    
+    function close(updateFlag){
+  
+  		var object = getObject();
+  		var input = getInput();
+  		var active = getActive();
+
+  		if(!object || !input || !active){
+  			console.error('error in close');
+  			return;
+  		}
+
+    	object.deactivate();
+
+		  active.close();
 
 	    if(updateFlag == true){
-			instance.object.update();
+			 object.update();
 	    }
-	    else{
-			instance.input.type = instance.prevType;
+	    else if(updateFlag == false){
+			 object.input = getPrevInput();
 	    }
 
-		instance.activeDialogMenu = null;
-		instance.object = null;
-		instance.input = null;
+	    instance.activeDialogMenu.splice(instance.activeDialogMenu.length-1, 1);
+	    instance.object.splice(instance.object.length-1, 1);
+	    instance.input.splice(instance.input.length-1, 1);
+	    instance.prevInput.splice(instance.prevInput.length-1, 1);
+	    instance.element.splice(instance.element.length-1, 1);
+
+		  console.log(instance);
+
+    };
+
+    function getPrevInput(){
+    	return instance.prevInput[instance.prevInput.length-1];
     };
 
     function getActive(){
-    	return instance.activeDialogMenu;
+    	return instance.activeDialogMenu[instance.activeDialogMenu.length-1];
     };
-    
-    function createBasicDialogMenu(object , id , title , width){
+   
+    function getObject(){
+    	return instance.object[instance.object.length-1];
+    }; 
 
-		object.dialogMenuTop = 200;
-		object.dialogMenuLeft = 200;
+    function getInput(){
+    	return instance.input[instance.input.length-1];
+    }; 
 
-		object.dialogMenuDiv = createHtmlElement({
-			format: "div",
-			id: id,
-			className: "modal",
-			father: "body",
-			top: object.dialogMenuTop,
-			left: object.dialogMenuLeft,
-			width: width
-		});
-		$(object.dialogMenuDiv).draggable();
-
-		object.dialogContentDiv = createHtmlElement({
-			format: "div",
-			id: id+"dialogContent",
-			className: "modal-content container",
-			father: object.dialogMenuDiv,
-			width: $(object.dialogMenuDiv).width(),
-			border: "2px solid #a1a1a1",
-			boxShadow: "5px 5px 5px #888888",
-			borderRadius: "10px"
-		});
-
-		object.dialogTitle = createHtmlElement({
-			format: "h2",
-			id: id+"dialogTitle",
-			father: object.dialogContentDiv,
-			text: title,
-			textAllign:"center"
-		});
-		$(object.dialogTitle).css('margin-top', 10);
-		$(object.dialogTitle).css('color', '#985b5b');
-
-	    $(object.dialogTitle).css('margin-bottom', 20);
-
-		object.buttonClose = createHtmlElement({
-			format: "span",
-			id: "buttonClose",
-			className: "close",
-			text: "x",
-			father: object.dialogTitle
-		});
-
-		$(object.buttonClose).mousedown(function(){
-	        close(false);
-		});
-
-		object.dialogBody = createHtmlElement({
-			format: "div",
-			id: id+"dialogBody",
-			className: "row",
-			father: object.dialogContentDiv
-		});
-		    
-		$(object.dialogBody).css('margin-bottom', 10);
-
-		object.dialogEnd = createHtmlElement({
-			format: "div",
-			id: id+"dialogEnd",
-			father: object.dialogContentDiv
-		});
-
-		object.buttonNext = createHtmlElement({
-			format: "button",
-			id: id+"buttonNext",
-			text: "Submit",
-			father: object.dialogEnd
-			//top: '0px'
-		});
-		$(object.buttonNext).attr("disabled", true);
-	    $(object.buttonNext).css('position', "relative");
-	    $(object.buttonNext).css('width', 70);
-	    $(object.buttonNext).css('left', $(object.dialogMenuDiv).position().left + $(object.dialogMenuDiv).width() - 2*$(object.buttonNext).width() );
-		$(object.buttonNext).css('margin-bottom', 10);
-
-		object.buttonBack = createHtmlElement({
-			format: "button",
-			id: id+"buttonBack",
-			text: "Back",
-			father: object.dialogEnd
-			//top: '0px'
-		});
-		$(object.buttonBack).attr("disabled", true);
-	    $(object.buttonBack).css('position', "relative");
-	    $(object.buttonBack).css('width', 70);
-	    $(object.buttonBack).css('left', $(object.dialogMenuDiv).position().left + $(object.dialogMenuDiv).width() - 5*$(object.buttonBack).width() );
-		$(object.buttonBack).css('margin-bottom', 10);
-    };
-    
-    function createLvalueDiv(object,id,father){
-
-		object.dialogBodyLeft = createHtmlElement({
-			format: "div",
-			id: id+"bodyLeft",
-			className: "col-sm-6",
-			father: father
-		});
-
-		object.radioForm = createHtmlElement({
-			format: "form",
-			id: id+"radioForm",
-			father: object.dialogBodyLeft
-		});
-
-		object.radioVariable = createRadioHtmlElement({
-			id: id+"radioVariable",
-			text: "local variable",
-			name: 'type',
-			father: object.radioForm
-		});
-
-		object.radioGlobalVariable = createRadioHtmlElement({
-			id: id+"radioNumber",
-			text: "global variable",
-			name: 'type',
-			father: object.radioForm
-		});
-
-		object.radioArrayElement = createRadioHtmlElement({
-			id: id+"radioText",
-			text: "array element",
-			name: 'type',
-			father: object.radioForm
-		});
-
-		object.radioObjectElement = createRadioHtmlElement({
-			id: id+"radioBoolean",
-			text: "object element",
-			name: 'type',
-			father: object.radioForm
-		});
-
-		object.dialogBodyRight = createHtmlElement({
-			format: "div",
-			id: id+"bodyRight",
-			className: "col-sm-6",
-			father: father
-		});
-
-		object.dialogTextInput = createHtmlElement({
-			format: "input",
-			type: "text",
-			id: id+"textInput",
-			placeholder: "value",
-			father: object.dialogBodyRight
-		});
-	    $(object.dialogTextInput).css('max-width', '100%');
-	    $(object.dialogTextInput).css('margin-top', 30);
-
-		object.dialogSubTextInput = createHtmlElement({
-			format: "input",
-			type: "text",
-			id: id+"subTextInput",
-			placeholder: "value",
-			father: object.dialogBodyRight
-		});
-	    $(object.dialogSubTextInput).css('max-width', '100%');
-	    $(object.dialogSubTextInput).css('margin-top', 20);
-    };
+    function getElement(){
+    	return instance.element[instance.element.length-1];
+    }; 
 })();

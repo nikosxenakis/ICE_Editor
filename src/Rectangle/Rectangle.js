@@ -18,7 +18,7 @@ function Rectangle (id , pos , type , element, rectangleOffset) {
 	this.type = type;
     this.rectangleOffset = rectangleOffset;
     this.pos = pos;
-    this.visibility == true;
+    this.visibility = true;
 	this.rectangleInCanvas = this.createRectangleInCanvas(pos);
     this.elements = new Array();
 
@@ -123,21 +123,6 @@ Rectangle.prototype.moveRectangleInCanvas = function (dx,dy){
 }
 
 Rectangle.prototype.setOpacity = function (opac){
-
-    if(this.element.deleteImage){
-        if(opac == CanvasData.highOpacity)
-            this.element.deleteImage.setVisibility(false);
-        else
-            this.element.deleteImage.setVisibility(true);
-    }
-
-    if(this.element.foldingItem){
-        if(opac == CanvasData.highOpacity)
-            this.element.foldingItem.setVisibility(false);
-        else
-            this.element.foldingItem.setVisibility(true);
-    }
-
     if(this.rectangleInCanvas)
         this.rectangleInCanvas.setOpacity(opac);
 
@@ -154,6 +139,8 @@ Rectangle.prototype.createRectangleInCanvas = function (pos){
         width: pos.width,
         height: pos.height,
         selectable: true,
+        lockMovementX: true,
+        lockMovementY: true,
         hasControls: false,
         stroke: 'grey',
         strokeWidth: 1,
@@ -188,7 +175,7 @@ Rectangle.prototype.mouseUp = function (){
 
     var c = Canvas.getInstance();
     
-    this.element.setOpacity(1);
+    this.element.setOpacity(CanvasData.highOpacity);
 
     if(!this.element.father && this.element.type!=ElementType.program){
         //if there is a current dummy
@@ -222,7 +209,7 @@ Rectangle.prototype.mouseUp = function (){
 };
 
 Rectangle.prototype.mouseDown = function (){
-
+	
     if(this.element.father && this.element.type != ElementType.doNothing){
         //removes element from father
         var father = this.element.father;
@@ -265,11 +252,12 @@ Rectangle.prototype.bringToFront = function (){
 };
 
 Rectangle.prototype.sendToBack = function (){
-    this.rectangleInCanvas.sendToBack();
 
     for(var i = 0; i < this.elements.length; i++) {
         this.elements[i].sendToBack();
     }
+
+    this.rectangleInCanvas.sendToBack();
 };
 
 function compareRectangles(a,b) {

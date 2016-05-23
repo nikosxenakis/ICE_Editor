@@ -8,7 +8,8 @@ function createHtmlElement(attributes){
 		name: attributes.name,
 		color: attributes.color,
 		style: attributes.style,
-		placeholder: attributes.placeholder
+		placeholder: attributes.placeholder,
+		object: attributes.object
 	});
 	
 	$(attributes.father).append(element);
@@ -66,3 +67,21 @@ function createRadioHtmlElement(attributes){
     
 	return radioDiv;
 };
+
+function createAutocompleteInputHtmlElement(father,placeholder,inputType){
+	var input = createHtmlElement({
+		format: "input",
+		father: father
+	});
+	$(input).easyAutocomplete(IdController.options(inputType));
+	$(input).attr('placeholder',placeholder);
+	$(input).parent().addClass('dialogInput');
+	$(input).parent().css('width','160px');
+	$(input).css('width','160px');
+
+	return input;
+};
+
+function radioIsChecked(radio){
+	return $(radio).children('input[type=radio]').prop("checked");
+}

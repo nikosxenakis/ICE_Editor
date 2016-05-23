@@ -1,40 +1,51 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 function InitEditor() {
-    /*
-    canvas.VPL_elementsInfo = sideBarSubCategories;
-    InitMenuElements(canvas);
-    CreateDialogs();
-    InitDialogs();
-    InitMenus();
-    CreateOperatorsMenu(canvas.canvas);
-    CreateVarsMenu(canvas.canvas);
-    CreateRightClickMenu(canvas.canvas);    
-    */
-           
+      
     cssModifications();
     
     //create ElementType
     for (key in Elements)
         ElementType[key] = key;
 
-
+    //initialize singleton classes
     Canvas.getInstance();
     DialogMenuController.getInstance();
     ImageHolder.getInstance();
-
-    var parser = new Parser();
-    parser.loadProgram(inputPrograms);
-    //parser.saveProgram(Canvas.getActiveElement());
+    IdController.getInstance();
+    
+    initializeUndoManager();
+    
+    //parse
+    parser = new Parser();
+    parser.load(inputPrograms);
+    parser.saveProgram(Canvas.getActiveElement());
 
     var elem = Canvas.getElement('programName2');
     Canvas.setActiveElement(elem);
+
 }
 
+function initializeUndoManager(){
+
+    undoManager = new UndoManager();
+
+    btnUndo = document.getElementById("btnUndo");
+    btnRedo = document.getElementById("btnRedo");
+    
+    function updateUI() {
+        btnUndo.disabled = !undoManager.hasUndo();
+        btnRedo.disabled = !undoManager.hasRedo();
+    }
+    undoManager.setCallback(updateUI);
+    
+    btnUndo.onclick = function () {
+        undoManager.undo();
+        updateUI();
+    };
+    btnRedo.onclick = function () {
+        undoManager.redo();
+        updateUI();
+    };
+};
 
 function cssModifications(){
      $('.draggable').css('z-index', 1001);   //to be in the front

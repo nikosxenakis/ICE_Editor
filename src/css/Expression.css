@@ -1,0 +1,23 @@
+.activatedExpression{
+    border: groove coral;
+    border-width: 4px;
+    box-shadow: 4px 4px 2px #888888;
+}
+
+.deactivatedExpression{
+    border: groove darkgray;
+    border-width: 2px;
+    box-shadow: 2px 2px 1px #888888;
+}
+
+.mainDiv{
+    border-radius: 10px;
+    margin: 4px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.contentDiv{
+    text-align: center;
+    margin: 15px;
+}

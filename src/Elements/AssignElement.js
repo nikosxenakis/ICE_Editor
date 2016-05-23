@@ -1,6 +1,20 @@
-function AssignElement (id , elementOffset , father){
+function AssignElement (id , elementOffset , father , data){
 
     Element.call(this , id , "assign" , elementOffset , father);
+
+    console.log('data : ',data);
+
+    var nameInputElement = new InputElement('variable name',InputType.localId);
+    var valueInputElement = new InputElement('variable value',InputType.arithmeticExpression);
+
+    parser.parseAssignExpressionData(data,nameInputElement,valueInputElement);
+
+    console.log('nameInputElement : ',nameInputElement);
+    console.log('valueInputElement : ',valueInputElement);
+
+    if(data){
+        IdController.add(nameInputElement.getText(),nameInputElement.type);
+    }
 
     var firstRect = this.getRectangle(RectangleOffset.firstHorizontial).rectangle;
     var top = firstRect.rectangleInCanvas.getTop() + CanvasData.horizontalElementsHeight/2;
@@ -21,7 +35,8 @@ function AssignElement (id , elementOffset , father){
         width: CanvasData.InputBoxWidth,
         height: CanvasData.InputBoxHeight
     };
-    var inputBoxVarName = new InputBox("var name",relPos,InputType.lvalue);
+
+    var inputBoxVarName = new InputBox(relPos,nameInputElement);
     firstRect.addElement(inputBoxVarName);
 
     leftOffset+=11;
@@ -39,7 +54,8 @@ function AssignElement (id , elementOffset , father){
         width: CanvasData.InputBoxWidth,
         height: CanvasData.InputBoxHeight
     };
-    var inputBoxVarValue = new InputBox("var value",relPos,InputType.expression);
+
+    var inputBoxVarValue = new InputBox(relPos,valueInputElement);
     firstRect.addElement(inputBoxVarValue);
 
 }

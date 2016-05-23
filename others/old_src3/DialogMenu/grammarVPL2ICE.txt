@@ -1,0 +1,25 @@
+POP UP ELEMENTS:
+
+	lValue:
+		find in: 
+			assignElement
+			term
+		contains:
+			var id
+			var global id
+			array element
+			object element
+
+	expresion:
+		find in:
+			declarationElement
+			assignElement
+			returnElement
+		contains:
+			arithmetic expresion    (not yet)
+			logic expresion    (not yet)
+			term    (not yet)
+			array initialization    (not yet)
+
+
+IN POP UP ELEMENTS:
