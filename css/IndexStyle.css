@@ -1,0 +1,72 @@
+/* Extra small devices (phones, less than 768px) */
+/* No media query since this is the default in Bootstrap */
+
+/* Small devices (tablets, 768px and up) */
+
+@media (min-width: 0px) {
+
+	body{
+		background-color: white;
+	}
+
+	.hamburger.is-closed .hamb-top{
+	    background-color: rgba(0, 77, 77, 1);
+	}
+	.hamburger.is-closed .hamb-middle{
+	    background-color: rgba(0, 77, 77, 1);
+	}
+	.hamburger.is-closed .hamb-bottom{
+	    background-color: rgba(0, 77, 77, 1);
+	}
+	.hamburger.is-open .hamb-top{
+	    background-color: rgba(0, 77, 77, 1);
+	}
+	.hamburger.is-open .hamb-bottom{
+	    background-color: rgba(0, 77, 77, 1);
+	}
+
+	#page-content-wrapper{
+		padding-top: 0px;
+	}
+
+	.draggable{
+		z-index: 1000;		
+	}
+
+	.undoButton{
+		overflow: auto;
+	}
+
+	.redoButton{
+		overflow: auto;
+	}
+
+	.canvasButton{
+		position: fixed;
+		z-index: 999;
+		top: 30px;
+	}
+
+	.undoCanvasButton{
+    	left: 85%;
+	}
+
+	.redoCanvasButton{
+    	left: 90%;
+	}
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+	
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+	
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+	
+}

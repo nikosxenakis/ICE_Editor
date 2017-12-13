@@ -1,0 +1,51 @@
+.activatedExpression{
+    border: solid firebrick;
+    border-width: 2px;
+    color: firebrick;
+
+}
+
+.deactivatedExpression{
+    border: solid darkgray;
+    border-width: 1px;
+    color: black;
+}
+
+.enabledExpression{
+    border: solid firebrick;
+    border-width: 1px;
+    color: firebrick;
+}
+
+.dataDivWithContent{
+    font-size: 1em;
+    font-style: normal;
+    color: black;
+}
+
+.dataDivWithoutContent{
+    font-size: 13px;
+    font-style: italic;
+    color: #8A1E27;
+}
+
+.mainDiv{
+    border-radius: 10px;
+    box-shadow: 2px 2px 1px darkgray;
+    margin: 4px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.contentDiv{
+    text-align: center;
+    margin: 5px;
+}
+
+.comparisonExpression{
+    border: none;
+    box-shadow: none;
+    background-color: white;
+    padding: 0px;
+    margin: 0px;
+}

@@ -1,0 +1,383 @@
+var inputPrograms = [
+	{
+		id: "func1",
+		type: "function",
+		args: [
+		],
+		elements: [
+			{
+				id: "doWhile1",
+				type: "doWhile",
+				data:{
+					left:{
+						left:{
+							type: InputType.localId,
+							text: "x"
+						},
+						operator:{
+							type: InputType.logicOperator,
+							text: "and"
+						},
+						right:{
+							type: InputType.localId,
+								text: "y"
+						}
+					},
+					operator:{
+						type: InputType.logicOperator,
+						text: "or"
+					},
+					right:{
+						type: InputType.globalId,
+						text: "z"
+					}
+				},
+				elements:[
+					{
+						id: "array1",
+						type: "array",
+						data:{
+							arrayName: "array1",
+							arrayType: "localId",
+							arrayList:[
+								{
+									type: InputType.localId,
+									text: "x"
+								},
+								{
+									type: InputType.localId,
+									text: "y"
+								},
+								{
+									type: InputType.localId,
+									text: "z"
+								}
+							]
+						}
+					},
+					{
+						id: "var1",
+						type: "assign",
+						data:{
+							varName: "var1",
+							varType: "localId",
+							arithmeticExpression:{
+								left:{
+									type: InputType.localId,
+									text: "x"									
+								},
+								operator:{
+									type: InputType.arithmeticOperator,
+									text: "+"
+								},
+								right:{
+									type: InputType.localId,
+									text: "z"
+								}
+							}
+						}
+					}
+				]
+			},
+			{
+				id: "for1",
+				type: "for",
+				data: [
+					0,
+					9,
+					1
+				],
+				elements:[
+
+				]
+			},
+			{
+				id: "repeat1",
+				type: "repeat",
+				data: 4,
+				elements:[
+
+				]
+			},		
+		] 
+	},
+	{
+		id: "func2",
+		type: "function",
+		args: [
+			{
+				text: "arg1",
+				type: "localId",
+			},
+			{
+				text: "arg2",
+				type: "localId",
+			}	
+		],
+		elements: [
+		] 
+	},
+	{
+		id: "variables",
+		type: "variables",
+		elements: [
+			{
+				id: "var1",
+				type: "assign",
+				data:{
+					varName: "gVar1",
+					varType: "globalId",
+					arithmeticExpression:{
+						type: InputType.number,
+						text: "3"										
+					}
+				}
+			},
+			{
+				id: "var2",
+				type: "assign",
+				data:{
+					varName: "gVar2",
+					varType: "globalId",
+					arithmeticExpression:{
+						type: InputType.string,
+						text: "testString"										
+					}
+				}
+			},
+		] 
+	},
+	{
+		id: "programName",
+		type: "program",
+		elements: [
+			{
+				id: "while2",
+				type: "while",
+				data:{
+					left:{
+						left:{
+							type: InputType.localId,
+							text: "x"
+						},
+						operator:{
+							type: InputType.logicOperator,
+							text: "and"
+						},
+						right:{
+							type: InputType.localId,
+								text: "y"
+						}
+					},
+					operator:{
+						type: InputType.logicOperator,
+						text: "or"
+					},
+					right:{
+						type: InputType.globalId,
+						text: "z"
+					}
+				},
+				elements:[
+					{
+						id: "array1",
+						type: "array",
+						data:{
+							arrayName: "array1",
+							arrayType: "localId",
+							arrayList:[
+								{
+									type: InputType.localId,
+									text: "x"
+								},
+								{
+									type: InputType.localId,
+									text: "y"
+								},
+								{
+									type: InputType.localId,
+									text: "z"
+								}
+							]
+						}
+					},
+					{
+						id: "var1",
+						type: "assign",
+						data:{
+							varName: "var1",
+							varType: "localId",
+							arithmeticExpression:{
+								left:{
+									type: InputType.localId,
+									text: "x"									
+								},
+								operator:{
+									type: InputType.arithmeticOperator,
+									text: "+"
+								},
+								right:{
+									type: InputType.localId,
+									text: "z"
+								}
+							}
+						}
+					}
+				]
+			},
+			{
+				id: "for1",
+				type: "for",
+			}
+		]
+	},
+	{
+		id: "programName2",
+		type: "program",
+		elements: [
+			{
+				id: "if1",
+				type: "if",
+				data:{
+					left:{
+						left:{
+							type: InputType.localId,
+							text: "x"
+						},
+						operator:{
+							type: InputType.logicOperator,
+							text: "and"
+						},
+						right:{
+							type: InputType.localId,
+								text: "y"
+						}
+					},
+					operator:{
+						type: InputType.logicOperator,
+						text: "or"
+					},
+					right:{
+						type: InputType.globalId,
+						text: "z"
+					}
+				}
+			},
+			{
+				id: "while1",
+				type: "while",
+				data:{
+					left:{
+						type: InputType.comparisonExpression,
+						left:{
+							type: InputType.localId,
+							text: "x"
+						},
+						operator:{
+							type: InputType.comparisonOperator,
+							text: "<"
+						},
+						right:{
+							type: InputType.localId,
+								text: "y"
+						}
+					},
+					operator:{
+						type: InputType.logicOperator,
+						text: "or"
+					},
+					right:{
+						left:{
+							type: InputType.localId,
+							text: "z"
+						},
+						operator:{
+							type: InputType.logicOperator,
+							text: "and"
+						},
+						right:{
+							type: InputType.localId,
+								text: "y"
+						}
+					}
+				},
+				elements: [
+					{
+						id: "var1",
+						type: "assign",
+						data:{
+							varName: "var1",
+							varType: "localId",
+							arithmeticExpression:{
+								left:{
+									type: InputType.localId,
+									text: "x"									
+								},
+								operator:{
+									type: InputType.arithmeticOperator,
+									text: "+"
+								},
+								right:{
+									type: InputType.localId,
+									text: "z"
+								}
+							}
+						}
+					},
+					{
+						id: "array1",
+						type: "array",
+						data:{
+							arrayName: "array1",
+							arrayType: "localId",
+							arrayList:[
+								{
+									type: InputType.localId,
+									text: "x"
+								},
+								{
+									type: InputType.localId,
+									text: "y"
+								},
+								{
+									type: InputType.localId,
+									text: "z"
+								}
+							]
+						}
+					}
+				]
+			},
+			{
+				id: "while2",
+				type: "while",
+				data:{
+					left:{
+						left:{
+							type: InputType.localId,
+							text: "x"
+						},
+						operator:{
+							type: InputType.logicOperator,
+							text: "and"
+						},
+						right:{
+							type: InputType.localId,
+								text: "y"
+						}
+					},
+					operator:{
+						type: InputType.logicOperator,
+						text: "or"
+					},
+					right:{
+						type: InputType.globalId,
+						text: "z"
+					}
+				}
+			}
+		]
+
+	}
+];
+

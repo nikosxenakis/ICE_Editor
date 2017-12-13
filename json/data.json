@@ -1,0 +1,160 @@
+var CanvasData = {
+	//"left":120,
+	"left":screen.width/4,
+	"top":100,
+
+	"highOpacity":1,
+	"lowOpacity":0.8,
+
+	"horizontalElementsWidth":400,
+	"horizontalElementsHeight":55,
+	"verticalElementsWidth":10,
+	"verticalElementsHeight":0,
+
+	"greyElementsHeight":35,
+
+	"InputBoxConditionWidth":280,
+	"InputBoxConditionHeight":35,
+	"InputBoxWidth":140,
+	"InputBoxHeight":35,
+	"InputBoxNumberWidth":30,
+	"InputBoxNumberHeight":35,
+	"InputBoxIdWidth":45,
+	"InputBoxIdHeight":35,
+
+	"ElementLabelColor":"white",
+	"ElementLabelSize":19,
+	"ElementForLabelSize":18,
+
+	"InputBoxTextSize":20,
+	"InputBoxTextColor":"grey",
+
+};
+
+var DialogMenuData = {
+	"doNothingDialogMenuWidth": 450,
+	"lValueDialogMenuWidth": 400,
+	"logicExpressionContentDialogMenuWidth": 550,
+	"dummyString": "click to add.."
+};
+
+var DeleteImageData = {
+	"id":"deleteImage",
+	"deleteImagePath":"images/deleteImage.png",
+	"deleteImageWidth":15,
+	"deleteImageHeight":15
+};
+
+var FoldingItemData = {
+	"id":"foldingItem",
+	"foldingItemWidth":13,
+	"foldingItemHeight":13
+};
+
+var Elements = {
+	"function":
+		{
+			format: "C",
+			color:"#008fb3",
+			class: FunctionElement
+		}
+	,
+	"variables":
+		{
+			format: "C",
+			color:"#008fb3",
+			class: VariablesElement
+		}
+	,
+	"program":
+		{
+			format: "C",
+			color:"#008fb3",
+			class: ProgramElement
+		}
+	,
+	"doNothing":
+		{
+			format: "I",
+			color:"green",
+			class: DoNothingElement
+		}
+	,
+	"grey":
+		{
+			format: "I",
+			color:"grey",
+			class: GreyElement
+		}
+	,
+	"assign":
+		{
+			format: "I",
+			color:"green",
+			class: AssignElement,
+			srcImg: "images/elements/assign.png",
+			categoryImg: "statements"
+		}
+	,
+	"array":
+		{
+			format: "I",
+			color:"purple",
+			class: ArrayElement,
+			srcImg: "images/elements/array.png",
+			categoryImg: "statements"
+		}
+	,
+	"while":
+		{
+			format: "C",
+			color:"#cc5200",
+			class: WhileElement,
+			srcImg: "images/elements/while.png",
+			categoryImg: "loops"
+		}
+	,
+	"forever":
+		{
+			format: "C",
+			color:"#B1D171",
+			class: ForeverElement,
+			srcImg: "images/elements/forever.png",
+			categoryImg: "loops"
+		}
+	,
+	"repeat":
+		{
+			format: "C",
+			color:"#AD4462",
+			class: RepeatElement,
+			srcImg: "images/elements/repeat.png",
+			categoryImg: "loops"
+		}
+	,
+	"for":
+		{
+			format: "C",
+			color:"#732DE3",
+			class: ForElement,
+			srcImg: "images/elements/for.png",
+			categoryImg: "loops"
+		}
+	,
+	"if":
+		{
+			format: "C",
+			color:"#E6BC35",
+			class: IfElement,
+			srcImg: "images/elements/if.png",
+			categoryImg: "flows"
+		},
+	"doWhile":
+		{
+			format: "C",
+			color:"#B5A855",
+			class: DoWhileElement,
+			srcImg: "images/elements/doWhile.png",
+			categoryImg: "loops"
+		}
+};

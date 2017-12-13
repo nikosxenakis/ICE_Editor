@@ -1,0 +1,189 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>ICE Editor</title>
+     
+
+        <!-- jquery -->
+        <script src="jquery/jquery-2.2.4.min.js"></script>        
+        <script type="text/javascript" src="jquery/jquery-ui-1.9.2.custom.js"></script>
+        <link rel="stylesheet" type="text/css" href="jquery/jquery-ui-1.9.2.custom.css">
+
+<script src="jquery/jquery.ui.touch-punch.min.js"></script>
+<script>$('#widget').draggable();</script>
+
+
+        <!-- bootstrap -->
+        <link rel="stylesheet" href="css/normalize.css">
+        <!--<link rel="stylesheet" href="css/bootstrap.min.css">-->
+        <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'>
+        <link rel="stylesheet" href="css/style.css">
+        <!--<script type="text/javascript" src="js/bootstrap.min.js"></script>-->
+        <script src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js'></script>
+
+        <!-- Basic JS -->
+        <script src="js/sideBar.js"></script>
+        
+        <script type="text/javascript" src="js/fabric.js"></script>
+
+        <script type="text/javascript" src="js/undomanager.js"></script> 
+        <script type="text/javascript" src="js/dropdownMultiDepth.js"></script> 
+
+        <!-- Basic CSS -->
+        
+        <link rel="stylesheet" type="text/css" href="css/IndexStyle.css">
+        <link rel="stylesheet" type="text/css" href="css/MenuBarStyle.css" /> 
+        <link rel="stylesheet" type="text/css" href="css/multipleDropdown.css" /> 
+        <link rel="stylesheet" type="text/css" href="css/dialogMenuStyle.css" /> 
+        <link rel="stylesheet" type="text/css" href="css/Expression.css" /> 
+        <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" /> 
+
+        <!-- JS -->
+        <script type="text/javascript" src="ICE_Editor/InitEditor.js"></script>
+
+        <script type="text/javascript" src="Canvas/Canvas.js"></script>
+
+        <script type="text/javascript" src="Parser/Parser.js"></script>
+        <script type="text/javascript" src="Parser/IdController.js"></script>
+
+        <script type="text/javascript" src="Image/ImageHolder.js"></script>
+
+        <!--Elements-->
+        <script type="text/javascript" src="Elements/Element.js"></script>
+
+        <script type="text/javascript" src="Elements/FoldingItem.js"></script>
+        <script type="text/javascript" src="Elements/DeleteImage.js"></script>
+
+        <script type="text/javascript" src="Elements/WhileElement.js"></script>
+        <script type="text/javascript" src="Elements/IfElement.js"></script>
+        <script type="text/javascript" src="Elements/ProgramElement.js"></script>
+        <script type="text/javascript" src="Elements/GreyElement.js"></script>
+        <script type="text/javascript" src="Elements/AssignElement.js"></script>
+        <script type="text/javascript" src="Elements/ArrayElement.js"></script>
+        <script type="text/javascript" src="Elements/DoNothingElement.js"></script>
+        <script type="text/javascript" src="Elements/ForeverElement.js"></script>
+        <script type="text/javascript" src="Elements/RepeatElement.js"></script>
+        <script type="text/javascript" src="Elements/ForElement.js"></script>
+        <script type="text/javascript" src="Elements/VariablesElement.js"></script>
+        <script type="text/javascript" src="Elements/FunctionElement.js"></script>
+        <script type="text/javascript" src="Elements/DoWhileElement.js"></script>
+
+        <script type="text/javascript" src="Rectangle/Rectangle.js"></script>
+        
+        <script type="text/javascript" src="Rectangle/TextInput.js"></script>
+        <script type="text/javascript" src="Rectangle/Label.js"></script>
+        <script type="text/javascript" src="Rectangle/InputBox.js"></script>
+
+        <script type="text/javascript" src="Elements/HtmlElement.js"></script>
+        <script type="text/javascript" src="Elements/InputElement.js"></script>
+
+        <!--Expressions-->
+        <script type="text/javascript" src="Expressions/ArithmeticExpression.js"></script>
+        <script type="text/javascript" src="Expressions/LogicExpression.js"></script>
+        <script type="text/javascript" src="Expressions/LogicExpressionMenu.js"></script>
+        <script type="text/javascript" src="Expressions/ArithmeticExpressionMenu.js"></script>
+        <script type="text/javascript" src="Expressions/LogicOperator.js"></script>
+        <script type="text/javascript" src="Expressions/ArithmeticOperator.js"></script>
+        <script type="text/javascript" src="Expressions/ComparisonExpression.js"></script>
+        <script type="text/javascript" src="Expressions/ComparisonTerm.js"></script>
+        <script type="text/javascript" src="Expressions/ComparisonOperator.js"></script>
+        <script type="text/javascript" src="Expressions/LogicOperatorMenu.js"></script>
+        <script type="text/javascript" src="Expressions/ArithmeticOperatorMenu.js"></script>
+        <script type="text/javascript" src="Expressions/ComparisonOperatorMenu.js"></script>        
+        <script type="text/javascript" src="Expressions/Term.js"></script>
+        <script type="text/javascript" src="Expressions/LValue.js"></script>
+        <script type="text/javascript" src="Expressions/ArrayExpression.js"></script>
+        <script type="text/javascript" src="Expressions/ArrayTerm.js"></script>
+
+        <!--Dialog Menus-->
+        <script type="text/javascript" src="DialogMenu/BasicDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/DialogMenuController.js"></script>
+        <script type="text/javascript" src="DialogMenu/DoNothingDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/LValueDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/ArithmeticExpressionDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/LogicExpressionDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/ArrayExpressionDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/NumberDialogMenu.js"></script>
+        <script type="text/javascript" src="DialogMenu/IdDialogMenu.js"></script>
+
+        <!-- JSON -->
+        <script type="text/javascript" src="json/data.json"></script>
+        <script type="text/javascript" src="json/inputProgram.json"></script>
+        <script type="text/javascript" src="json/outputProgram.json"></script>
+
+  </head>
+
+  <body onload="InitEditor();">
+
+        <div id="wrapper">
+        <div class="overlay"></div>
+    
+        <!-- Sidebar -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
+            <ul class="nav sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                       ICE Editor
+                    </a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-fw fa-home"></i> Home</a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-cog"></i>Elements<span class="caret"></span></a>
+                    <ul id="sideBarImagesLoops" class="dropdown-menu" role="menu">
+                        <li class="dropdown-header">Loops</li>
+                    </ul>
+                    <ul id="sideBarImagesStatements" class="dropdown-menu" role="menu">
+                        <li class="dropdown-header">Statements</li>
+                    </ul>
+                    <ul id="sideBarImagesFlows" class="dropdown-menu" role="menu">
+                        <li class="dropdown-header">Flows</li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-file-o"></i>Programs<span class="caret"></span></a>
+                    <ul id="variablesList" class="dropdown-menu" role="menu">
+                        <li class="dropdown-header">Variables</li>
+                    </ul>
+
+                    <ul id="functionList" class="dropdown-menu" role="menu">
+                        <li class="dropdown-header">Functions
+                            <span class="glyphicon glyphicon-plus sideBarButtonAdd addFunction"></span>
+                            <span class="glyphicon glyphicon-eye-open sideBarButtonSee seeFunctions"></span>
+                        </li>
+                    </ul>
+
+                    <ul id="programList" class="dropdown-menu" role="menu">
+                        <li class="dropdown-header">Programs
+                            <span class="glyphicon glyphicon-plus sideBarButtonAdd addProgram"></span>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+          <button id="hamburger" type="button" class="hamburger is-closed animated fadeInLeft" data-toggle="offcanvas">
+            <span class="hamb-top"></span>
+            <span class="hamb-middle"></span>
+            <span class="hamb-bottom"></span>
+          </button>
+                <i class="fa fa-undo undoButton canvasButton undoCanvasButton btnUndo" style="font-size: 30px;"></i>
+                <i class="fa fa-repeat redoButton canvasButton redoCanvasButton btnRedo" style="font-size: 30px;" aria-hidden="true"></i>
+
+            <img id="deleteImage" class="deleteIcon" src="images/deleteImage.png" hidden></img>
+            <div id="canvasContainer">
+                <canvas id="canvas"></canvas>
+            </div>
+
+        </div>
+        <!-- /#page-content-wrapper -->
+
+        </div>    
+
+
+  </body>
+</html>
