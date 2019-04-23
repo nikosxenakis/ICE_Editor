@@ -1,4 +1,13 @@
-BASIC:
+# ICE_Editor
+
+## Description
+
+ICE Editor is my bachelor thesis during my undergraduate studies in Computer Science
+department at the University of Crete. This project is a part of a PhD research which
+main goal is to use efficient means of communication between IOT devices in terms of
+energy and time using bluetooth technology.
+
+## To_do
 
     -complete Save Element
 
