@@ -1,5 +1,7 @@
 # ICE_Editor
 
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/nikosxenakis/ICE_Editor.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/nikosxenakis/ICE_Editor/context:javascript)
+
 ## Description
 
 ICE Editor is my bachelor thesis during my undergraduate studies in Computer Science
