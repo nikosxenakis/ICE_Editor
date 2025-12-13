@@ -1,180 +1,170 @@
 function InitEditor() {
-         
-    //create ElementType
-    for (key in Elements)
-        ElementType[key] = key;
+  //create ElementType
+  for (key in Elements) ElementType[key] = key;
 
-    //initialize singleton classes
-    Canvas.getInstance();
-    DialogMenuController.getInstance();
-    ImageHolder.getInstance();
+  //initialize singleton classes
+  Canvas.getInstance();
+  DialogMenuController.getInstance();
+  ImageHolder.getInstance();
 
-    IdController.getInstance();
-    
-    initializeUndoManager();
-    
-    //parse
-    parser = new Parser();
-    parser.load(inputPrograms);
-    parser.saveProgram(Canvas.getActiveElement());
+  IdController.getInstance();
 
-    addSideBarEventListenners();
+  initializeUndoManager();
 
-    var elem = Canvas.getElement('programName2');
-    Canvas.setActiveElement(elem);
+  //parse
+  parser = new Parser();
+  parser.load(inputPrograms);
+  parser.saveProgram(Canvas.getActiveElement());
+
+  addSideBarEventListenners();
+
+  var elem = Canvas.getElement("programName2");
+  Canvas.setActiveElement(elem);
 }
 
-function initializeUndoManager(){
+function initializeUndoManager() {
+  undoManager = new UndoManager();
 
-    undoManager = new UndoManager();
+  btnUndo = document.getElementsByClassName("btnUndo")[0];
+  btnRedo = document.getElementsByClassName("btnRedo")[0];
 
-    btnUndo = document.getElementsByClassName("btnUndo")[0];
-    btnRedo = document.getElementsByClassName("btnRedo")[0];
-    
-    function updateUI() {
-        btnUndo.disabled = !undoManager.hasUndo();
-        btnRedo.disabled = !undoManager.hasRedo();
+  function updateUI() {
+    btnUndo.disabled = !undoManager.hasUndo();
+    btnRedo.disabled = !undoManager.hasRedo();
 
-        if(!undoManager.hasRedo()){
-            $('.btnRedo').css('color', 'grey');
-        }
-        else{
-            $('.btnRedo').css('color', '#34495e');
-        }
-
-        if(!undoManager.hasUndo()){
-            $('.btnUndo').css('color', 'grey');
-        }
-        else{
-            $('.btnUndo').css('color', '#34495e');
-        }
-
+    if (!undoManager.hasRedo()) {
+      $(".btnRedo").css("color", "grey");
+    } else {
+      $(".btnRedo").css("color", "#34495e");
     }
-    undoManager.setCallback(updateUI);
-    
-    btnUndo.onclick = function () {
-        undoManager.undo();
-        updateUI();
-    };
-    btnRedo.onclick = function () {
-        undoManager.redo();
-        updateUI();
-    };
 
-    $('.btnUndo').mouseover(function(){
-        $(this).css('cursor', 'pointer');
-    });
+    if (!undoManager.hasUndo()) {
+      $(".btnUndo").css("color", "grey");
+    } else {
+      $(".btnUndo").css("color", "#34495e");
+    }
+  }
+  undoManager.setCallback(updateUI);
 
-    $('.btnRedo').mouseover(function(){
-        $(this).css('cursor', 'pointer');
-    });
-
+  btnUndo.onclick = function () {
+    undoManager.undo();
     updateUI();
-};
+  };
+  btnRedo.onclick = function () {
+    undoManager.redo();
+    updateUI();
+  };
 
-function rectangesCollision(r1,r2){
-    return(!(
-        r1.left           > r2.left+r2.width  ||
-        r1.left+r1.width  < r2.left           ||
-        r1.top           > r2.top+r2.height ||
-        r1.top+r1.height < r2.top
-    ));
-};
+  $(".btnUndo").mouseover(function () {
+    $(this).css("cursor", "pointer");
+  });
 
-var addSideBarEventListenners = function(){
+  $(".btnRedo").mouseover(function () {
+    $(this).css("cursor", "pointer");
+  });
 
-    var addFunctionMouseDown = function(){
-        var id = 'newF';
-        var element = new FunctionElement(id);
+  updateUI();
+}
 
-        parser.addTopElement(element , null , id , '#functionList');
+function rectangesCollision(r1, r2) {
+  return !(
+    r1.left > r2.left + r2.width ||
+    r1.left + r1.width < r2.left ||
+    r1.top > r2.top + r2.height ||
+    r1.top + r1.height < r2.top
+  );
+}
 
-        var father = $(this).parent();
+var addSideBarEventListenners = function () {
+  var addFunctionMouseDown = function () {
+    var id = "newF";
+    var element = new FunctionElement(id);
 
-        var elem = $(this);
-        var elem2 = $(father).find('.seeFunctions');
+    parser.addTopElement(element, null, id, "#functionList");
 
-        $(elem).remove();
-        $(elem2).remove();
+    var father = $(this).parent();
 
-        elem.appendTo(father);
-        elem2.appendTo(father);
+    var elem = $(this);
+    var elem2 = $(father).find(".seeFunctions");
 
-        elem2.mousedown(seeFunctionsMouseDown);
-        elem.mousedown(addFunctionMouseDown);
+    $(elem).remove();
+    $(elem2).remove();
 
-        return false;
-    };
+    elem.appendTo(father);
+    elem2.appendTo(father);
 
-	$('.addFunction').mousedown(addFunctionMouseDown);
+    elem2.mousedown(seeFunctionsMouseDown);
+    elem.mousedown(addFunctionMouseDown);
 
-    var addProgramMouseDown = function(){
-        var id = 'newProgram';
-        var element = new ProgramElement(id);
+    return false;
+  };
 
-        parser.addTopElement(element , null , id , '#programList');
-        
-        var father = $(this).parent();
+  $(".addFunction").mousedown(addFunctionMouseDown);
 
-        var elem = $(this);
+  var addProgramMouseDown = function () {
+    var id = "newProgram";
+    var element = new ProgramElement(id);
 
-        $(elem).remove();
+    parser.addTopElement(element, null, id, "#programList");
 
-        elem.appendTo(father);
-        
-        elem.mousedown(addProgramMouseDown);
+    var father = $(this).parent();
 
-        return false;
-    };
+    var elem = $(this);
 
-	$('.addProgram').mousedown(addProgramMouseDown);
+    $(elem).remove();
 
-    $('.addFunction').mouseover(function(){
-        $(this).css('color','lightgreen');
-    });
+    elem.appendTo(father);
 
-    $('.addFunction').mouseout(function(){
-        $(this).css('color','mediumseagreen');
-    });  
+    elem.mousedown(addProgramMouseDown);
 
-    $('.addProgram').mouseover(function(){
-        $(this).css('color','lightgreen');
-    });
+    return false;
+  };
 
-    $('.addProgram').mouseout(function(){
-        $(this).css('color','mediumseagreen');
-    });  
+  $(".addProgram").mousedown(addProgramMouseDown);
 
-    var seeFunctionsMouseDown = function(){
-        
-        var father = $(this).parent();
+  $(".addFunction").mouseover(function () {
+    $(this).css("color", "lightgreen");
+  });
 
-        var elem = $(father).find('.addFunction');
-        var elem2 = $(this); 
+  $(".addFunction").mouseout(function () {
+    $(this).css("color", "mediumseagreen");
+  });
 
-        $(elem).remove();
-        $(elem2).remove();
+  $(".addProgram").mouseover(function () {
+    $(this).css("color", "lightgreen");
+  });
 
-        elem.appendTo(father);
-        elem2.appendTo(father);
-        
-        elem2.mousedown(seeFunctionsMouseDown);
-        elem.mousedown(addFunctionMouseDown);
+  $(".addProgram").mouseout(function () {
+    $(this).css("color", "mediumseagreen");
+  });
 
-        Canvas.seeFunctions();
+  var seeFunctionsMouseDown = function () {
+    var father = $(this).parent();
 
-        return false;
-    };
+    var elem = $(father).find(".addFunction");
+    var elem2 = $(this);
 
-	$('.seeFunctions').mousedown(seeFunctionsMouseDown);
+    $(elem).remove();
+    $(elem2).remove();
 
+    elem.appendTo(father);
+    elem2.appendTo(father);
 
+    elem2.mousedown(seeFunctionsMouseDown);
+    elem.mousedown(addFunctionMouseDown);
 
-    $('.seeFunctions').mouseover(function(){
-        $(this).css('color','cyan');
-    });
+    Canvas.seeFunctions();
 
-    $('.seeFunctions').mouseout(function(){
-        $(this).css('color','lightcyan');
-    });
+    return false;
+  };
+
+  $(".seeFunctions").mousedown(seeFunctionsMouseDown);
+
+  $(".seeFunctions").mouseover(function () {
+    $(this).css("color", "cyan");
+  });
+
+  $(".seeFunctions").mouseout(function () {
+    $(this).css("color", "lightcyan");
+  });
 };
