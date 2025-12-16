@@ -135,7 +135,7 @@ function createAutocompleteInputHtmlElement(father,placeholder,inputType){
 	$(s).css('left','135px');
 	$(s).css('top','-20px');
 
-    $(s).mousedown(function () {
+    	$(s).on('click', function () {
     	$(input).autocomplete("search");
 	});
 	

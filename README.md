@@ -1,4 +1,5 @@
-# ICE_Editor
+# ICE Editor
+![Build Status](https://github.com/nikosxenakis/ICE_Editor/actions/workflows/deploy.yml/badge.svg)
 
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/nikosxenakis/ICE_Editor.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/nikosxenakis/ICE_Editor/context:javascript)
 

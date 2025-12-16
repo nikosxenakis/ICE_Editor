@@ -1,10 +1,5 @@
-function GreyElement (id , elementOffset , father ){
-
-    Element.call(this , id , "grey" , elementOffset , father);
-
-
-
-
+class GreyElement extends Element {
+  constructor(id, elementOffset, father) {
+    super(id, "grey", elementOffset, father);
+  }
 }
-
-GreyElement.prototype = Element.prototype;

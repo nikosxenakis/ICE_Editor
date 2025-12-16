@@ -1,136 +1,122 @@
-function TextInput (id,relPos,color,size){
-
-    var c=Canvas.getInstance();
+class TextInput {
+  constructor(id, relPos, color, size) {
+    const c = Canvas.getInstance();
 
     this.relPos = relPos;
 
-	this.text = new fabric.IText(id,{
-        left: relPos.left,
-        top: relPos.top,
-        fill: color,
-        fontSize: size,
-        id: id,
-        strokeWidth:3,
-        fontFamily: "Helvetica",
-        transparentCorners: true,
-        textAlign:"center",
-        cornersize:0,
-        hasBorders: false,
-        hasControls: false,
-        hasRotatingPoint: false,
-        class: this
+    this.text = new fabric.IText(id, {
+      left: relPos.left,
+      top: relPos.top,
+      fill: color,
+      fontSize: size,
+      id: id,
+      strokeWidth: 3,
+      fontFamily: "Helvetica",
+      transparentCorners: true,
+      textAlign: "center",
+      cornersize: 0,
+      hasBorders: false,
+      hasControls: false,
+      hasRotatingPoint: false,
+      class: this
     });
 
     this.prevText = id;
 
     c.canvas.add(this.text);
 
-};
+  }
+  updateSideBar() {
 
-var changeSideBarElementName = function(prevText,text) {
-    console.log(prevText,text);
-    
-    $( "#programList a" ).each(function(){
-        console.log($(this).text());
-        if($(this).text() === prevText){
-            
-            var replaced = $(this).text().replace(prevText, text);
-            $(this).text(replaced);
+    changeSideBarElementName(this.prevText, this.text.text);
 
-            var programHtmlHeaderSpan = createHtmlElement({
-                format: "span",
-                className: "glyphicon glyphicon-minus sideBarButtonRemove",
-                father: this
-            });
-            
-            $(programHtmlHeaderSpan).mouseover(function(){
-                $(this).css('color','red');
-            });
-
-            $(programHtmlHeaderSpan).mouseout(function(){
-                $(this).css('color','mediumvioletred');
-            });     
-            
-            $(programHtmlHeaderSpan).mousedown(function(){
-
-                var id = $(this).parent().text();
-                var element = Canvas.removeElement(id);
-
-                $(this).parent().parent().remove();
-                return false;
-
-            });
-        }
-        console.log($(this).text());
-    });
-
-};
-
-TextInput.prototype.updateSideBar = function(){
-
-    changeSideBarElementName(this.prevText,this.text.getText());
-
-    if(this.element && this.element instanceof ProgramElement){
-        this.element.id = this.text.getText();
+    if (this.element && this.element instanceof ProgramElement) {
+      this.element.id = this.text.text;
     }
 
-    this.prevText = this.text.getText();
-};
-
-
-TextInput.prototype.getLeft = function (){
-    return this.text.getLeft();
-};
-
-TextInput.prototype.getTop = function (){
-    return this.text.getTop();
-};
-
-TextInput.prototype.getWidth = function (){
+    this.prevText = this.text.text;
+  }
+  getLeft() {
+    return this.text.left;
+  }
+  getTop() {
+    return this.text.top;
+  }
+  getWidth() {
     return this.text.width;
-};
-
-TextInput.prototype.getHeight = function (){
+  }
+  getHeight() {
     return this.text.height;
-};
-
-TextInput.prototype.move = function (dx,dy){
-    
-	this.text.setLeft(this.text.getLeft() + dx);
-    this.text.setTop(this.text.getTop() + dy);
+  }
+  move(dx, dy) {
+    this.text.set('left', this.text.left + dx);
+    this.text.set('top', this.text.top + dy);
     this.text.setCoords();
-};
-
-TextInput.prototype.remove = function (){
-	var c=Canvas.getInstance();
-	c.canvas.remove(this.text);
-	this.text = null;
-};
-
-TextInput.prototype.setVisibillity = function (flag){
-	this.text.visible = flag;
-};
-
-TextInput.prototype.bringToFront = function (){
+  }
+  remove() {
+    const c = Canvas.getInstance();
+    c.canvas.remove(this.text);
+    this.text = null;
+  }
+  setVisibillity(flag) {
+    this.text.visible = flag;
+  }
+  bringToFront() {
     this.text.bringToFront();
-};
-
-TextInput.prototype.mouseOver = function (){
+  }
+  mouseOver() {
 
     this.text.fill = "green";
 
-    if(this.element)
-        this.rectangle.mouseOver();
-};
-
-TextInput.prototype.mouseUp = function (){
-};
-
-TextInput.prototype.mouseDown = function (){
-};
-
-TextInput.prototype.mouseOut = function (){
+    if (this.element)
+      this.rectangle.mouseOver();
+  }
+  mouseUp() {
+  }
+  mouseDown() {
+  }
+  mouseOut() {
     this.text.fill = "white";
-    if(this.element)
-        this.rectangle.mouseOut();
+    if (this.element)
+      this.rectangle.mouseOut();
+  }
+};
+
+var changeSideBarElementName = function (prevText, text) {
+  console.log(prevText, text);
+
+  $("#programList a").each(function () {
+    console.log($(this).text());
+    if ($(this).text() === prevText) {
+
+      var replaced = $(this).text().replace(prevText, text);
+      $(this).text(replaced);
+
+      var programHtmlHeaderSpan = createHtmlElement({
+        format: "span",
+        className: "glyphicon glyphicon-minus sideBarButtonRemove",
+        father: this
+      });
+
+      $(programHtmlHeaderSpan).mouseover(function () {
+        $(this).css('color', 'red');
+      });
+
+      $(programHtmlHeaderSpan).mouseout(function () {
+        $(this).css('color', 'mediumvioletred');
+      });
+
+      $(programHtmlHeaderSpan).mousedown(function () {
+
+        var id = $(this).parent().text();
+        var element = Canvas.removeElement(id);
+
+        $(this).parent().parent().remove();
+        return false;
+
+      });
+    }
+    console.log($(this).text());
+  });
+
 };

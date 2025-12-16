@@ -18,8 +18,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "animate.css": "^4.1.1",
     "bootstrap": "^3.3.7",
     "fabric": "^4.6.0",
+    "flat-ui": "^2.1.1",
     "font-awesome": "^4.7.0",
     "jquery": "^2.2.4",
     "jquery-ui-dist": "^1.12.1",
